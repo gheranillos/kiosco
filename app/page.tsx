@@ -187,6 +187,16 @@ export default function KioscoDropLanding() {
                 className="w-full rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3 text-sm text-stone-100 placeholder:text-stone-500 outline-none transition focus:border-stone-500"
               />
             </div>
+            <div className="md:col-span-2">
+              <label className="mb-2 block text-xs uppercase tracking-[0.16em] text-stone-400">
+                Número telefónico
+              </label>
+              <input
+                type="tel"
+                placeholder="+58 412 1234567"
+                className="w-full rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3 text-sm text-stone-100 placeholder:text-stone-500 outline-none transition focus:border-stone-500"
+              />
+            </div>
             <div>
               <label className="mb-2 block text-xs uppercase tracking-[0.16em] text-stone-400">
                 Talla de interés
