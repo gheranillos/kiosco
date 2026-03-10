@@ -31,10 +31,10 @@ export default function KioscoDropLanding() {
             </div>
 
             <div className="space-y-4">
-              <h1 className="max-w-xl text-4xl font-black uppercase leading-none tracking-tight md:text-6xl text-balance">
+              <h1 data-hero-title className="max-w-xl text-4xl font-black uppercase leading-none tracking-tight md:text-6xl text-balance">
                 Made by artists. Worn by outsiders.
               </h1>
-              <p className="max-w-lg text-sm leading-6 text-stone-300 md:text-base">
+              <p className="anim-hero-subtitle max-w-lg text-sm leading-6 text-stone-300 md:text-base">
                 Estamos preparando el próximo drop de Kiosco. Déjanos tus datos para
                 entrar primero, recibir fotos, precio de salida y acceso anticipado.
               </p>
@@ -48,7 +48,7 @@ export default function KioscoDropLanding() {
 
             <a
               href="#preregistro"
-              className="inline-flex rounded-full bg-stone-100 px-6 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-stone-950 transition hover:scale-[1.02]"
+              className="anim-hero-cta-pulse anim-cursor-scale inline-flex rounded-full bg-stone-100 px-6 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-stone-950 transition hover:scale-[1.02]"
             >
               Quiero entrar al drop
             </a>
@@ -56,26 +56,26 @@ export default function KioscoDropLanding() {
 
           <div className="relative z-10">
             <div className="grid grid-cols-2 gap-4">
-              <div className="overflow-hidden rounded-[2rem] border border-stone-800 bg-stone-900 shadow-2xl">
+              <div className="anim-drop-image-wrap overflow-hidden rounded-[2rem] border border-stone-800 bg-stone-900 shadow-2xl">
                 <img
                   src={gallery[0].image}
                   alt={gallery[0].title}
-                  className="h-80 w-full object-cover"
+                  className="anim-drop-image anim-drop-image-reveal h-80 w-full object-cover"
                 />
               </div>
               <div className="grid gap-4">
-                <div className="overflow-hidden rounded-[2rem] border border-stone-800 bg-stone-900 shadow-2xl">
+                <div className="anim-drop-image-wrap overflow-hidden rounded-[2rem] border border-stone-800 bg-stone-900 shadow-2xl">
                   <img
                     src={gallery[1].image}
                     alt={gallery[1].title}
-                    className="h-40 w-full object-cover"
+                    className="anim-drop-image anim-drop-image-reveal h-40 w-full object-cover"
                   />
                 </div>
-                <div className="overflow-hidden rounded-[2rem] border border-stone-800 bg-stone-900 shadow-2xl">
+                <div className="anim-drop-image-wrap overflow-hidden rounded-[2rem] border border-stone-800 bg-stone-900 shadow-2xl">
                   <img
                     src={gallery[2].image}
                     alt={gallery[2].title}
-                    className="h-36 w-full object-cover"
+                    className="anim-drop-image anim-drop-image-reveal h-36 w-full object-cover"
                   />
                 </div>
               </div>
@@ -84,7 +84,7 @@ export default function KioscoDropLanding() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-16 md:px-10">
+      <section data-reveal className="anim-reveal mx-auto max-w-7xl px-6 py-16 md:px-10">
         <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <p className="mb-2 text-xs uppercase tracking-[0.2em] text-stone-400">Preview</p>
@@ -95,17 +95,17 @@ export default function KioscoDropLanding() {
           </p>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-3">
+        <div data-reveal-stagger className="grid gap-5 md:grid-cols-3 anim-reveal-stagger">
           {gallery.map((item) => (
             <div
               key={item.title}
               className="group overflow-hidden rounded-[2rem] border border-stone-800 bg-stone-900"
             >
-              <div className="overflow-hidden">
+              <div className="anim-drop-image-wrap overflow-hidden">
                 <img
                   src={item.image}
                   alt={item.title}
-                  className="h-80 w-full object-cover transition duration-500 group-hover:scale-105"
+                  className="anim-drop-image anim-drop-image-reveal h-80 w-full object-cover transition duration-500 group-hover:scale-105"
                 />
               </div>
               <div className="space-y-2 p-5">
@@ -117,8 +117,8 @@ export default function KioscoDropLanding() {
         </div>
       </section>
 
-      <section className="border-y border-stone-800 bg-stone-900/60">
-        <div className="mx-auto grid max-w-7xl gap-6 px-6 py-12 md:grid-cols-3 md:px-10">
+      <section data-reveal className="anim-reveal border-y border-stone-800 bg-stone-900/60">
+        <div data-reveal-stagger className="anim-reveal-stagger mx-auto grid max-w-7xl gap-6 px-6 py-12 md:grid-cols-3 md:px-10">
           <div className="rounded-[2rem] border border-stone-800 p-6">
             <p className="mb-2 text-xs uppercase tracking-[0.2em] text-stone-500">01</p>
             <h3 className="mb-2 text-xl font-bold uppercase">Te registras</h3>
@@ -143,7 +143,7 @@ export default function KioscoDropLanding() {
         </div>
       </section>
 
-      <section id="preregistro" className="mx-auto max-w-7xl px-6 py-16 md:px-10">
+      <section id="preregistro" data-reveal className="anim-reveal mx-auto max-w-7xl px-6 py-16 md:px-10">
         <div className="grid gap-8 lg:grid-cols-[1fr_1.1fr]">
           <div className="space-y-4">
             <p className="text-xs uppercase tracking-[0.2em] text-stone-400">Base de datos</p>
@@ -156,7 +156,7 @@ export default function KioscoDropLanding() {
             </p>
           </div>
 
-          <form className="grid gap-4 rounded-[2rem] border border-stone-800 bg-stone-900 p-6 md:grid-cols-2 md:p-8">
+          <form data-cta-container className="anim-cta-container grid gap-4 rounded-[2rem] border border-stone-800 bg-stone-900 p-6 md:grid-cols-2 md:p-8">
             <div className="md:col-span-1">
               <label className="mb-2 block text-xs uppercase tracking-[0.16em] text-stone-400">
                 Nombre
@@ -217,7 +217,8 @@ export default function KioscoDropLanding() {
             <div className="md:col-span-2 flex flex-col gap-3 sm:flex-row sm:items-center">
               <button
                 type="button"
-                className="inline-flex justify-center rounded-full bg-stone-100 px-6 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-stone-950 transition hover:scale-[1.02] hover:bg-stone-200"
+                data-cta-submit
+                className="anim-cta-submit-btn anim-cursor-scale inline-flex justify-center rounded-full bg-stone-100 px-6 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-stone-950 transition hover:scale-[1.02] hover:bg-stone-200"
               >
                 Unirme al preregistro
               </button>

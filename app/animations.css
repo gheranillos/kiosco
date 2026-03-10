@@ -1,0 +1,235 @@
+/* ============================================
+   El Kiosco — Animations
+   Solo animaciones; sin cambios de contenido.
+   ============================================ */
+
+/* --- Reduced motion (siempre primero) --- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* --- 1. Hero: letras cayendo (stagger por letra) --- */
+@keyframes kiosco-letter-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-0.6em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.anim-hero-letter {
+  display: inline-block;
+  opacity: 0;
+  animation: kiosco-letter-drop 0.5s ease-out forwards;
+}
+
+.anim-hero-subtitle {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: kiosco-subtitle-in 0.6s ease-out 0.4s forwards;
+}
+
+@keyframes kiosco-subtitle-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* CTA hero: pulse suave en loop --- */
+@keyframes kiosco-cta-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.15);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 0 0 8px rgba(255, 255, 255, 0);
+  }
+}
+
+.anim-hero-cta-pulse {
+  animation: kiosco-cta-pulse 2.5s ease-in-out infinite;
+}
+
+/* --- 2. Scroll reveal general --- */
+.anim-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 600ms ease-out,
+    transform 600ms ease-out;
+}
+
+.anim-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.anim-reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 600ms ease-out,
+    transform 600ms ease-out;
+}
+
+.anim-reveal-stagger.revealed > *:nth-child(1) { transition-delay: 0ms; }
+.anim-reveal-stagger.revealed > *:nth-child(2) { transition-delay: 100ms; }
+.anim-reveal-stagger.revealed > *:nth-child(3) { transition-delay: 200ms; }
+.anim-reveal-stagger.revealed > *:nth-child(4) { transition-delay: 300ms; }
+.anim-reveal-stagger.revealed > *:nth-child(5) { transition-delay: 400ms; }
+.anim-reveal-stagger.revealed > *:nth-child(6) { transition-delay: 500ms; }
+.anim-reveal-stagger.revealed > *:nth-child(7) { transition-delay: 600ms; }
+.anim-reveal-stagger.revealed > *:nth-child(8) { transition-delay: 700ms; }
+.anim-reveal-stagger.revealed > *:nth-child(9) { transition-delay: 800ms; }
+.anim-reveal-stagger.revealed > *:nth-child(10) { transition-delay: 900ms; }
+
+.anim-reveal-stagger.revealed > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- 3. Imágenes del drop: hover scale + clip-path reveal --- */
+.anim-drop-image-wrap {
+  overflow: hidden;
+}
+
+.anim-drop-image {
+  transition: transform 400ms ease;
+}
+
+.anim-drop-image-wrap:hover .anim-drop-image {
+  transform: scale(1.03);
+}
+
+.anim-drop-image-reveal {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 700ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.anim-drop-image-wrap.revealed .anim-drop-image-reveal {
+  clip-path: inset(0 0 0 0);
+}
+
+/* --- 5. CTA final: zoom + fade, botón shimmer y hover --- */
+.anim-cta-container {
+  opacity: 0;
+  transform: scale(0.95);
+  transition:
+    opacity 600ms ease-out,
+    transform 600ms ease-out;
+}
+
+.anim-cta-container.revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@keyframes kiosco-shimmer {
+  0% {
+    background-position: -120% 0;
+  }
+  100% {
+    background-position: 220% 0;
+  }
+}
+
+.anim-cta-submit-btn {
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 300ms ease, transform 300ms ease;
+}
+
+.anim-cta-submit-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.15) 45%,
+    rgba(255, 255, 255, 0.25) 50%,
+    rgba(255, 255, 255, 0.15) 55%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  background-position: -120% 0;
+  animation: kiosco-shimmer 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.anim-cta-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+/* Submit success: checkmark (CSS only) --- */
+@keyframes kiosco-checkmark-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes kiosco-success-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.anim-cta-success-check {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: kiosco-checkmark-draw 0.4s ease-out forwards;
+}
+
+.anim-cta-success-visible {
+  animation: kiosco-success-pop 0.5s ease-out forwards;
+}
+
+/* --- 6. Header fijo: padding reducido + backdrop-blur al scroll --- */
+.anim-header {
+  transition:
+    padding 300ms ease,
+    backdrop-filter 300ms ease,
+    background-color 300ms ease;
+}
+
+.anim-header.scrolled {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  background-color: rgba(12, 10, 9, 0.85);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+}
+
+/* --- 7. Cursor personalizado (opcional) --- */
+.anim-cursor-scale {
+  cursor: pointer;
+  transition: transform 200ms ease;
+}
+
+.anim-cursor-scale:hover {
+  transform: scale(1.05);
+}
+
+.anim-cursor-scale:active {
+  transform: scale(0.98);
+}
