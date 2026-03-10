@@ -50,6 +50,7 @@ export default function RootLayout({
           {children}
         </div>
         <Analytics />
+        <Script src="/validation.js" strategy="afterInteractive" />
         <Script src="/animations.js" strategy="afterInteractive" />
       </body>
     </html>

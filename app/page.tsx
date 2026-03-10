@@ -162,8 +162,13 @@ export default function KioscoDropLanding() {
                 Nombre
               </label>
               <input
+                name="nombre"
                 type="text"
                 placeholder="Tu nombre"
+                required
+                minLength={2}
+                maxLength={50}
+                pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+"
                 className="w-full rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3 text-sm text-stone-100 placeholder:text-stone-500 outline-none transition focus:border-stone-500"
               />
             </div>
@@ -172,8 +177,11 @@ export default function KioscoDropLanding() {
                 Instagram
               </label>
               <input
+                name="instagram"
                 type="text"
                 placeholder="@tuusuario"
+                required
+                maxLength={31}
                 className="w-full rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3 text-sm text-stone-100 placeholder:text-stone-500 outline-none transition focus:border-stone-500"
               />
             </div>
@@ -182,8 +190,10 @@ export default function KioscoDropLanding() {
                 Correo electrónico
               </label>
               <input
+                name="email"
                 type="email"
                 placeholder="tumail@email.com"
+                required
                 className="w-full rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3 text-sm text-stone-100 placeholder:text-stone-500 outline-none transition focus:border-stone-500"
               />
             </div>
@@ -192,8 +202,12 @@ export default function KioscoDropLanding() {
                 Número telefónico
               </label>
               <input
+                name="telefono"
                 type="tel"
                 placeholder="+58 412 1234567"
+                required
+                minLength={7}
+                maxLength={16}
                 className="w-full rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3 text-sm text-stone-100 placeholder:text-stone-500 outline-none transition focus:border-stone-500"
               />
             </div>
@@ -201,7 +215,8 @@ export default function KioscoDropLanding() {
               <label className="mb-2 block text-xs uppercase tracking-[0.16em] text-stone-400">
                 Talla de interés
               </label>
-              <select className="w-full rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3 text-sm text-stone-100 outline-none transition focus:border-stone-500">
+              <select name="talla" required className="w-full rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3 text-sm text-stone-100 outline-none transition focus:border-stone-500">
+                <option value="">Selecciona tu talla</option>
                 <option>S</option>
                 <option>M</option>
                 <option>L</option>
@@ -213,8 +228,13 @@ export default function KioscoDropLanding() {
                 Ciudad
               </label>
               <input
+                name="ciudad"
                 type="text"
                 placeholder="Lechería / Valencia / etc"
+                required
+                minLength={2}
+                maxLength={50}
+                pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+"
                 className="w-full rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3 text-sm text-stone-100 placeholder:text-stone-500 outline-none transition focus:border-stone-500"
               />
             </div>
