@@ -1,3 +1,5 @@
+import { FormSupabaseHandler } from '@/components/FormSupabaseHandler'
+
 export default function KioscoDropLanding() {
   const gallery = [
     {
@@ -157,6 +159,7 @@ export default function KioscoDropLanding() {
           </div>
 
           <form data-cta-container className="anim-cta-container grid gap-4 rounded-[2rem] border border-stone-800 bg-stone-900 p-6 md:grid-cols-2 md:p-8">
+            <FormSupabaseHandler />
             <div className="md:col-span-1">
               <label className="mb-2 block text-xs uppercase tracking-[0.16em] text-stone-400">
                 Nombre
@@ -246,7 +249,7 @@ export default function KioscoDropLanding() {
             </div>
             <div className="md:col-span-2 flex flex-col gap-3 sm:flex-row sm:items-center">
               <button
-                type="button"
+                type="submit"
                 data-cta-submit
                 className="anim-cta-submit-btn anim-cursor-scale inline-flex justify-center rounded-full bg-stone-100 px-6 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-stone-950 transition hover:scale-[1.02] hover:bg-stone-200"
               >
