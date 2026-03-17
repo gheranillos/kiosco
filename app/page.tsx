@@ -9,7 +9,7 @@ export default function KioscoDropLanding() {
         "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1200&auto=format&fit=crop",
     },
     {
-      title: "Drop preview",
+      title: "Fuck i want to creative",
       caption: "Muestra detalles del arte, textura y construcción de la pieza.",
       image:
         "https://images.unsplash.com/photo-1503341504253-dff4815485f1?q=80&w=1200&auto=format&fit=crop",
@@ -45,9 +45,9 @@ export default function KioscoDropLanding() {
             </div>
 
             <div className="flex flex-wrap gap-3 text-xs uppercase tracking-[0.18em] text-stone-400">
-              <span className="rounded-full border border-stone-800 px-3 py-2">Edición limitada</span>
-              <span className="rounded-full border border-stone-800 px-3 py-2">Acceso prioritario</span>
-              <span className="rounded-full border border-stone-800 px-3 py-2">Comunidad primero</span>
+              <span className="rounded-full border border-stone-800 px-3 py-2">Exclusividad</span>
+              <span className="rounded-full border border-stone-800 px-3 py-2">Early Access</span>
+              <span className="rounded-full border border-stone-800 px-3 py-2">Comunidad</span>
             </div>
 
             <a
@@ -95,7 +95,7 @@ export default function KioscoDropLanding() {
             <h2 className="text-2xl font-bold uppercase md:text-3xl">Fotos del drop</h2>
           </div>
           <p className="max-w-md text-sm leading-6 text-stone-400">
-            Aquí puedes mostrar mockups, detalles de estampado, fitting y mood visual del lanzamiento.
+          Esto no es solo Merch: El Kiosco es la idea, detalles y la vibras de un outsider.
           </p>
         </div>
 
@@ -146,7 +146,7 @@ export default function KioscoDropLanding() {
             <p className="mb-2 text-xs uppercase tracking-[0.2em] text-stone-500">03</p>
             <h3 className="mb-2 text-xl font-bold uppercase">Entras temprano</h3>
             <p className="text-sm leading-6 text-stone-400">
-              La idea es convertir esta lista en tu base de datos real para próximos drops.
+              Conectas con más creativos y personas que comparten tu visión.
             </p>
           </div>
         </div>
@@ -160,8 +160,8 @@ export default function KioscoDropLanding() {
               Preregistro del drop
             </h2>
             <p className="max-w-md text-sm leading-6 text-stone-400 md:text-base">
-              Esta sección está pensada para conectar luego con Formspree, Mailchimp,
-              ConvertKit, Google Sheets o una automatización simple para guardar tus leads.
+              No es solo ropa, es cultura. Regístrate y sé parte del próximo drop del Kiosco
+              prendas limitadas, comunidad creativa y acceso exclusivo antes del lanzamiento.
             </p>
           </div>
 
