@@ -57,16 +57,16 @@ export function GallerySection({ galleryPreview }: { galleryPreview: GalleryItem
 
       {selected && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm animate-in fade-in duration-150"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm animate-in fade-in duration-150 p-4 sm:p-6"
           onClick={() => setSelected(null)}
         >
           <div
-            className="relative max-w-3xl w-full mx-4 animate-in fade-in zoom-in-95 duration-200"
+            className="relative max-w-3xl w-full animate-in fade-in zoom-in-95 duration-200 max-h-[85vh] overflow-y-auto rounded-2xl bg-stone-950/95 border border-stone-800"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={() => setSelected(null)}
-              className="absolute -top-10 right-0 text-stone-400 hover:text-white text-xs uppercase tracking-widest font-semibold transition"
+              className="absolute top-3 right-3 text-stone-400 hover:text-white text-xs uppercase tracking-widest font-semibold transition"
             >
               Cerrar ✕
             </button>
@@ -74,10 +74,10 @@ export function GallerySection({ galleryPreview }: { galleryPreview: GalleryItem
             <img
               src={selected.image}
               alt={selected.title}
-              className="w-full rounded-2xl object-cover max-h-[75vh]"
+              className="w-full rounded-2xl object-cover max-h-[70vh] sm:max-h-[75vh]"
             />
 
-            <div className="mt-4 space-y-1">
+            <div className="mt-4 space-y-1 px-4 pb-4 sm:px-6 sm:pb-6">
               <h3 className="text-xs font-semibold uppercase tracking-widest text-stone-300">
                 {selected.title}
               </h3>
