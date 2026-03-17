@@ -39,7 +39,7 @@ export default function KioscoDropLanding() {
             <div className="space-y-4">
               <h1
                 data-hero-title
-                className="max-w-xl text-4xl font-black uppercase leading-none tracking-tight md:text-6xl"
+                className="max-w-xl break-keep text-4xl font-black uppercase leading-none tracking-tight md:text-6xl"
               >
                 Made by&nbsp;artists. Worn by&nbsp;outsiders.
               </h1>
@@ -57,13 +57,13 @@ export default function KioscoDropLanding() {
 
             <a
               href="#preregistro"
-              className="anim-hero-cta-pulse anim-cursor-scale group relative inline-flex overflow-hidden rounded-full bg-stone-100 px-6 py-3 text-sm font-bold uppercase text-stone-950 transition hover:scale-[1.02]"
+              className="anim-hero-cta-pulse anim-cursor-scale group relative inline-flex min-w-[260px] items-center justify-center overflow-hidden rounded-full bg-stone-100 px-8 py-4 text-sm font-bold uppercase leading-none text-stone-950 transition hover:scale-[1.02]"
             >
-              <span className="relative z-10 inline-block translate-x-1 transition-all duration-300 group-hover:translate-x-12 group-hover:opacity-0">
+              <span className="relative z-10 inline-block whitespace-nowrap translate-x-1 transition-all duration-300 group-hover:translate-x-12 group-hover:opacity-0">
                 Quiero entrar al drop
               </span>
-              <span className="absolute top-0 z-10 flex h-full w-full translate-x-12 items-center justify-center gap-2 text-stone-100 opacity-0 transition-all duration-300 group-hover:-translate-x-1 group-hover:opacity-100">
-                <span>Quiero entrar al drop</span>
+              <span className="absolute top-0 z-10 flex h-full w-full translate-x-12 items-center justify-center gap-2 whitespace-nowrap text-stone-100 opacity-0 transition-all duration-300 group-hover:-translate-x-1 group-hover:opacity-100">
+                <span className="whitespace-nowrap">Quiero entrar al drop</span>
                 <svg
                   aria-hidden="true"
                   viewBox="0 0 24 24"
