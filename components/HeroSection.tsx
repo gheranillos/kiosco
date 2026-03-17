@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type MouseEvent } from "react";
 
 type GalleryItem = {
   title: string;
@@ -9,37 +9,45 @@ type GalleryItem = {
 };
 
 export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
-  const heroRef = useRef<HTMLDivElement>(null);
+  const heroBgRef = useRef<HTMLDivElement>(null);
   const heroImageSrc = "/hero1.jpg";
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const fadeEnd = window.innerHeight * 0.7;
+      const fadeEnd = window.innerHeight * 1.2;
       const opacity = Math.max(1 - scrollY / fadeEnd, 0);
       const translateY = scrollY * 0.25;
-      if (heroRef.current) {
-        heroRef.current.style.opacity = String(opacity);
-        heroRef.current.style.transform = `translateY(${translateY}px)`;
+      if (heroBgRef.current) {
+        heroBgRef.current.style.opacity = String(opacity);
+        heroBgRef.current.style.transform = `translateY(${translateY}px)`;
       }
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const scrollToPreregistro = (e: MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const el = document.getElementById("preregistro");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      window.history.replaceState(null, "", "#preregistro");
+    }
+  };
+
   return (
     <section className="relative">
-      <div
-        ref={heroRef}
-        className="sticky top-0 z-0 h-[100vh] w-full overflow-hidden"
-      >
-        <img
-          src={heroImageSrc}
-          alt={gallery[0]?.title ?? "Hero image"}
-          className="h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/40" />
-        <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-black/70 to-transparent" />
+      <div className="sticky top-0 z-0 h-[100vh] w-full overflow-hidden">
+        <div ref={heroBgRef} className="absolute inset-0 will-change-transform">
+          <img
+            src={heroImageSrc}
+            alt={gallery[0]?.title ?? "Hero image"}
+            className="h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-black/70 to-transparent" />
+        </div>
 
         <h1 className="absolute top-8 left-6 md:left-10 max-w-[11ch] break-keep font-black uppercase leading-[0.85] tracking-tight text-white text-[7vw] md:text-[5.5vw]">
           <span className="block">Made by artists</span>
@@ -71,6 +79,7 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
 
           <a
             href="#preregistro"
+            onClick={scrollToPreregistro}
             className="anim-hero-cta-pulse anim-cursor-scale group relative inline-flex min-w-[260px] items-center justify-center overflow-hidden rounded-full bg-stone-100 px-8 py-4 text-sm font-bold uppercase leading-none text-stone-950 transition hover:scale-[1.02]"
           >
             <span className="relative z-10 inline-block whitespace-nowrap translate-x-1 transition-all duration-300 group-hover:translate-x-12 group-hover:opacity-0">
