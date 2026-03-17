@@ -5,26 +5,22 @@ export default function KioscoDropLanding() {
     {
       title: "Mom im an artist",
       caption: "Ser artista no es una carrera, es una forma de existir.",
-      image:
-        "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1200&auto=format&fit=crop",
+      image: "/tshirt1.jpg",
     },
     {
       title: "Fuck i want to creative",
       caption: "Muestra detalles del arte, textura y construcción de la pieza.",
-      image:
-        "https://images.unsplash.com/photo-1503341504253-dff4815485f1?q=80&w=1200&auto=format&fit=crop",
+      image: "/tshirt2.jpg",
     },
     {
       title: "Created not aproved",
       caption: "Las piezas que cambian la cultura nunca pasan por aprobación.",
-      image:
-        "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1200&auto=format&fit=crop",
+      image: "/tshirt3.jpg",
     },
     {
       title: "Normal never built anything",
       caption: "Lo normal nunca ha construido nada.",
-      image:
-        "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=1200&auto=format&fit=crop",
+      image: "/tshirt4.jpg",
     },
   ];
 
