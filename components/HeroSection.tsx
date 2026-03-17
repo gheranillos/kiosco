@@ -42,7 +42,7 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
         <div className="absolute inset-0 bg-black/40" />
         <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-black/70 to-transparent" />
 
-        <h1 className="absolute top-8 left-6 md:left-10 max-w-[11ch] break-keep font-black uppercase leading-[0.85] tracking-tight text-white text-[14vw] md:text-[11vw]">
+        <h1 className="absolute top-8 left-6 md:left-10 max-w-[11ch] break-keep font-black uppercase leading-[0.85] tracking-tight text-white text-[7vw] md:text-[5.5vw]">
           <span className="block">Made By artists</span>
           <span className="mt-2 block font-semibold tracking-[0.12em]">
             worn by
