@@ -1,4 +1,5 @@
 import { FormSupabaseHandler } from '@/components/FormSupabaseHandler'
+import { GallerySection } from '@/components/GallerySection'
 import { HeroSection } from '@/components/HeroSection'
 
 export default function KioscoDropLanding() {
@@ -32,41 +33,7 @@ export default function KioscoDropLanding() {
       <HeroSection gallery={gallery} />
 
       <div className="relative z-10 bg-stone-950">
-        <section data-reveal className="anim-reveal mx-auto max-w-7xl px-6 py-16 md:px-10">
-          <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <div>
-              <p className="mb-2 text-xs font-semibold uppercase text-stone-400">Preview</p>
-              <h2 className="text-2xl font-bold uppercase md:text-3xl">Fotos del drop</h2>
-            </div>
-            <p className="max-w-md text-sm leading-6 text-stone-400">
-            Esto no es solo Merch: El Kiosco es la idea, detalles y la vibras de un outsider.
-            </p>
-          </div>
-
-          <div data-reveal-stagger className="grid gap-5 md:grid-cols-2 lg:grid-cols-4 anim-reveal-stagger">
-            {galleryPreview.map((item, itemIndex) => (
-              <div
-                key={item.title}
-                className="group overflow-hidden rounded-xl border border-stone-700 bg-stone-950/80 backdrop-blur-sm opacity-0 translate-y-6 transition-all duration-700 ease-out hover:scale-[1.02] hover:border-stone-500"
-                style={{ transitionDelay: `${itemIndex * 100}ms` }}
-              >
-                <div className="overflow-hidden">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="h-72 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  />
-                </div>
-                <div className="space-y-1 p-4">
-                  <h3 className="text-xs font-semibold uppercase text-stone-300">
-                    {item.title}
-                  </h3>
-                  <p className="text-stone-500 text-xs font-light">{item.caption}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+        <GallerySection galleryPreview={galleryPreview} />
 
         <section data-reveal className="anim-reveal border-y border-stone-800 bg-stone-900/60">
           <div data-reveal-stagger className="anim-reveal-stagger mx-auto grid max-w-7xl gap-6 px-6 py-12 md:grid-cols-3 md:px-10">
