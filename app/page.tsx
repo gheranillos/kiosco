@@ -20,9 +20,15 @@ export default function KioscoDropLanding() {
       image:
         "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1200&auto=format&fit=crop",
     },
+    {
+      title: "Fit & mood",
+      caption: "Una foto lifestyle para vender actitud, no solo la prenda.",
+      image:
+        "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=1200&auto=format&fit=crop",
+    },
   ];
 
-  const galleryPreview = gallery.slice(0, 2);
+  const galleryPreview = gallery;
 
   return (
     <div className="min-h-screen bg-stone-950 text-stone-100 selection:bg-stone-100 selection:text-stone-950">
@@ -99,30 +105,28 @@ export default function KioscoDropLanding() {
           </p>
         </div>
 
-        <div data-reveal-stagger className="grid gap-5 md:grid-cols-2 anim-reveal-stagger">
-          {[0, 1].map((groupIndex) =>
-            galleryPreview.map((item, itemIndex) => (
-              <div
-                key={`${item.title}-${groupIndex}`}
-                className="group overflow-hidden rounded-xl border border-stone-700 bg-stone-950/80 backdrop-blur-sm opacity-0 transform transition-all duration-700 ease-out hover:scale-[1.02] hover:border-stone-500"
-                style={{ transitionDelay: `${(groupIndex * gallery.length + itemIndex) * 100}ms` }}
-              >
-                <div className="overflow-hidden">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="h-72 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  />
-                </div>
-                <div className="space-y-1 p-4">
-                  <h3 className="font-light tracking-[0.3em] uppercase text-xs text-stone-300">
-                    {item.title}
-                  </h3>
-                  <p className="text-stone-500 text-xs font-light">{item.caption}</p>
-                </div>
+        <div data-reveal-stagger className="grid gap-5 md:grid-cols-2 lg:grid-cols-4 anim-reveal-stagger">
+          {galleryPreview.map((item, itemIndex) => (
+            <div
+              key={item.title}
+              className="group overflow-hidden rounded-xl border border-stone-700 bg-stone-950/80 backdrop-blur-sm opacity-0 translate-y-6 transition-all duration-700 ease-out hover:scale-[1.02] hover:border-stone-500"
+              style={{ transitionDelay: `${itemIndex * 100}ms` }}
+            >
+              <div className="overflow-hidden">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="h-72 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                />
               </div>
-            )),
-          )}
+              <div className="space-y-1 p-4">
+                <h3 className="font-light tracking-[0.3em] uppercase text-xs text-stone-300">
+                  {item.title}
+                </h3>
+                <p className="text-stone-500 text-xs font-light">{item.caption}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
