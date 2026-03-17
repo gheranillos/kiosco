@@ -42,13 +42,10 @@ export default function RootLayout({
       <body className="font-sans antialiased">
         <header
           data-animate-header
-          className="anim-header fixed top-0 left-0 right-0 z-50 px-6 py-4 md:px-10 text-sm uppercase tracking-[0.2em] text-stone-300 bg-stone-950/0"
+          className="anim-header fixed top-0 left-0 right-0 z-50 px-6 py-4 md:px-10 text-sm uppercase tracking-[0.2em] text-stone-100 bg-stone-950"
           aria-label="Navegación"
         >
-          <AnimatedLogo
-            darkSrc="/kiosco-logo-black.png"
-            lightSrc="/kiosco-logo-white.png"
-          />
+          <AnimatedLogo lightSrc="/kiosco-logo-white.png" />
         </header>
         <div className="pt-14">
           {children}
