@@ -41,7 +41,7 @@ export default function KioscoDropLanding() {
                 data-hero-title
                 className="max-w-xl text-4xl font-black uppercase leading-none tracking-tight md:text-6xl"
               >
-                Made by&nbsp;artists. Worn by outsiders.
+                Made by&nbsp;artists. Worn by&nbsp;outsiders.
               </h1>
               <p className="anim-hero-subtitle max-w-lg text-sm leading-6 text-stone-300 md:text-base">
                 Estamos preparando el próximo drop de Kiosco. Déjanos tus datos para
@@ -57,9 +57,28 @@ export default function KioscoDropLanding() {
 
             <a
               href="#preregistro"
-              className="anim-hero-cta-pulse anim-cursor-scale inline-flex rounded-full bg-stone-100 px-6 py-3 text-sm font-bold uppercase text-stone-950 transition hover:scale-[1.02]"
+              className="anim-hero-cta-pulse anim-cursor-scale group relative inline-flex overflow-hidden rounded-full bg-stone-100 px-6 py-3 text-sm font-bold uppercase text-stone-950 transition hover:scale-[1.02]"
             >
-              Quiero entrar al drop
+              <span className="relative z-10 inline-block translate-x-1 transition-all duration-300 group-hover:translate-x-12 group-hover:opacity-0">
+                Quiero entrar al drop
+              </span>
+              <span className="absolute top-0 z-10 flex h-full w-full translate-x-12 items-center justify-center gap-2 text-stone-100 opacity-0 transition-all duration-300 group-hover:-translate-x-1 group-hover:opacity-100">
+                <span>Quiero entrar al drop</span>
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M5 12h14" />
+                  <path d="m12 5 7 7-7 7" />
+                </svg>
+              </span>
+              <span className="absolute left-[20%] top-[40%] h-2 w-2 scale-[1] rounded-lg bg-stone-950 transition-all duration-300 group-hover:left-[0%] group-hover:top-[0%] group-hover:h-full group-hover:w-full group-hover:scale-[1.8]" />
             </a>
           </div>
 
