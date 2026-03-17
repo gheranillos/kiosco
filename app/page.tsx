@@ -21,8 +21,8 @@ export default function KioscoDropLanding() {
         "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1200&auto=format&fit=crop",
     },
     {
-      title: "Fit & mood",
-      caption: "Una foto lifestyle para vender actitud, no solo la prenda.",
+      title: "Normal never built anything",
+      caption: "Lo normal nunca ha construido nada.",
       image:
         "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=1200&auto=format&fit=crop",
     },
