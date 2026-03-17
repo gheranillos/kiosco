@@ -22,6 +22,12 @@ export default function KioscoDropLanding() {
     },
   ];
 
+  const galleryPreview = gallery.filter(
+    (item) =>
+      item.title !== 'Fxck i want creative' &&
+      item.title !== 'Created not aproved',
+  );
+
   return (
     <div className="min-h-screen bg-stone-950 text-stone-100 selection:bg-stone-100 selection:text-stone-950">
       <section className="relative overflow-hidden border-b border-stone-800">
@@ -99,7 +105,7 @@ export default function KioscoDropLanding() {
 
         <div data-reveal-stagger className="grid gap-5 md:grid-cols-2 anim-reveal-stagger">
           {[0, 1].map((groupIndex) =>
-            gallery.map((item, itemIndex) => (
+            galleryPreview.map((item, itemIndex) => (
               <div
                 key={`${item.title}-${groupIndex}`}
                 className="group overflow-hidden rounded-xl border border-stone-700 bg-stone-950/80 backdrop-blur-sm opacity-0 transform transition-all duration-700 ease-out hover:scale-[1.02] hover:border-stone-500"
