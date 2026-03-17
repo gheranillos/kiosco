@@ -41,7 +41,15 @@ export default function KioscoDropLanding() {
                 data-hero-title
                 className="max-w-xl break-keep text-4xl font-black uppercase leading-none tracking-tight md:text-6xl"
               >
-                Made by&nbsp;artists. Worn by&nbsp;outsiders.
+                <span className="block text-5xl font-black tracking-tight md:text-7xl">
+                  Made By <span className="text-stone-300">artists</span>
+                </span>
+                <span className="mt-2 block text-2xl font-semibold tracking-[0.12em] text-stone-300 md:text-4xl">
+                  worn by
+                </span>
+                <span className="mt-2 block text-6xl font-black tracking-tight md:text-8xl">
+                  Outsiders
+                </span>
               </h1>
               <p className="anim-hero-subtitle max-w-lg text-sm leading-6 text-stone-300 md:text-base">
                 Estamos preparando el próximo drop de Kiosco. Déjanos tus datos para
@@ -78,7 +86,7 @@ export default function KioscoDropLanding() {
                   <path d="m12 5 7 7-7 7" />
                 </svg>
               </span>
-              <span className="absolute left-[20%] top-[40%] h-2 w-2 scale-[1] rounded-lg bg-stone-950 transition-all duration-300 group-hover:left-[0%] group-hover:top-[0%] group-hover:h-full group-hover:w-full group-hover:scale-[1.8]" />
+              <span className="absolute left-[20%] top-[40%] h-2 w-2 scale-0 rounded-lg bg-stone-950 opacity-0 transition-all duration-300 group-hover:left-[0%] group-hover:top-[0%] group-hover:h-full group-hover:w-full group-hover:scale-[1.8] group-hover:opacity-100" />
             </a>
           </div>
 
