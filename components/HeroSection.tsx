@@ -10,6 +10,8 @@ type GalleryItem = {
 
 export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
   const heroRef = useRef<HTMLDivElement>(null);
+  const heroImageSrc =
+    "https://images.unsplash.com/photo-1520975958225-1c65f9e11c63?auto=format&fit=crop&w=1920&h=1080&q=80";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,13 +35,14 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
         className="sticky top-0 z-0 h-[100vh] w-full overflow-hidden"
       >
         <img
-          src={gallery[0]?.image ?? "/tshirt1.jpg"}
+          src={heroImageSrc}
           alt={gallery[0]?.title ?? "Hero image"}
           className="h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-black/70 to-transparent" />
 
-        <h1 className="absolute top-8 left-6 md:left-10 max-w-[12ch] break-keep font-black uppercase leading-none tracking-tight text-white text-[14vw] md:text-[11vw]">
+        <h1 className="absolute top-8 left-6 md:left-10 max-w-[11ch] break-keep font-black uppercase leading-[0.85] tracking-tight text-white text-[14vw] md:text-[11vw]">
           <span className="block">Made By artists</span>
           <span className="mt-2 block font-semibold tracking-[0.12em]">
             worn by
@@ -47,7 +50,7 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
           <span className="mt-2 block">Outsiders</span>
         </h1>
 
-        <div className="absolute bottom-10 left-6 md:left-10 space-y-4">
+        <div className="absolute bottom-6 md:bottom-10 left-6 md:left-10 max-w-[min(520px,92vw)] space-y-3 md:space-y-4">
           <div className="inline-flex items-center rounded-full border border-stone-700 bg-stone-900/70 px-3 py-1 text-xs font-semibold uppercase text-stone-300">
             Kiosco — Drop #001 Not normal.
           </div>
@@ -94,34 +97,6 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
             </span>
             <span className="absolute left-[20%] top-[40%] h-2 w-2 scale-0 rounded-lg bg-stone-950 opacity-0 transition-all duration-300 group-hover:left-[0%] group-hover:top-[0%] group-hover:h-full group-hover:w-full group-hover:scale-[1.8] group-hover:opacity-100" />
           </a>
-        </div>
-
-        <div className="absolute right-6 md:right-10 top-1/2 -translate-y-1/2 hidden md:block">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="anim-drop-image-wrap overflow-hidden rounded-[2rem] border border-stone-800 bg-stone-900 shadow-2xl">
-              <img
-                src={gallery[0].image}
-                alt={gallery[0].title}
-                className="anim-drop-image anim-drop-image-reveal h-80 w-full object-cover"
-              />
-            </div>
-            <div className="grid gap-4">
-              <div className="anim-drop-image-wrap overflow-hidden rounded-[2rem] border border-stone-800 bg-stone-900 shadow-2xl">
-                <img
-                  src={gallery[1].image}
-                  alt={gallery[1].title}
-                  className="anim-drop-image anim-drop-image-reveal h-40 w-full object-cover"
-                />
-              </div>
-              <div className="anim-drop-image-wrap overflow-hidden rounded-[2rem] border border-stone-800 bg-stone-900 shadow-2xl">
-                <img
-                  src={gallery[2].image}
-                  alt={gallery[2].title}
-                  className="anim-drop-image anim-drop-image-reveal h-36 w-full object-cover"
-                />
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
