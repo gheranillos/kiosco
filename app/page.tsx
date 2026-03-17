@@ -3,20 +3,20 @@ import { FormSupabaseHandler } from '@/components/FormSupabaseHandler'
 export default function KioscoDropLanding() {
   const gallery = [
     {
-      title: "Front Graphic",
-      caption: "Visual del drop — reemplaza esta tarjeta por tu mockup real.",
+      title: "Mom im an artist",
+      caption: "Ser artista no es una carrera, es una forma de existir.",
       image:
         "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1200&auto=format&fit=crop",
     },
     {
-      title: "Back Print",
+      title: "Fxck i want creative",
       caption: "Muestra detalle del arte, textura o frase principal.",
       image:
-        "https://images.unsplash.com/photo-1503341504253-dff4815485f1?q=80&w=1200&auto=format&fit=crop",
+        "rechazo a lo convencional.",
     },
     {
-      title: "Fit & Mood",
-      caption: "Usa una foto lifestyle para vender actitud, no solo ropa.",
+      title: "Created not aproved",
+      caption: "las cosas que cambian la cultura no pasan por aprobación.",
       image:
         "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1200&auto=format&fit=crop",
     },
@@ -97,25 +97,30 @@ export default function KioscoDropLanding() {
           </p>
         </div>
 
-        <div data-reveal-stagger className="grid gap-5 md:grid-cols-3 anim-reveal-stagger">
-          {gallery.map((item) => (
-            <div
-              key={item.title}
-              className="group overflow-hidden rounded-[2rem] border border-stone-800 bg-stone-900"
-            >
-              <div className="anim-drop-image-wrap overflow-hidden">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="anim-drop-image anim-drop-image-reveal h-80 w-full object-cover transition duration-500 group-hover:scale-105"
-                />
+        <div data-reveal-stagger className="grid gap-5 md:grid-cols-2 anim-reveal-stagger">
+          {[0, 1].map((groupIndex) =>
+            gallery.map((item, itemIndex) => (
+              <div
+                key={`${item.title}-${groupIndex}`}
+                className="group overflow-hidden rounded-xl border border-stone-700 bg-stone-950/80 backdrop-blur-sm opacity-0 transform transition-all duration-700 ease-out hover:scale-[1.02] hover:border-stone-500"
+                style={{ transitionDelay: `${(groupIndex * gallery.length + itemIndex) * 100}ms` }}
+              >
+                <div className="overflow-hidden">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="h-72 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                </div>
+                <div className="space-y-1 p-4">
+                  <h3 className="font-light tracking-[0.3em] uppercase text-xs text-stone-300">
+                    {item.title}
+                  </h3>
+                  <p className="text-stone-500 text-xs font-light">{item.caption}</p>
+                </div>
               </div>
-              <div className="space-y-2 p-5">
-                <h3 className="text-lg font-semibold uppercase">{item.title}</h3>
-                <p className="text-sm leading-6 text-stone-400">{item.caption}</p>
-              </div>
-            </div>
-          ))}
+            )),
+          )}
         </div>
       </section>
 
