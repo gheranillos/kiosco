@@ -32,8 +32,8 @@ export default function KioscoDropLanding() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_35%)]" />
         <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 md:px-10 lg:grid-cols-2 lg:items-center lg:py-24">
           <div className="relative z-10 space-y-6">
-            <div className="inline-flex items-center rounded-full border border-stone-700 bg-stone-900/70 px-3 py-1 text-xs uppercase tracking-[0.2em] text-stone-300">
-              Kiosco — Drop preregistro
+            <div className="inline-flex items-center rounded-full border border-stone-700 bg-stone-900/70 px-3 py-1 text-xs font-semibold uppercase text-stone-300">
+              Kiosco — Drop #001 Not normal.
             </div>
 
             <div className="space-y-4">
@@ -46,7 +46,7 @@ export default function KioscoDropLanding() {
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-3 text-xs uppercase tracking-[0.18em] text-stone-400">
+            <div className="flex flex-wrap gap-3 text-xs font-medium uppercase text-stone-400">
               <span className="rounded-full border border-stone-800 px-3 py-2">Exclusividad</span>
               <span className="rounded-full border border-stone-800 px-3 py-2">Early Access</span>
               <span className="rounded-full border border-stone-800 px-3 py-2">Comunidad</span>
@@ -54,7 +54,7 @@ export default function KioscoDropLanding() {
 
             <a
               href="#preregistro"
-              className="anim-hero-cta-pulse anim-cursor-scale inline-flex rounded-full bg-stone-100 px-6 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-stone-950 transition hover:scale-[1.02]"
+              className="anim-hero-cta-pulse anim-cursor-scale inline-flex rounded-full bg-stone-100 px-6 py-3 text-sm font-bold uppercase text-stone-950 transition hover:scale-[1.02]"
             >
               Quiero entrar al drop
             </a>
@@ -93,7 +93,7 @@ export default function KioscoDropLanding() {
       <section data-reveal className="anim-reveal mx-auto max-w-7xl px-6 py-16 md:px-10">
         <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
-            <p className="mb-2 text-xs uppercase tracking-[0.2em] text-stone-400">Preview</p>
+            <p className="mb-2 text-xs font-semibold uppercase text-stone-400">Preview</p>
             <h2 className="text-2xl font-bold uppercase md:text-3xl">Fotos del drop</h2>
           </div>
           <p className="max-w-md text-sm leading-6 text-stone-400">
@@ -116,7 +116,7 @@ export default function KioscoDropLanding() {
                 />
               </div>
               <div className="space-y-1 p-4">
-                <h3 className="font-light tracking-[0.3em] uppercase text-xs text-stone-300">
+                <h3 className="text-xs font-semibold uppercase text-stone-300">
                   {item.title}
                 </h3>
                 <p className="text-stone-500 text-xs font-light">{item.caption}</p>
@@ -129,21 +129,21 @@ export default function KioscoDropLanding() {
       <section data-reveal className="anim-reveal border-y border-stone-800 bg-stone-900/60">
         <div data-reveal-stagger className="anim-reveal-stagger mx-auto grid max-w-7xl gap-6 px-6 py-12 md:grid-cols-3 md:px-10">
           <div className="rounded-[2rem] border border-stone-800 p-6">
-            <p className="mb-2 text-xs uppercase tracking-[0.2em] text-stone-500">01</p>
+            <p className="mb-2 text-xs font-semibold uppercase text-stone-500">01</p>
             <h3 className="mb-2 text-xl font-bold uppercase">Te registras</h3>
             <p className="text-sm leading-6 text-stone-400">
               Dejas tu nombre, correo e Instagram para entrar a la lista.
             </p>
           </div>
           <div className="rounded-[2rem] border border-stone-800 p-6">
-            <p className="mb-2 text-xs uppercase tracking-[0.2em] text-stone-500">02</p>
+            <p className="mb-2 text-xs font-semibold uppercase text-stone-500">02</p>
             <h3 className="mb-2 text-xl font-bold uppercase">Recibes acceso</h3>
             <p className="text-sm leading-6 text-stone-400">
               Te avisamos primero cuando salgan fecha, precio y cantidad disponible.
             </p>
           </div>
           <div className="rounded-[2rem] border border-stone-800 p-6">
-            <p className="mb-2 text-xs uppercase tracking-[0.2em] text-stone-500">03</p>
+            <p className="mb-2 text-xs font-semibold uppercase text-stone-500">03</p>
             <h3 className="mb-2 text-xl font-bold uppercase">Entras temprano</h3>
             <p className="text-sm leading-6 text-stone-400">
               Conectas con más creativos y personas que comparten tu visión.
@@ -155,7 +155,7 @@ export default function KioscoDropLanding() {
       <section id="preregistro" data-reveal className="anim-reveal mx-auto max-w-7xl px-6 py-16 md:px-10">
         <div className="grid gap-8 lg:grid-cols-[1fr_1.1fr]">
           <div className="space-y-4">
-            <p className="text-xs uppercase tracking-[0.2em] text-stone-400">Base de datos</p>
+            <p className="text-xs font-semibold uppercase text-stone-400">Base de datos</p>
             <h2 className="text-3xl font-black uppercase leading-none md:text-5xl text-balance">
               Preregistro del drop
             </h2>
@@ -168,7 +168,7 @@ export default function KioscoDropLanding() {
           <form data-cta-container className="anim-cta-container grid gap-4 rounded-[2rem] border border-stone-800 bg-stone-900 p-6 md:grid-cols-2 md:p-8">
             <FormSupabaseHandler />
             <div className="md:col-span-1">
-              <label className="mb-2 block text-xs uppercase tracking-[0.16em] text-stone-400">
+              <label className="mb-2 block text-xs font-semibold uppercase text-stone-400">
                 Nombre
               </label>
               <input
@@ -183,7 +183,7 @@ export default function KioscoDropLanding() {
               />
             </div>
             <div className="md:col-span-1">
-              <label className="mb-2 block text-xs uppercase tracking-[0.16em] text-stone-400">
+              <label className="mb-2 block text-xs font-semibold uppercase text-stone-400">
                 Instagram
               </label>
               <input
@@ -196,7 +196,7 @@ export default function KioscoDropLanding() {
               />
             </div>
             <div className="md:col-span-2">
-              <label className="mb-2 block text-xs uppercase tracking-[0.16em] text-stone-400">
+              <label className="mb-2 block text-xs font-semibold uppercase text-stone-400">
                 Correo electrónico
               </label>
               <input
@@ -208,7 +208,7 @@ export default function KioscoDropLanding() {
               />
             </div>
             <div className="md:col-span-2">
-              <label className="mb-2 block text-xs uppercase tracking-[0.16em] text-stone-400">
+              <label className="mb-2 block text-xs font-semibold uppercase text-stone-400">
                 Número telefónico
               </label>
               <input
@@ -222,7 +222,7 @@ export default function KioscoDropLanding() {
               />
             </div>
             <div>
-              <label className="mb-2 block text-xs uppercase tracking-[0.16em] text-stone-400">
+              <label className="mb-2 block text-xs font-semibold uppercase text-stone-400">
                 Talla de interés
               </label>
               <select name="talla" required className="w-full rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3 text-sm text-stone-100 outline-none transition focus:border-stone-500">
@@ -234,7 +234,7 @@ export default function KioscoDropLanding() {
               </select>
             </div>
             <div>
-              <label className="mb-2 block text-xs uppercase tracking-[0.16em] text-stone-400">
+              <label className="mb-2 block text-xs font-semibold uppercase text-stone-400">
                 Ciudad
               </label>
               <input
@@ -258,7 +258,7 @@ export default function KioscoDropLanding() {
               <button
                 type="submit"
                 data-cta-submit
-                className="anim-cta-submit-btn anim-cursor-scale inline-flex justify-center rounded-full bg-stone-100 px-6 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-stone-950 transition hover:scale-[1.02] hover:bg-stone-200"
+                className="anim-cta-submit-btn anim-cursor-scale inline-flex justify-center rounded-full bg-stone-100 px-6 py-3 text-sm font-bold uppercase text-stone-950 transition hover:scale-[1.02] hover:bg-stone-200"
               >
                 Unirme al preregistro
               </button>
@@ -270,7 +270,7 @@ export default function KioscoDropLanding() {
         </div>
       </section>
 
-      <footer className="border-t border-stone-800 px-6 py-8 text-center text-xs uppercase tracking-[0.18em] text-stone-500 md:px-10">
+      <footer className="border-t border-stone-800 px-6 py-8 text-center text-xs font-medium uppercase text-stone-500 md:px-10">
         Kiosco — cultura para incomprendidos
       </footer>
     </div>
