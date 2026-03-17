@@ -10,8 +10,7 @@ type GalleryItem = {
 
 export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
   const heroRef = useRef<HTMLDivElement>(null);
-  const heroImageSrc =
-    "https://images.unsplash.com/photo-1520975958225-1c65f9e11c63?auto=format&fit=crop&w=1920&h=1080&q=80";
+  const heroImageSrc = "/hero1.jpg";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,10 +42,8 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
         <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-black/70 to-transparent" />
 
         <h1 className="absolute top-8 left-6 md:left-10 max-w-[11ch] break-keep font-black uppercase leading-[0.85] tracking-tight text-white text-[7vw] md:text-[5.5vw]">
-          <span className="block">Made By artists</span>
-          <span className="mt-2 block font-semibold tracking-[0.12em]">
-            worn by
-          </span>
+          <span className="block">Made by artists</span>
+          <span className="mt-2 block">Worn by</span>
           <span className="mt-2 block">Outsiders</span>
         </h1>
 
