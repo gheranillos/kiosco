@@ -9,24 +9,20 @@ export default function KioscoDropLanding() {
         "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1200&auto=format&fit=crop",
     },
     {
-      title: "Fxck i want creative",
-      caption: "Muestra detalle del arte, textura o frase principal.",
+      title: "Drop preview",
+      caption: "Muestra detalles del arte, textura y construcción de la pieza.",
       image:
-        "rechazo a lo convencional.",
+        "https://images.unsplash.com/photo-1503341504253-dff4815485f1?q=80&w=1200&auto=format&fit=crop",
     },
     {
       title: "Created not aproved",
-      caption: "las cosas que cambian la cultura no pasan por aprobación.",
+      caption: "Las piezas que cambian la cultura nunca pasan por aprobación.",
       image:
         "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1200&auto=format&fit=crop",
     },
   ];
 
-  const galleryPreview = gallery.filter(
-    (item) =>
-      item.title !== 'Fxck i want creative' &&
-      item.title !== 'Created not aproved',
-  );
+  const galleryPreview = gallery.slice(0, 2);
 
   return (
     <div className="min-h-screen bg-stone-950 text-stone-100 selection:bg-stone-100 selection:text-stone-950">
