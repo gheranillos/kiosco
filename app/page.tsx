@@ -37,8 +37,11 @@ export default function KioscoDropLanding() {
             </div>
 
             <div className="space-y-4">
-              <h1 data-hero-title className="max-w-xl text-4xl font-black uppercase leading-none tracking-tight md:text-6xl text-balance">
-                Made by artists. Worn by outsiders.
+              <h1
+                data-hero-title
+                className="max-w-xl text-4xl font-black uppercase leading-none tracking-tight md:text-6xl"
+              >
+                Made by&nbsp;artists. Worn by outsiders.
               </h1>
               <p className="anim-hero-subtitle max-w-lg text-sm leading-6 text-stone-300 md:text-base">
                 Estamos preparando el próximo drop de Kiosco. Déjanos tus datos para
@@ -271,7 +274,7 @@ export default function KioscoDropLanding() {
       </section>
 
       <footer className="border-t border-stone-800 px-6 py-8 text-center text-xs font-medium uppercase text-stone-500 md:px-10">
-        Kiosco — cultura para incomprendidos
+        El Kiosco - Made by artists, worn by outsiders. by @gheranillos
       </footer>
     </div>
   );
