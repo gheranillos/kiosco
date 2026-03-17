@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/next'
 import Script from 'next/script'
 import './globals.css'
 import './animations.css'
+import { AnimatedLogo } from '@/components/AnimatedLogo'
 
 const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
@@ -44,7 +45,10 @@ export default function RootLayout({
           className="anim-header fixed top-0 left-0 right-0 z-50 px-6 py-4 md:px-10 text-sm uppercase tracking-[0.2em] text-stone-300 bg-stone-950/0"
           aria-label="Navegación"
         >
-          <a href="#" className="anim-cursor-scale hover:text-stone-100 transition-colors">Kiosco</a>
+          <AnimatedLogo
+            darkSrc="/kiosco-logo-black.png"
+            lightSrc="/kiosco-logo-white.png"
+          />
         </header>
         <div className="pt-14">
           {children}

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { supabase } from '@/lib/supabase'
+import { getSupabaseClient } from '@/lib/supabase'
 
 const FORM_SELECTOR = 'form[data-cta-container]'
 const MESSAGE_ID = 'supabase-form-message'
@@ -66,6 +66,12 @@ export function FormSupabaseHandler() {
       const { nombre, instagram, telefono, correo, ciudad, talla } = getFormData(form)
 
       try {
+        const supabase = getSupabaseClient()
+        if (!supabase) {
+          showMessage(form, 'Algo salió mal. Intenta más tarde.')
+          return
+        }
+
         const { error } = await supabase.from('registro_drop').insert([
           { nombre, instagram, telefono, correo, ciudad, talla },
         ])
