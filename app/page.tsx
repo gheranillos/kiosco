@@ -1,6 +1,7 @@
 import { FormSupabaseHandler } from '@/components/FormSupabaseHandler'
 import { GallerySection } from '@/components/GallerySection'
 import { HeroSection } from '@/components/HeroSection'
+import { StepsSection } from '@/components/StepsSection'
 import { FooterSection } from '@/components/ui/footer'
 
 export default function KioscoDropLanding() {
@@ -36,31 +37,7 @@ export default function KioscoDropLanding() {
       <div className="relative z-10 bg-stone-950">
         <GallerySection galleryPreview={galleryPreview} />
 
-        <section data-reveal className="anim-reveal border-y border-stone-800 bg-stone-900/60">
-          <div data-reveal-stagger className="anim-reveal-stagger mx-auto grid max-w-7xl gap-6 px-6 py-12 md:grid-cols-3 md:px-10">
-            <div className="rounded-[2rem] border border-stone-800 p-6">
-              <p className="mb-2 text-xs font-semibold uppercase text-stone-500">01</p>
-              <h3 className="mb-2 text-xl font-bold uppercase">Te registras</h3>
-              <p className="text-sm leading-6 text-stone-400">
-                Dejas tu nombre, correo e Instagram para entrar a la lista.
-              </p>
-            </div>
-            <div className="rounded-[2rem] border border-stone-800 p-6">
-              <p className="mb-2 text-xs font-semibold uppercase text-stone-500">02</p>
-              <h3 className="mb-2 text-xl font-bold uppercase">Recibes acceso</h3>
-              <p className="text-sm leading-6 text-stone-400">
-                Te avisamos primero cuando salgan fecha, precio y cantidad disponible.
-              </p>
-            </div>
-            <div className="rounded-[2rem] border border-stone-800 p-6">
-              <p className="mb-2 text-xs font-semibold uppercase text-stone-500">03</p>
-              <h3 className="mb-2 text-xl font-bold uppercase">Entras temprano</h3>
-              <p className="text-sm leading-6 text-stone-400">
-                Conectas con más creativos y personas que comparten tu visión.
-              </p>
-            </div>
-          </div>
-        </section>
+        <StepsSection />
 
         <section id="preregistro" data-reveal className="anim-reveal mx-auto max-w-7xl px-6 py-16 md:px-10">
           <div className="grid gap-8 lg:grid-cols-[1fr_1.1fr]">
