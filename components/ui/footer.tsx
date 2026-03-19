@@ -1,22 +1,16 @@
 import Link from "next/link";
 
 const links = [
-  { title: "Drop #001", href: "#" },
   { title: "Galería", href: "#" },
-  { title: "Preregistro", href: "#preregistro" },
   { title: "Comunidad", href: "#" },
-  { title: "Contacto", href: "#" },
+  { title: "Contacto", href: "https://wa.me/584147613621" },
 ];
 
 export function FooterSection() {
   return (
     <footer className="border-t border-stone-800 bg-stone-950 py-16">
       <div className="mx-auto max-w-5xl px-6">
-        <Link href="/" className="mx-auto block w-fit">
-          <span className="text-xs font-black uppercase tracking-[0.3em] text-stone-100">
-            El Kiosco
-          </span>
-        </Link>
+        <Link href="/" className="mx-auto block w-fit" />
 
         <div className="my-8 flex flex-wrap justify-center gap-6">
           {links.map((link, index) => (
@@ -31,7 +25,7 @@ export function FooterSection() {
         </div>
         <div className="my-8 flex flex-wrap justify-center gap-6 text-sm">
           <Link
-            href="#"
+            href="https://x.com/wearekiosco"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="X/Twitter"
@@ -51,7 +45,7 @@ export function FooterSection() {
             </svg>
           </Link>
           <Link
-            href="https://instagram.com/elkiosco"
+            href="https://instagram.com/wearekiosco"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram"
@@ -71,7 +65,7 @@ export function FooterSection() {
             </svg>
           </Link>
           <Link
-            href="https://tiktok.com/@elkiosco"
+            href="https://www.tiktok.com/@wearekiosco"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="TikTok"
