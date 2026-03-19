@@ -1,9 +1,13 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 import { FooterSection } from "@/components/ui/footer";
 import { products } from "@/lib/products";
 
 export default function ShopPage() {
+  const shopEnabled = process.env.NEXT_PUBLIC_SHOP_ENABLED !== "false";
+  if (!shopEnabled) redirect("/#preregistro");
+
   return (
     <div className="min-h-screen bg-stone-950 text-stone-100 selection:bg-stone-100 selection:text-stone-950">
       <div className="mx-auto max-w-7xl px-6 pt-16 pb-10 md:px-10">
