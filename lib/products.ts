@@ -52,6 +52,18 @@ export const products: Product[] = [
 ];
 
 export function getProductBySlug(slug: string) {
-  return products.find((p) => p.slug === slug);
+  const normalized = normalizeSlug(slug);
+  return products.find((p) => p.slug === normalized);
+}
+
+export function normalizeSlug(input: string) {
+  try {
+    return decodeURIComponent(input)
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, "-");
+  } catch {
+    return input.trim().toLowerCase().replace(/\s+/g, "-");
+  }
 }
 
