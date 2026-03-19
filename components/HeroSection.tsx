@@ -10,6 +10,7 @@ type GalleryItem = {
 
 export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
   const heroBgRef = useRef<HTMLDivElement>(null);
+  const shopEnabled = process.env.NEXT_PUBLIC_SHOP_ENABLED === "true";
   const slides = [
     {
       image: "/hero1.jpg",
@@ -231,6 +232,24 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
             </span>
             <span className="absolute left-[20%] top-[40%] h-2 w-2 scale-0 rounded-lg bg-stone-950 opacity-0 transition-all duration-300 group-hover:left-[0%] group-hover:top-[0%] group-hover:h-full group-hover:w-full group-hover:scale-[1.8] group-hover:opacity-100" />
           </a>
+
+          {shopEnabled ? (
+            <a
+              href="/shop"
+              className="anim-cursor-scale inline-flex min-w-[260px] items-center justify-center rounded-full border border-stone-700 bg-stone-950/40 px-8 py-4 text-sm font-bold uppercase leading-none text-stone-100 transition hover:scale-[1.02] hover:bg-stone-950/60"
+            >
+              Shop
+            </a>
+          ) : (
+            <button
+              type="button"
+              disabled
+              className="inline-flex min-w-[260px] cursor-not-allowed items-center justify-center rounded-full border border-stone-800 bg-stone-950/20 px-8 py-4 text-sm font-bold uppercase leading-none text-stone-500 opacity-80"
+              title="Próximamente"
+            >
+              Shop (Próximamente)
+            </button>
+          )}
         </div>
       </div>
     </section>
