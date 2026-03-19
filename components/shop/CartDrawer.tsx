@@ -132,7 +132,7 @@ export function CartDrawer() {
                   </span>
                 </div>
                 <p className="mt-2 text-[11px] leading-5 text-stone-500">
-                  Checkout y métodos de pago se conectan en la siguiente fase.
+                  Completa tu orden en checkout.
                 </p>
 
                 <div className="mt-4 flex gap-2">
@@ -145,11 +145,12 @@ export function CartDrawer() {
                     Vaciar
                   </Button>
                   <Button
-                    type="button"
+                    asChild
                     className="flex-1 rounded-full bg-stone-100 text-stone-950 hover:bg-stone-200"
-                    onClick={closeCart}
                   >
-                    Continuar
+                    <Link href="/checkout" onClick={closeCart}>
+                      Checkout
+                    </Link>
                   </Button>
                 </div>
               </div>
