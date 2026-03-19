@@ -10,7 +10,7 @@ type GalleryItem = {
 
 export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
   const heroBgRef = useRef<HTMLDivElement>(null);
-  const shopEnabled = process.env.NEXT_PUBLIC_SHOP_ENABLED === "true";
+  const shopEnabled = process.env.NEXT_PUBLIC_SHOP_ENABLED !== "false";
   const slides = [
     {
       image: "/hero1.jpg",
