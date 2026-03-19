@@ -2,7 +2,11 @@ import { notFound } from "next/navigation";
 
 import { FooterSection } from "@/components/ui/footer";
 import { ProductDetailClient } from "@/components/shop/ProductDetailClient";
-import { getProductBySlug } from "@/lib/products";
+import { getProductBySlug, products } from "@/lib/products";
+
+export function generateStaticParams() {
+  return products.map((p) => ({ slug: p.slug }));
+}
 
 export default function ProductPage({ params }: { params: { slug: string } }) {
   const product = getProductBySlug(params.slug);
