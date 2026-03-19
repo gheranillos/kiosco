@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 
 type GalleryItem = {
   title: string;
@@ -10,7 +10,27 @@ type GalleryItem = {
 
 export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
   const heroBgRef = useRef<HTMLDivElement>(null);
-  const heroImageSrc = "/hero1.jpg";
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+
+  const goToNext = () => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setCurrentSlide((prev) => (prev + 1) % gallery.length);
+      setIsTransitioning(false);
+    }, 400);
+  };
+
+  const goToPrev = () => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setCurrentSlide((prev) => (prev - 1 + gallery.length) % gallery.length);
+      setIsTransitioning(false);
+    }, 400);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +47,12 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (isPaused) return;
+    const interval = setInterval(goToNext, 4000);
+    return () => clearInterval(interval);
+  }, [currentSlide, isPaused]);
+
   const scrollToPreregistro = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     const el = document.getElementById("preregistro");
@@ -37,16 +63,71 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
   };
 
   return (
-    <section className="relative">
+    <section
+      className="relative"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
       <div className="sticky top-0 z-0 h-[100vh] w-full overflow-hidden">
         <div ref={heroBgRef} className="absolute inset-0 will-change-transform">
-          <img
-            src={heroImageSrc}
-            alt={gallery[0]?.title ?? "Hero image"}
-            className="h-full w-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0">
+            {gallery.map((item, index) => (
+              <img
+                key={item.image}
+                src={item.image}
+                alt={item.title}
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${
+                  index === currentSlide ? "opacity-100" : "opacity-0"
+                }`}
+              />
+            ))}
+            <div className="absolute inset-0 bg-black/40" />
+          </div>
           <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-black/70 to-transparent" />
+        </div>
+
+        <button
+          onClick={goToPrev}
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full border border-white/20 bg-black/30 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300 hover:scale-110"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+
+        <button
+          onClick={goToNext}
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full border border-white/20 bg-black/30 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300 hover:scale-110"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </button>
+
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+          {gallery.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`transition-all duration-300 rounded-full ${
+                index === currentSlide
+                  ? "w-6 h-1.5 bg-white"
+                  : "w-1.5 h-1.5 bg-white/40 hover:bg-white/70"
+              }`}
+            />
+          ))}
         </div>
 
         <h1 className="absolute top-8 left-6 md:left-10 max-w-[11ch] break-keep font-black uppercase leading-[0.85] tracking-tight text-white text-[7vw] md:text-[5.5vw]">
