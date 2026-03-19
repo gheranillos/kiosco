@@ -2,14 +2,17 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 import type { Product } from "@/lib/products";
-import { products } from "@/lib/products";
+import { getProductBySlug, products } from "@/lib/products";
 import { useCart } from "@/components/shop/cart-context";
 
 const sizes = ["XS", "S", "M", "L", "XL", "XXL"] as const;
 
-export function ProductDetailClient({ product }: { product: Product }) {
+export function ProductDetailClient() {
+  const params = useParams<{ slug: string }>();
+  const product: Product = getProductBySlug(params?.slug ?? "") ?? products[0];
   const { addItem } = useCart();
   const images = product.images?.length ? product.images : [product.image].filter(Boolean);
   const safeImages = images.length ? images : ["/tshirt1.jpg"];
