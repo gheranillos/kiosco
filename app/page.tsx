@@ -1,6 +1,7 @@
 import { FormSupabaseHandler } from '@/components/FormSupabaseHandler'
 import { GallerySection } from '@/components/GallerySection'
 import { HeroSection } from '@/components/HeroSection'
+import { FooterSection } from '@/components/ui/footer'
 
 export default function KioscoDropLanding() {
   const gallery = [
@@ -180,9 +181,7 @@ export default function KioscoDropLanding() {
         </section>
       </div>
 
-      <footer className="border-t border-stone-800 px-6 py-8 text-center text-xs font-medium uppercase text-stone-500 md:px-10">
-        El Kiosco - Made by artists, worn by outsiders. by @gheranillos
-      </footer>
+      <FooterSection />
     </div>
   );
 }
