@@ -30,13 +30,14 @@ export default function ShopPage() {
 
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {products.map((p) => (
-            <div
-              key={p.image}
+            <Link
+              key={p.slug}
+              href={`/shop/${p.slug}`}
               className="group overflow-hidden rounded-[2rem] border border-stone-800 bg-stone-900/30"
             >
               <div className="relative aspect-[4/5] overflow-hidden bg-stone-950">
                 <img
-                  src={p.image}
+                  src={p.images[0]}
                   alt={p.title}
                   className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
                 />
@@ -44,21 +45,21 @@ export default function ShopPage() {
               </div>
 
               <div className="space-y-2 p-5">
-                <h3 className="text-sm font-black uppercase tracking-tight text-stone-100">
-                  {p.title}
-                </h3>
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="text-sm font-black uppercase tracking-tight text-stone-100">
+                    {p.title}
+                  </h3>
+                  <span className="text-xs font-semibold text-stone-300">
+                    ${p.price}
+                  </span>
+                </div>
                 <p className="text-xs leading-5 text-stone-400">{p.caption}</p>
 
-                <button
-                  type="button"
-                  disabled
-                  className="mt-2 inline-flex w-full cursor-not-allowed items-center justify-center rounded-full bg-stone-100/10 px-4 py-3 text-xs font-bold uppercase text-stone-400"
-                  title="Carrito próximamente"
-                >
-                  Agregar al carrito (Próximamente)
-                </button>
+                <span className="mt-2 inline-flex w-full items-center justify-center rounded-full bg-stone-100/10 px-4 py-3 text-xs font-bold uppercase text-stone-200 transition group-hover:bg-stone-100/15">
+                  Ver producto
+                </span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
