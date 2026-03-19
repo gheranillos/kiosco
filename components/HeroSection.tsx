@@ -10,6 +10,27 @@ type GalleryItem = {
 
 export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
   const heroBgRef = useRef<HTMLDivElement>(null);
+  const slides = [
+    {
+      image: "/hero1.jpg",
+      badge: null as string | null,
+      bullets: [] as string[],
+      quote: null as string | null,
+    },
+    {
+      image: "/hero2.jpg",
+      badge: "5% OFF pre-registro",
+      bullets: ["Early Access"],
+      quote: "Los que están adentro, son los verdaderos.",
+    },
+    {
+      image: "/hero3.jpg",
+      badge: "EXCLUSIVIDAD / FOMO",
+      bullets: ["Limited Drop", "Solo X piezas disponibles", "No restock"],
+      quote: null,
+    },
+  ];
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -18,7 +39,7 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
     if (isTransitioning) return;
     setIsTransitioning(true);
     setTimeout(() => {
-      setCurrentSlide((prev) => (prev + 1) % gallery.length);
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
       setIsTransitioning(false);
     }, 400);
   };
@@ -27,7 +48,7 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
     if (isTransitioning) return;
     setIsTransitioning(true);
     setTimeout(() => {
-      setCurrentSlide((prev) => (prev - 1 + gallery.length) % gallery.length);
+      setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
       setIsTransitioning(false);
     }, 400);
   };
@@ -49,7 +70,7 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
 
   useEffect(() => {
     if (isPaused) return;
-    const interval = setInterval(goToNext, 4000);
+    const interval = setInterval(goToNext, 3000);
     return () => clearInterval(interval);
   }, [currentSlide, isPaused]);
 
@@ -71,11 +92,11 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
       <div className="sticky top-0 z-0 h-[100vh] w-full overflow-hidden">
         <div ref={heroBgRef} className="absolute inset-0 will-change-transform">
           <div className="absolute inset-0">
-            {gallery.map((item, index) => (
+            {slides.map((item, index) => (
               <img
                 key={item.image}
                 src={item.image}
-                alt={item.title}
+                alt={`Hero slide ${index + 1}`}
                 className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${
                   index === currentSlide ? "opacity-100" : "opacity-0"
                 }`}
@@ -117,7 +138,7 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
         </button>
 
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-          {gallery.map((_, index) => (
+          {slides.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
@@ -140,6 +161,32 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
           <div className="inline-flex items-center rounded-full border border-stone-700 bg-stone-900/70 px-3 py-1 text-xs font-semibold uppercase text-stone-300">
             Kiosco — Drop #001 Not normal.
           </div>
+
+          {slides[currentSlide].badge && (
+            <div className="inline-flex items-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm px-3 py-1 text-xs font-semibold uppercase text-white animate-in fade-in duration-500">
+              {slides[currentSlide].badge}
+            </div>
+          )}
+
+          {slides[currentSlide].bullets.length > 0 && (
+            <ul className="flex flex-col gap-1 animate-in fade-in duration-500">
+              {slides[currentSlide].bullets.map((bullet) => (
+                <li
+                  key={bullet}
+                  className="flex items-center gap-2 text-xs uppercase font-semibold tracking-widest text-white/80"
+                >
+                  <span className="w-1 h-1 rounded-full bg-white/60" />
+                  {bullet}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {slides[currentSlide].quote && (
+            <p className="text-sm italic text-white/60 font-light max-w-xs animate-in fade-in duration-500">
+              "{slides[currentSlide].quote}"
+            </p>
+          )}
 
           <p className="anim-hero-subtitle max-w-lg text-sm leading-6 text-stone-300 md:text-base">
             Estamos preparando el próximo drop de Kiosco. Déjanos tus datos para
