@@ -5,10 +5,12 @@ import Link from "next/link";
 
 import type { Product } from "@/lib/products";
 import { products } from "@/lib/products";
+import { useCart } from "@/components/shop/cart-context";
 
 const sizes = ["XS", "S", "M", "L", "XL", "XXL"] as const;
 
 export function ProductDetailClient({ product }: { product: Product }) {
+  const { addItem } = useCart();
   const images = product.images?.length ? product.images : [product.image].filter(Boolean);
   const safeImages = images.length ? images : ["/tshirt1.jpg"];
 
@@ -119,6 +121,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
           <div className="space-y-3">
             <button
               type="button"
+                onClick={() => addItem(product, 1)}
               className="w-full rounded-full bg-stone-100 px-6 py-4 text-sm font-black uppercase text-stone-950 transition hover:bg-stone-200"
             >
               Add to cart
