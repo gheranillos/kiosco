@@ -130,13 +130,6 @@ export function ProductDetailClient() {
               Add to cart
             </button>
 
-            <button
-              type="button"
-              className="w-full rounded-full bg-[#ffc439] px-6 py-4 text-sm font-black uppercase text-stone-950 transition hover:brightness-95"
-            >
-              Pay with PayPal
-            </button>
-
             <p className="text-[11px] leading-5 text-stone-500">
               Seleccionaste talla{" "}
               <span className="font-semibold text-stone-300">{activeSize}</span>. Carrito y

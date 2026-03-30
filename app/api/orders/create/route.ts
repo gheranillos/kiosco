@@ -9,6 +9,11 @@ type Body = {
   name?: string;
   email?: string;
   phone?: string;
+  address_line?: string;
+  city?: string;
+  state?: string;
+  zip_code?: string;
+  shipping_method?: string;
 };
 
 export async function POST(req: Request) {
@@ -67,6 +72,11 @@ export async function POST(req: Request) {
     const status =
       body.payment_method === "paypal" ? "pending_payment" : "pending_verification";
 
+    const trimOrNull = (v: string | undefined) => {
+      const t = String(v ?? "").trim();
+      return t ? t : null;
+    };
+
     const { data: order, error: orderErr } = await supabase
       .from("orders")
       .insert([
@@ -75,9 +85,14 @@ export async function POST(req: Request) {
           payment_method: body.payment_method,
           currency: "USD",
           subtotal_amount: subtotal,
-          name: body.name ?? null,
-          email: body.email ?? null,
-          phone: body.phone ?? null,
+          name: trimOrNull(body.name),
+          email: trimOrNull(body.email),
+          phone: trimOrNull(body.phone),
+          address_line: trimOrNull(body.address_line),
+          city: trimOrNull(body.city),
+          state: trimOrNull(body.state),
+          zip_code: trimOrNull(body.zip_code),
+          shipping_method: trimOrNull(body.shipping_method),
         },
       ])
       .select("id")

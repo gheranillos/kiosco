@@ -37,8 +37,20 @@ create table if not exists public.orders (
   name text,
   email text,
   phone text,
+  address_line text,
+  city text,
+  state text,
+  zip_code text,
+  shipping_method text,
   paypal_order_id text
 );
+
+-- Si ya tenías la tabla sin estos campos, ejecuta también:
+-- alter table public.orders add column if not exists address_line text;
+-- alter table public.orders add column if not exists city text;
+-- alter table public.orders add column if not exists state text;
+-- alter table public.orders add column if not exists zip_code text;
+-- alter table public.orders add column if not exists shipping_method text;
 
 create index if not exists orders_created_at_idx on public.orders (created_at desc);
 create index if not exists orders_status_idx on public.orders (status);

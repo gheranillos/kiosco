@@ -178,6 +178,7 @@ export default function Checkout() {
   }
 
   const createOrder = async () => {
+    const name = `${shippingAddress.firstName} ${shippingAddress.lastName}`.trim();
     const res = await fetch("/api/orders/create", {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -187,6 +188,14 @@ export default function Checkout() {
           slug: it.slug,
           quantity: it.quantity,
         })),
+        name,
+        email: shippingAddress.email.trim(),
+        phone: shippingAddress.phone.trim() || undefined,
+        address_line: shippingAddress.address.trim(),
+        city: shippingAddress.city.trim(),
+        state: shippingAddress.state.trim(),
+        zip_code: shippingAddress.zipCode.trim() || undefined,
+        shipping_method: selectedShipping,
       }),
     });
     if (!res.ok) throw new Error(await readApiError(res));
@@ -285,10 +294,18 @@ export default function Checkout() {
     }));
   };
 
+  const isShippingComplete =
+    shippingAddress.firstName.trim() &&
+    shippingAddress.lastName.trim() &&
+    shippingAddress.email.trim() &&
+    shippingAddress.address.trim() &&
+    shippingAddress.city.trim() &&
+    shippingAddress.state.trim();
+
   const validateStep = (step: number): boolean => {
     switch (step) {
       case 1:
-        return canPay;
+        return canPay && !!isShippingComplete;
       case 2:
         return canPay && !!selectedPaymentType;
       case 3:
