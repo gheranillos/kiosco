@@ -14,6 +14,17 @@ function getProduct(slug: string): Product | undefined {
   return products.find((p) => p.slug === slug);
 }
 
+async function readApiError(res: Response): Promise<string> {
+  const text = await res.text();
+  try {
+    const j = JSON.parse(text) as { error?: string };
+    if (typeof j.error === "string" && j.error.trim()) return j.error.trim();
+  } catch {
+    /* ignore */
+  }
+  return text.trim() || `Error ${res.status}`;
+}
+
 export default function CheckoutPage() {
   const { items, subtotal, clear } = useCart();
   const [method, setMethod] = useState<PaymentMethod>("paypal");
@@ -46,7 +57,7 @@ export default function CheckoutPage() {
         })),
       }),
     });
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) throw new Error(await readApiError(res));
     return (await res.json()) as { orderId: string };
   };
 
@@ -56,7 +67,7 @@ export default function CheckoutPage() {
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ orderId: createdOrderId }),
     });
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) throw new Error(await readApiError(res));
     const data = (await res.json()) as { approvalUrl: string };
     window.location.href = data.approvalUrl;
   };
@@ -72,7 +83,7 @@ export default function CheckoutPage() {
     fd.append("file", proofFile);
 
     const res = await fetch("/api/orders/upload-proof", { method: "POST", body: fd });
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) throw new Error(await readApiError(res));
     clear();
     setMessage("Recibimos tu comprobante. Validación en breve.");
   };
@@ -82,12 +93,12 @@ export default function CheckoutPage() {
     setMessage(null);
     try {
       const { orderId: createdOrderId } = await createOrder();
-      setOrderId(createdOrderId);
 
       if (method === "paypal") {
         await startPayPal(createdOrderId);
         return;
       }
+      setOrderId(createdOrderId);
       setMessage("Orden creada. Sigue las instrucciones y sube tu comprobante.");
     } catch (e) {
       setMessage(String((e as Error).message || e));
@@ -153,7 +164,7 @@ export default function CheckoutPage() {
               </div>
 
               {message && (
-                <p className="mt-4 text-xs leading-5 text-stone-400">{message}</p>
+                <p className="mt-4 text-xs leading-5 text-amber-200/90">{message}</p>
               )}
 
               {method !== "paypal" && orderId && (
@@ -265,6 +276,10 @@ export default function CheckoutPage() {
                   Impuestos y envío se calcularán luego.
                 </p>
               </div>
+
+              {message && (
+                <p className="mt-4 text-xs leading-5 text-amber-200/90">{message}</p>
+              )}
 
               <div className="mt-5 grid gap-2">
                 <Button

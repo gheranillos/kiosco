@@ -4,8 +4,6 @@ import { getSupabaseServerClient } from "@/lib/supabase-server";
 import { paypalCreateOrder } from "@/lib/paypal";
 
 export async function POST(req: Request) {
-  const supabase = getSupabaseServerClient();
-
   let body: { orderId?: string };
   try {
     body = (await req.json()) as { orderId?: string };
@@ -16,38 +14,45 @@ export async function POST(req: Request) {
   const orderId = String(body.orderId || "").trim();
   if (!orderId) return NextResponse.json({ error: "Missing orderId" }, { status: 400 });
 
-  const { data: order, error } = await supabase
-    .from("orders")
-    .select("id,status,payment_method,currency,subtotal_amount,paypal_order_id")
-    .eq("id", orderId)
-    .single();
+  try {
+    const supabase = getSupabaseServerClient();
 
-  if (error || !order) {
-    return NextResponse.json({ error: error?.message || "Order not found" }, { status: 404 });
+    const { data: order, error } = await supabase
+      .from("orders")
+      .select("id,status,payment_method,currency,subtotal_amount,paypal_order_id")
+      .eq("id", orderId)
+      .single();
+
+    if (error || !order) {
+      return NextResponse.json({ error: error?.message || "Order not found" }, { status: 404 });
+    }
+
+    if (order.payment_method !== "paypal") {
+      return NextResponse.json({ error: "Order is not PayPal" }, { status: 400 });
+    }
+
+    const amount = Number(order.subtotal_amount || 0);
+    if (!Number.isFinite(amount) || amount <= 0) {
+      return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
+    }
+
+    const origin = new URL(req.url).origin;
+    const { paypalOrderId, approvalUrl } = await paypalCreateOrder({
+      amount: amount.toFixed(2),
+      currency: order.currency || "USD",
+      returnUrl: `${origin}/checkout/success`,
+      cancelUrl: `${origin}/checkout/cancel`,
+    });
+
+    await supabase
+      .from("orders")
+      .update({ paypal_order_id: paypalOrderId, status: "pending_payment" })
+      .eq("id", orderId);
+
+    return NextResponse.json({ paypalOrderId, approvalUrl });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
-
-  if (order.payment_method !== "paypal") {
-    return NextResponse.json({ error: "Order is not PayPal" }, { status: 400 });
-  }
-
-  const amount = Number(order.subtotal_amount || 0);
-  if (!Number.isFinite(amount) || amount <= 0) {
-    return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
-  }
-
-  const origin = new URL(req.url).origin;
-  const { paypalOrderId, approvalUrl } = await paypalCreateOrder({
-    amount: amount.toFixed(0),
-    currency: order.currency || "USD",
-    returnUrl: `${origin}/checkout/success`,
-    cancelUrl: `${origin}/checkout/cancel`,
-  });
-
-  await supabase
-    .from("orders")
-    .update({ paypal_order_id: paypalOrderId, status: "pending_payment" })
-    .eq("id", orderId);
-
-  return NextResponse.json({ paypalOrderId, approvalUrl });
 }
 
