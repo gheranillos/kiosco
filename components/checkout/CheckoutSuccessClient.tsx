@@ -7,6 +7,18 @@ import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/shop/cart-context";
 
+async function readApiError(res: Response): Promise<string> {
+  const text = await res.text();
+  try {
+    const j = JSON.parse(text) as { error?: string };
+    if (typeof j.error === "string" && j.error.trim()) return j.error.trim();
+  } catch {
+    /* ignore */
+  }
+  if (text.trim()) return text.trim().slice(0, 500);
+  return `Error del servidor (${res.status}).`;
+}
+
 export function CheckoutSuccessClient() {
   const params = useSearchParams();
   const token = params.get("token");
@@ -27,12 +39,13 @@ export function CheckoutSuccessClient() {
           headers: { "content-type": "application/json" },
           body: JSON.stringify({ paypalOrderId: token }),
         });
-        if (!res.ok) throw new Error(await res.text());
+        if (!res.ok) throw new Error(await readApiError(res));
         clear();
         setStatus("ok");
       } catch (e) {
         setStatus("error");
-        setMessage(String((e as Error).message || e));
+        const raw = String((e as Error).message || e);
+        setMessage(raw.trim() || "No se pudo confirmar el pago. Intenta de nuevo o contáctanos.");
       }
     };
     run();
@@ -52,7 +65,7 @@ export function CheckoutSuccessClient() {
         {status === "ok" &&
           "Listo. Recibimos tu pago. Te contactaremos con los detalles del envío."}
         {status === "error" &&
-          (message ??
+          (message?.trim() ||
             "Hubo un problema confirmando el pago. Intenta de nuevo o contáctanos.")}
       </p>
 

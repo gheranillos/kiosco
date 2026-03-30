@@ -8,10 +8,12 @@ function getPayPalBaseUrl() {
 }
 
 function getPayPalCreds() {
-  const clientId = process.env.PAYPAL_CLIENT_ID;
-  const secret = process.env.PAYPAL_CLIENT_SECRET;
+  const clientId = process.env.PAYPAL_CLIENT_ID?.trim();
+  const secret = process.env.PAYPAL_CLIENT_SECRET?.trim();
   if (!clientId || !secret) {
-    throw new Error("Missing PAYPAL_CLIENT_ID or PAYPAL_CLIENT_SECRET");
+    throw new Error(
+      "Missing PAYPAL_CLIENT_ID or PAYPAL_CLIENT_SECRET. En local: .env.local y reinicia el servidor. En Vercel/hosting: Project Settings → Environment Variables con los mismos nombres."
+    );
   }
   return { clientId, secret };
 }
@@ -90,7 +92,13 @@ export async function paypalCreateOrder(args: {
   return { paypalOrderId: json.id, approvalUrl: approval };
 }
 
-export async function paypalCaptureOrder(paypalOrderId: string) {
+export type PayPalCaptureResult =
+  | { duplicate: true }
+  | { duplicate: false; capture: unknown };
+
+export async function paypalCaptureOrder(
+  paypalOrderId: string
+): Promise<PayPalCaptureResult> {
   const base = getPayPalBaseUrl();
   const token = await getPayPalAccessToken();
 
@@ -105,9 +113,12 @@ export async function paypalCaptureOrder(paypalOrderId: string) {
 
   if (!res.ok) {
     const text = await res.text();
+    if (text.includes("ORDER_ALREADY_CAPTURED")) {
+      return { duplicate: true };
+    }
     throw new Error(`PayPal capture error: ${text}`);
   }
 
-  return await res.json();
+  return { duplicate: false, capture: await res.json() };
 }
 
