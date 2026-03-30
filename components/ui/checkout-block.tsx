@@ -46,6 +46,9 @@ import {
 } from "@/components/ui/select";
 
 import { products } from "@/lib/products";
+import { useCart } from "@/components/shop/cart-context";
+
+type CheckoutPaymentMethod = "paypal" | "bolivares" | "binance_pay" | "zinli";
 
 interface OrderItem {
   id: string;
@@ -85,10 +88,18 @@ interface PaymentMethod {
 
 export default function Checkout() {
   const router = useRouter();
+  const { items: cartItems, subtotal, clear } = useCart();
 
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentStep, setCurrentStep] = useState<number>(1);
+  const [orderId, setOrderId] = useState<string | null>(null);
+  const [reference, setReference] = useState("");
+  const [proofFile, setProofFile] = useState<File | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const canPay = cartItems.length > 0 && subtotal > 0;
   const [shippingAddress, setShippingAddress] = useState<ShippingAddress>({
     firstName: "",
     lastName: "",
@@ -109,11 +120,11 @@ export default function Checkout() {
   });
 
   const [selectedPaymentType, setSelectedPaymentType] =
-    useState<string>("card");
+    useState<CheckoutPaymentMethod>("paypal");
   const [sameAsShipping, setSameAsShipping] = useState<boolean>(true);
   const [savePaymentMethod, setSavePaymentMethod] = useState<boolean>(false);
   const [appliedPromo, setAppliedPromo] = useState<string>("SAVE10");
-  const [agreeToTerms, setAgreeToTerms] = useState<boolean>(false);
+  const [agreeToTerms, setAgreeToTerms] = useState<boolean>(true);
 
   const shippingMethods = [
     {
@@ -139,41 +150,121 @@ export default function Checkout() {
   const [selectedShipping, setSelectedShipping] = useState("standard");
 
   useEffect(() => {
-    const loadCheckout = async () => {
-      setIsLoading(true);
+    setIsLoading(true);
 
-      // Simulación para que el Skeleton se vea en local.
-      await new Promise((resolve) => setTimeout(resolve, 600));
+    const hydratedFromCart: OrderItem[] = cartItems.map((it) => ({
+      id: it.slug,
+      name: it.title,
+      price: it.price,
+      image: it.image,
+      quantity: it.quantity,
+    }));
 
-      setOrderItems(
-        products.map((p) => ({
-          id: p.slug,
-          name: p.title,
-          price: p.price,
-          image: p.image,
-          quantity: 1,
-        }))
-      );
-      setIsLoading(false);
-    };
+    // Si el carrito está vacío, mostramos las piezas “reales” como fallback visual.
+    setOrderItems(
+      hydratedFromCart.length
+        ? hydratedFromCart
+        : products.map((p) => ({
+            id: p.slug,
+            name: p.title,
+            price: p.price,
+            image: p.image,
+            quantity: 1,
+          }))
+    );
 
-    loadCheckout();
-  }, []);
+    setIsLoading(false);
+  }, [cartItems]);
+
+  async function readApiError(res: Response): Promise<string> {
+    const text = await res.text();
+    try {
+      const j = JSON.parse(text) as { error?: string };
+      if (typeof j.error === "string" && j.error.trim()) return j.error.trim();
+    } catch {
+      /* ignore */
+    }
+    if (text.trim()) return text.trim().slice(0, 500);
+    return `Error del servidor (${res.status}).`;
+  }
+
+  const createOrder = async () => {
+    const res = await fetch("/api/orders/create", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        payment_method: selectedPaymentType,
+        items: cartItems.map((it) => ({
+          slug: it.slug,
+          quantity: it.quantity,
+        })),
+      }),
+    });
+    if (!res.ok) throw new Error(await readApiError(res));
+    return (await res.json()) as { orderId: string };
+  };
+
+  const startPayPal = async (createdOrderId: string) => {
+    const res = await fetch("/api/paypal/create-order", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ orderId: createdOrderId }),
+    });
+    if (!res.ok) throw new Error(await readApiError(res));
+    const data = (await res.json()) as { approvalUrl: string };
+
+    // Redirección hacia PayPal (solo en cliente).
+    if (typeof window !== "undefined") {
+      window.location.href = data.approvalUrl;
+    }
+  };
+
+  const uploadProof = async () => {
+    if (!orderId) throw new Error("Missing orderId");
+    if (!proofFile) throw new Error("Missing file");
+
+    const fd = new FormData();
+    fd.append("orderId", orderId);
+    fd.append("method", selectedPaymentType);
+    fd.append("reference", reference);
+    fd.append("file", proofFile);
+
+    const res = await fetch("/api/orders/upload-proof", { method: "POST", body: fd });
+    if (!res.ok) throw new Error(await readApiError(res));
+    clear();
+    setMessage("Recibimos tu comprobante. Validación en breve.");
+  };
+
+  const onConfirmOrder = async () => {
+    setIsSubmitting(true);
+    setMessage(null);
+    setOrderId(null);
+    try {
+      const { orderId: createdOrderId } = await createOrder();
+      setOrderId(createdOrderId);
+
+      if (selectedPaymentType === "paypal") {
+        await startPayPal(createdOrderId);
+        return;
+      }
+
+      setMessage("Orden creada. Sigue las instrucciones y sube tu comprobante.");
+    } catch (e) {
+      setMessage(String((e as Error).message || e));
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const calculateSummary = (): CheckoutSummary => {
     const subtotal = orderItems.reduce(
       (sum, item) => sum + item.price * item.quantity,
       0
     );
-    const discount = appliedPromo === "SAVE10" ? subtotal * 0.1 : 0;
-    const shipping =
-      selectedShipping === "standard"
-        ? 9.99
-        : selectedShipping === "express"
-          ? 19.99
-          : 39.99;
-    const tax = (subtotal - discount) * 0.08; // 8% tax
-    const total = subtotal - discount + shipping + tax;
+    const discount = 0;
+    const shipping = 0;
+    const tax = 0;
+    const total = subtotal;
 
     return {
       subtotal,
@@ -207,26 +298,9 @@ export default function Checkout() {
   const validateStep = (step: number): boolean => {
     switch (step) {
       case 1:
-        return !!(
-          shippingAddress.firstName &&
-          shippingAddress.lastName &&
-          shippingAddress.email &&
-          shippingAddress.address &&
-          shippingAddress.city &&
-          shippingAddress.state &&
-          shippingAddress.zipCode
-        );
+        return canPay;
       case 2:
-        if (selectedPaymentType === "card") {
-          return !!(
-            paymentMethod.cardNumber &&
-            paymentMethod.expiryMonth &&
-            paymentMethod.expiryYear &&
-            paymentMethod.cvv &&
-            paymentMethod.nameOnCard
-          );
-        }
-        return !!selectedPaymentType;
+        return canPay && !!selectedPaymentType;
       case 3:
         return agreeToTerms;
       default:
@@ -647,124 +721,92 @@ export default function Checkout() {
                   <Label className="text-base font-medium">
                     Elige tu método de pago
                   </Label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setSelectedPaymentType("card")}
-                      className={cn(
-                        "flex items-center gap-3 p-4 border-2 rounded-ele transition-colors text-left",
-                        selectedPaymentType === "card"
-                          ? "border-primary bg-primary/5"
-                          : "border-border hover:border-primary/50"
-                      )}
-                    >
-                      <CreditCard className="h-5 w-5 text-primary" />
-                      <div>
-                        <div className="font-medium">Credit/Debit Card</div>
-                        <div className="text-xs text-muted-foreground">
-                          Visa, Mastercard, Amex
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedPaymentType("paypal")}
+                        className={cn(
+                          "flex items-center gap-3 p-4 border-2 rounded-ele transition-colors text-left",
+                          selectedPaymentType === "paypal"
+                            ? "border-primary bg-primary/5"
+                            : "border-border hover:border-primary/50"
+                        )}
+                      >
+                        <Wallet className="h-5 w-5 text-blue-600" />
+                        <div>
+                          <div className="font-medium">
+                            PayPal (automático)
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            Redirección a PayPal
+                          </div>
                         </div>
-                      </div>
-                    </button>
+                      </button>
 
-                    <button
-                      type="button"
-                      onClick={() => setSelectedPaymentType("paypal")}
-                      className={cn(
-                        "flex items-center gap-3 p-4 border-2 rounded-ele transition-colors text-left",
-                        selectedPaymentType === "paypal"
-                          ? "border-primary bg-primary/5"
-                          : "border-border hover:border-primary/50"
-                      )}
-                    >
-                      <Wallet className="h-5 w-5 text-blue-600" />
-                      <div>
-                        <div className="font-medium">PayPal</div>
-                        <div className="text-xs text-muted-foreground">
-                          Fast & secure
+                      <button
+                        type="button"
+                        onClick={() => setSelectedPaymentType("bolivares")}
+                        className={cn(
+                          "flex items-center gap-3 p-4 border-2 rounded-ele transition-colors text-left",
+                          selectedPaymentType === "bolivares"
+                            ? "border-primary bg-primary/5"
+                            : "border-border hover:border-primary/50"
+                        )}
+                      >
+                        <Phone className="h-5 w-5 text-blue-700" />
+                        <div>
+                          <div className="font-medium">
+                            Bolívares (manual)
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            Pago móvil/transferencia
+                          </div>
                         </div>
-                      </div>
-                    </button>
+                      </button>
 
-                    <button
-                      type="button"
-                      onClick={() => setSelectedPaymentType("apple-pay")}
-                      className={cn(
-                        "flex items-center gap-3 p-4 border-2 rounded-ele transition-colors text-left",
-                        selectedPaymentType === "apple-pay"
-                          ? "border-primary bg-primary/5"
-                          : "border-border hover:border-primary/50"
-                      )}
-                    >
-                      <Smartphone className="h-5 w-5 text-gray-800" />
-                      <div>
-                        <div className="font-medium">Apple Pay</div>
-                        <div className="text-xs text-muted-foreground">
-                          Touch ID or Face ID
+                      <button
+                        type="button"
+                        onClick={() => setSelectedPaymentType("binance_pay")}
+                        className={cn(
+                          "flex items-center gap-3 p-4 border-2 rounded-ele transition-colors text-left",
+                          selectedPaymentType === "binance_pay"
+                            ? "border-primary bg-primary/5"
+                            : "border-border hover:border-primary/50"
+                        )}
+                      >
+                        <Building2 className="h-5 w-5 text-blue-800" />
+                        <div>
+                          <div className="font-medium">
+                            Binance Pay (manual)
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            Pago con Binance Pay
+                          </div>
                         </div>
-                      </div>
-                    </button>
+                      </button>
 
-                    <button
-                      type="button"
-                      onClick={() => setSelectedPaymentType("google-pay")}
-                      className={cn(
-                        "flex items-center gap-3 p-4 border-2 rounded-ele transition-colors text-left",
-                        selectedPaymentType === "google-pay"
-                          ? "border-primary bg-primary/5"
-                          : "border-border hover:border-primary/50"
-                      )}
-                    >
-                      <Smartphone className="h-5 w-5 text-green-600" />
-                      <div>
-                        <div className="font-medium">Google Pay</div>
-                        <div className="text-xs text-muted-foreground">
-                          One-tap checkout
+                      <button
+                        type="button"
+                        onClick={() => setSelectedPaymentType("zinli")}
+                        className={cn(
+                          "flex items-center gap-3 p-4 border-2 rounded-ele transition-colors text-left",
+                          selectedPaymentType === "zinli"
+                            ? "border-primary bg-primary/5"
+                            : "border-border hover:border-primary/50"
+                        )}
+                      >
+                        <Smartphone className="h-5 w-5 text-gray-700" />
+                        <div>
+                          <div className="font-medium">Zinli (manual)</div>
+                          <div className="text-xs text-muted-foreground">
+                            Pago con Zinli
+                          </div>
                         </div>
-                      </div>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setSelectedPaymentType("bank-transfer")}
-                      className={cn(
-                        "flex items-center gap-3 p-4 border-2 rounded-ele transition-colors text-left",
-                        selectedPaymentType === "bank-transfer"
-                          ? "border-primary bg-primary/5"
-                          : "border-border hover:border-primary/50"
-                      )}
-                    >
-                      <Building2 className="h-5 w-5 text-blue-800" />
-                      <div>
-                        <div className="font-medium">Bank Transfer</div>
-                        <div className="text-xs text-muted-foreground">
-                          Direct bank payment
-                        </div>
-                      </div>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setSelectedPaymentType("bnpl")}
-                      className={cn(
-                        "flex items-center gap-3 p-4 border-2 rounded-ele transition-colors text-left",
-                        selectedPaymentType === "bnpl"
-                          ? "border-primary bg-primary/5"
-                          : "border-border hover:border-primary/50"
-                      )}
-                    >
-                      <Clock className="h-5 w-5 text-purple-600" />
-                      <div>
-                        <div className="font-medium">Buy Now Pay Later</div>
-                        <div className="text-xs text-muted-foreground">
-                          Split into 4 payments
-                        </div>
-                      </div>
-                    </button>
-                  </div>
+                      </button>
+                    </div>
                 </div>
 
-                {selectedPaymentType === "card" && (
+                {false && (
                   <div className="flex flex-col gap-4 border-t pt-6">
                     <div className="flex flex-col gap-2">
                       <Label htmlFor="nameOnCard">
@@ -866,11 +908,11 @@ export default function Checkout() {
                         <Wallet className="h-5 w-5 text-blue-600 mt-0.5" />
                         <div>
                           <h4 className="font-medium text-blue-900">
-                            PayPal Payment
+                            PayPal (automático)
                           </h4>
                           <p className="text-sm text-blue-700 mt-1">
-                            You'll be redirected to PayPal to complete
-                            your payment securely.
+                            Te redirigiremos a PayPal para completar tu
+                            pago de forma segura.
                           </p>
                         </div>
                       </div>
@@ -878,9 +920,64 @@ export default function Checkout() {
                   </div>
                 )}
 
-                {/* (Otros métodos de pago quedan igual) */}
+                {selectedPaymentType === "bolivares" && (
+                  <div className="border-t pt-6">
+                    <div className="bg-stone-50 border border-stone-200 rounded-ele p-4">
+                      <div className="flex items-start gap-3">
+                        <Phone className="h-5 w-5 text-blue-700 mt-0.5" />
+                        <div>
+                          <h4 className="font-medium text-stone-900">
+                            Bolívares (manual)
+                          </h4>
+                          <p className="text-sm text-stone-700 mt-1">
+                            Realiza el pago por Pago Móvil/transferencia y
+                            sube tu comprobante.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
-                {selectedPaymentType === "card" && (
+                {selectedPaymentType === "binance_pay" && (
+                  <div className="border-t pt-6">
+                    <div className="bg-stone-50 border border-stone-200 rounded-ele p-4">
+                      <div className="flex items-start gap-3">
+                        <Building2 className="h-5 w-5 text-blue-800 mt-0.5" />
+                        <div>
+                          <h4 className="font-medium text-stone-900">
+                            Binance Pay (manual)
+                          </h4>
+                          <p className="text-sm text-stone-700 mt-1">
+                            Realiza el pago por Binance Pay (o QR) y sube
+                            el comprobante.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {selectedPaymentType === "zinli" && (
+                  <div className="border-t pt-6">
+                    <div className="bg-stone-50 border border-stone-200 rounded-ele p-4">
+                      <div className="flex items-start gap-3">
+                        <Smartphone className="h-5 w-5 text-gray-700 mt-0.5" />
+                        <div>
+                          <h4 className="font-medium text-stone-900">
+                            Zinli (manual)
+                          </h4>
+                          <p className="text-sm text-stone-700 mt-1">
+                            Realiza el pago por Zinli y sube el
+                            comprobante.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {false && (
                   <div className="flex items-center gap-2 border-t pt-4">
                     <Checkbox
                       id="savePayment"
@@ -928,7 +1025,7 @@ export default function Checkout() {
               </CardHeader>
               <CardContent className="flex flex-col gap-6">
                 <div className="flex flex-col gap-2">
-                  <h3 className="font-medium">Shipping Address</h3>
+                  <h3 className="font-medium">Datos de envío</h3>
                   <div className="text-sm text-muted-foreground p-3 bg-accent rounded-ele">
                     <p>
                       {shippingAddress.firstName} {shippingAddress.lastName}
@@ -943,25 +1040,116 @@ export default function Checkout() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <h3 className="font-medium">Payment Method</h3>
+                  <h3 className="font-medium">Método de pago</h3>
                   <div className="text-sm text-muted-foreground p-3 bg-accent rounded-ele">
-                    {selectedPaymentType === "card" && (
-                      <>
-                        <p>
-                          **** **** ****{" "}
-                          {paymentMethod.cardNumber.slice(-4)}
-                        </p>
-                        <p>{paymentMethod.nameOnCard}</p>
-                      </>
-                    )}
                     {selectedPaymentType === "paypal" && (
                       <div className="flex items-center gap-2">
                         <Wallet className="h-4 w-4 text-blue-600" />
-                        <span>PayPal</span>
+                        <span>PayPal (automático)</span>
+                      </div>
+                    )}
+
+                    {selectedPaymentType === "bolivares" && (
+                      <div className="flex items-center gap-2">
+                        <Phone className="h-4 w-4 text-blue-700" />
+                        <span>Bolívares (manual)</span>
+                      </div>
+                    )}
+
+                    {selectedPaymentType === "binance_pay" && (
+                      <div className="flex items-center gap-2">
+                        <Building2 className="h-4 w-4 text-blue-800" />
+                        <span>Binance Pay (manual)</span>
+                      </div>
+                    )}
+
+                    {selectedPaymentType === "zinli" && (
+                      <div className="flex items-center gap-2">
+                        <Smartphone className="h-4 w-4 text-gray-700" />
+                        <span>Zinli (manual)</span>
                       </div>
                     )}
                   </div>
                 </div>
+
+                {message && (
+                  <p className="text-xs leading-5 text-amber-200/90">
+                    {message}
+                  </p>
+                )}
+
+                {selectedPaymentType !== "paypal" && orderId && (
+                  <div className="flex flex-col gap-4 border-t pt-4">
+                    <div className="rounded-2xl border border-stone-800 bg-stone-950/30 p-4">
+                      <p className="text-xs font-semibold uppercase text-stone-400">
+                        Instrucciones
+                      </p>
+                      <p className="mt-2 text-sm leading-6 text-stone-300">
+                        Tu orden es{" "}
+                        <span className="font-black text-stone-100">
+                          {orderId}
+                        </span>
+                        . Usa este ID como referencia.
+                      </p>
+                      <p className="mt-2 text-xs leading-5 text-stone-500">
+                        {selectedPaymentType === "bolivares" &&
+                          "Paga por Pago Móvil/transferencia y sube el comprobante."}
+                        {selectedPaymentType === "binance_pay" &&
+                          "Realiza el pago por Binance Pay (o QR) y sube el comprobante."}
+                        {selectedPaymentType === "zinli" &&
+                          "Realiza el pago por Zinli y sube el comprobante."}
+                      </p>
+                    </div>
+
+                    <div className="grid gap-3">
+                      <div>
+                        <label className="mb-2 block text-xs font-semibold uppercase text-stone-400">
+                          Referencia (opcional)
+                        </label>
+                        <input
+                          value={reference}
+                          onChange={(e) => setReference(e.target.value)}
+                          className="w-full rounded-2xl border border-stone-800 bg-stone-950/30 px-4 py-3 text-sm text-stone-100 placeholder:text-stone-600 outline-none"
+                          placeholder="Ej: 000123 / teléfono / nota"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="mb-2 block text-xs font-semibold uppercase text-stone-400">
+                          Comprobante (imagen)
+                        </label>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) =>
+                            setProofFile(e.target.files?.[0] ?? null)
+                          }
+                          className="block w-full text-xs text-stone-300 file:mr-3 file:rounded-full file:border-0 file:bg-stone-100 file:px-4 file:py-2 file:text-xs file:font-bold file:uppercase file:text-stone-950"
+                        />
+                      </div>
+
+                      <Button
+                        type="button"
+                        disabled={!proofFile || isSubmitting}
+                        onClick={async () => {
+                          setIsSubmitting(true);
+                          try {
+                            await uploadProof();
+                          } catch (e) {
+                            setMessage(
+                              String((e as Error).message || e)
+                            );
+                          } finally {
+                            setIsSubmitting(false);
+                          }
+                        }}
+                        className="rounded-full bg-stone-100 text-stone-950 hover:bg-stone-200"
+                      >
+                        Enviar comprobante
+                      </Button>
+                    </div>
+                  </div>
+                )}
 
                 <div className="flex items-start gap-2 border-t pt-4">
                   <Checkbox
@@ -988,12 +1176,18 @@ export default function Checkout() {
                   className="flex items-center gap-2"
                 >
                   <ChevronLeft className="h-4 w-4" />
-                  Back
+                  Volver
                 </Button>
 
                 <button
                   type="button"
-                  disabled={!validateStep(3)}
+                  disabled={
+                    !validateStep(3) ||
+                    !canPay ||
+                    isSubmitting ||
+                    (selectedPaymentType !== "paypal" && !!orderId)
+                  }
+                  onClick={onConfirmOrder}
                   className="inline-flex items-center gap-2 rounded-full 
                    bg-stone-100 px-8 py-4 text-sm font-bold 
                    uppercase text-stone-950 transition 

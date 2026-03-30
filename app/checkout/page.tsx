@@ -7,6 +7,7 @@ import { FooterSection } from "@/components/ui/footer";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/shop/cart-context";
 import { products, type Product } from "@/lib/products";
+import CheckoutBlock from "@/components/ui/checkout-block";
 
 type PaymentMethod = "paypal" | "bolivares" | "binance_pay" | "zinli";
 
@@ -27,6 +28,8 @@ async function readApiError(res: Response): Promise<string> {
 }
 
 export default function CheckoutPage() {
+  return <CheckoutBlock />;
+  /*
   const { items, subtotal, clear } = useCart();
   const [method, setMethod] = useState<PaymentMethod>("paypal");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -308,5 +311,6 @@ export default function CheckoutPage() {
       <FooterSection />
     </div>
   );
+*/
 }
 
