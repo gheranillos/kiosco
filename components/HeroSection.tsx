@@ -158,7 +158,7 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
           <span className="mt-2 block">Outsiders</span>
         </h1>
 
-        <div className="absolute bottom-6 md:bottom-10 left-6 md:left-10 max-w-[min(520px,92vw)] space-y-3 md:space-y-4">
+        <div className="absolute bottom-6 md:bottom-10 left-6 md:left-10 max-w-[min(580px,92vw)] space-y-3 md:space-y-4">
           <div className="inline-flex items-center rounded-full border border-stone-700 bg-stone-900/70 px-3 py-1 text-xs font-semibold uppercase text-stone-300">
             Kiosco — Drop #001 Not normal.
           </div>
@@ -189,11 +189,6 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
             </p>
           )}
 
-          <p className="anim-hero-subtitle max-w-lg text-sm leading-6 text-stone-300 md:text-base">
-            Estamos preparando el próximo drop de Kiosco. Déjanos tus datos para
-            entrar primero, recibir fotos, precio de salida y acceso anticipado.
-          </p>
-
           <div className="flex flex-wrap gap-3 text-xs font-medium uppercase text-stone-400">
             <span className="rounded-full border border-stone-800 px-3 py-2">
               Exclusividad
@@ -206,50 +201,52 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
             </span>
           </div>
 
-          <a
-            href="#preregistro"
-            onClick={scrollToPreregistro}
-            className="anim-hero-cta-pulse anim-cursor-scale group relative inline-flex min-w-[260px] items-center justify-center overflow-hidden rounded-full bg-stone-100 px-8 py-4 text-sm font-bold uppercase leading-none text-stone-950 transition hover:scale-[1.02]"
-          >
-            <span className="relative z-10 inline-block whitespace-nowrap translate-x-1 transition-all duration-300 group-hover:translate-x-12 group-hover:opacity-0">
-              Quiero entrar al drop
-            </span>
-            <span className="absolute top-0 z-10 flex h-full w-full translate-x-12 items-center justify-center gap-2 whitespace-nowrap text-stone-100 opacity-0 transition-all duration-300 group-hover:-translate-x-1 group-hover:opacity-100">
-              <span className="whitespace-nowrap">Quiero entrar al drop</span>
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 24 24"
-                className="h-4 w-4"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M5 12h14" />
-                <path d="m12 5 7 7-7 7" />
-              </svg>
-            </span>
-            <span className="absolute left-[20%] top-[40%] h-2 w-2 scale-0 rounded-lg bg-stone-950 opacity-0 transition-all duration-300 group-hover:left-[0%] group-hover:top-[0%] group-hover:h-full group-hover:w-full group-hover:scale-[1.8] group-hover:opacity-100" />
-          </a>
-
-          {shopEnabled ? (
+          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
             <a
-              href="/shop"
-              className="anim-cursor-scale inline-flex min-w-[260px] items-center justify-center rounded-full border border-stone-700 bg-stone-950/40 px-8 py-4 text-sm font-bold uppercase leading-none text-stone-100 transition hover:scale-[1.02] hover:bg-stone-950/60"
+              href="#preregistro"
+              onClick={scrollToPreregistro}
+              className="anim-hero-cta-pulse anim-cursor-scale group relative inline-flex min-w-[min(260px,100%)] shrink-0 items-center justify-center overflow-hidden rounded-full bg-stone-100 px-8 py-4 text-sm font-bold uppercase leading-none text-stone-950 transition hover:scale-[1.02]"
             >
-              Shop
+              <span className="relative z-10 inline-block whitespace-nowrap translate-x-1 transition-all duration-300 group-hover:translate-x-12 group-hover:opacity-0">
+                Quiero entrar al drop
+              </span>
+              <span className="absolute top-0 z-10 flex h-full w-full translate-x-12 items-center justify-center gap-2 whitespace-nowrap text-stone-100 opacity-0 transition-all duration-300 group-hover:-translate-x-1 group-hover:opacity-100">
+                <span className="whitespace-nowrap">Quiero entrar al drop</span>
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M5 12h14" />
+                  <path d="m12 5 7 7-7 7" />
+                </svg>
+              </span>
+              <span className="absolute left-[20%] top-[40%] h-2 w-2 scale-0 rounded-lg bg-stone-950 opacity-0 transition-all duration-300 group-hover:left-[0%] group-hover:top-[0%] group-hover:h-full group-hover:w-full group-hover:scale-[1.8] group-hover:opacity-100" />
             </a>
-          ) : (
-            <button
-              type="button"
-              disabled
-              className="inline-flex min-w-[260px] cursor-not-allowed items-center justify-center rounded-full border border-stone-800 bg-stone-950/20 px-8 py-4 text-sm font-bold uppercase leading-none text-stone-500 opacity-80"
-              title="Próximamente"
-            >
-              Shop (Próximamente)
-            </button>
-          )}
+
+            {shopEnabled ? (
+              <a
+                href="/shop"
+                className="anim-cursor-scale inline-flex min-w-[min(260px,100%)] shrink-0 items-center justify-center rounded-full border border-stone-700 bg-stone-950/40 px-8 py-4 text-sm font-bold uppercase leading-none text-stone-100 transition hover:scale-[1.02] hover:bg-stone-950/60"
+              >
+                Shop
+              </a>
+            ) : (
+              <button
+                type="button"
+                disabled
+                className="inline-flex min-w-[min(260px,100%)] shrink-0 cursor-not-allowed items-center justify-center rounded-full border border-stone-800 bg-stone-950/20 px-8 py-4 text-sm font-bold uppercase leading-none text-stone-500 opacity-80"
+                title="Próximamente"
+              >
+                Shop (Próximamente)
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </section>
