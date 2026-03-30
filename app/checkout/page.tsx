@@ -22,7 +22,8 @@ async function readApiError(res: Response): Promise<string> {
   } catch {
     /* ignore */
   }
-  return text.trim() || `Error ${res.status}`;
+  if (text.trim()) return text.trim().slice(0, 500);
+  return `Error del servidor (${res.status}). Si usas Supabase, revisa SUPABASE_URL y SUPABASE_SERVICE_ROLE_KEY en .env.local y reinicia el servidor.`;
 }
 
 export default function CheckoutPage() {
