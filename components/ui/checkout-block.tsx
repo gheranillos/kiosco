@@ -439,7 +439,7 @@ export default function Checkout() {
   }
 
   return (
-    <div className="w-full mx-auto p-6 flex flex-col gap-6">
+    <div className="w-full mx-auto p-6 flex flex-col gap-6 animate-in fade-in-0 duration-500">
       <div className="flex items-center justify-between">
         <div className="flex items-start gap-4 flex-col">
           <Button
@@ -459,7 +459,10 @@ export default function Checkout() {
             </p>
           </div>
         </div>
-        <Badge variant="secondary" className="flex items-center gap-1">
+        <Badge
+          variant="secondary"
+          className="flex items-center gap-1 transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(255,255,255,0.18)]"
+        >
           <Shield className="h-3 w-3" />
           Pago seguro 🔒
         </Badge>
@@ -476,9 +479,9 @@ export default function Checkout() {
             <div className="flex items-center gap-2">
               <div
                 className={cn(
-                  "flex items-center justify-center w-8 h-8 rounded-full border-2 transition-colors",
+                  "flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all duration-300",
                   currentStep >= step
-                    ? "bg-stone-100 border-stone-100 text-stone-950"
+                    ? "bg-stone-100 border-stone-100 text-stone-950 shadow-[0_0_18px_rgba(255,255,255,0.28)]"
                     : "border-border text-muted-foreground"
                 )}
               >
@@ -502,7 +505,7 @@ export default function Checkout() {
             {index < 2 && (
               <div
                 className={cn(
-                  "w-8 h-0.5",
+                  "w-8 h-0.5 transition-all duration-300",
                   currentStep > step ? "bg-stone-100" : "bg-border"
                 )}
               />
@@ -516,7 +519,7 @@ export default function Checkout() {
         <div className="lg:col-span-2 flex flex-col gap-6">
           {/* Step 1: Datos de envío */}
           {currentStep === 1 && (
-            <Card className="flex flex-col gap-6">
+            <Card className="flex flex-col gap-6 transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.08)]">
               <CardHeader>
                 <h2 className="text-xl font-semibold flex items-center gap-2">
                   <MapPin className="h-5 w-5" />
@@ -652,7 +655,7 @@ export default function Checkout() {
                       <div
                         key={method.id}
                         className={cn(
-                          "p-3 border rounded-ele cursor-pointer transition-colors",
+                        "p-3 border rounded-ele cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_18px_rgba(255,255,255,0.10)]",
                           selectedShipping === method.id
                             ? "border-primary bg-primary/5"
                             : "border-border hover:bg-accent"
@@ -683,7 +686,7 @@ export default function Checkout() {
                 <Button
                   onClick={nextStep}
                   disabled={!validateStep(1)}
-                  className="ml-auto"
+                  className="ml-auto transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_22px_rgba(255,255,255,0.18)]"
                   size="lg"
                 >
                   Continuar al pago
@@ -694,7 +697,7 @@ export default function Checkout() {
 
           {/* Step 2: Método de pago */}
           {currentStep === 2 && (
-            <Card className="flex flex-col gap-6">
+            <Card className="flex flex-col gap-6 transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.08)]">
               <CardHeader>
                 <h2 className="text-xl font-semibold flex items-center gap-2">
                   <CreditCard className="h-5 w-5" />
@@ -711,7 +714,7 @@ export default function Checkout() {
                         type="button"
                         onClick={() => setSelectedPaymentType("paypal")}
                         className={cn(
-                          "flex items-center gap-3 p-4 border-2 rounded-ele transition-colors text-left",
+                        "flex items-center gap-3 p-4 border-2 rounded-ele transition-all duration-300 text-left hover:-translate-y-0.5 hover:shadow-[0_0_18px_rgba(255,255,255,0.10)]",
                           selectedPaymentType === "paypal"
                             ? "border-primary bg-primary/5"
                             : "border-border hover:border-primary/50"
@@ -732,7 +735,7 @@ export default function Checkout() {
                         type="button"
                         onClick={() => setSelectedPaymentType("bolivares")}
                         className={cn(
-                          "flex items-center gap-3 p-4 border-2 rounded-ele transition-colors text-left",
+                        "flex items-center gap-3 p-4 border-2 rounded-ele transition-all duration-300 text-left hover:-translate-y-0.5 hover:shadow-[0_0_18px_rgba(255,255,255,0.10)]",
                           selectedPaymentType === "bolivares"
                             ? "border-primary bg-primary/5"
                             : "border-border hover:border-primary/50"
@@ -753,7 +756,7 @@ export default function Checkout() {
                         type="button"
                         onClick={() => setSelectedPaymentType("binance_pay")}
                         className={cn(
-                          "flex items-center gap-3 p-4 border-2 rounded-ele transition-colors text-left",
+                        "flex items-center gap-3 p-4 border-2 rounded-ele transition-all duration-300 text-left hover:-translate-y-0.5 hover:shadow-[0_0_18px_rgba(255,255,255,0.10)]",
                           selectedPaymentType === "binance_pay"
                             ? "border-primary bg-primary/5"
                             : "border-border hover:border-primary/50"
@@ -774,7 +777,7 @@ export default function Checkout() {
                         type="button"
                         onClick={() => setSelectedPaymentType("zinli")}
                         className={cn(
-                          "flex items-center gap-3 p-4 border-2 rounded-ele transition-colors text-left",
+                        "flex items-center gap-3 p-4 border-2 rounded-ele transition-all duration-300 text-left hover:-translate-y-0.5 hover:shadow-[0_0_18px_rgba(255,255,255,0.10)]",
                           selectedPaymentType === "zinli"
                             ? "border-primary bg-primary/5"
                             : "border-border hover:border-primary/50"
@@ -983,7 +986,7 @@ export default function Checkout() {
                   variant="outline"
                   size="lg"
                   onClick={prevStep}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 transition-all duration-300 hover:scale-[1.02]"
                 >
                   <ChevronLeft className="h-4 w-4" />
                   Back
@@ -991,6 +994,7 @@ export default function Checkout() {
                 <Button
                   onClick={nextStep}
                   disabled={!validateStep(2)}
+                  className="transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_22px_rgba(255,255,255,0.18)]"
                   size="lg"
                 >
                   Revisar pedido
@@ -1001,7 +1005,7 @@ export default function Checkout() {
 
           {/* Step 3: Confirmar pedido */}
           {currentStep === 3 && (
-            <Card className="flex flex-col gap-6">
+            <Card className="flex flex-col gap-6 transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.08)]">
               <CardHeader>
                 <h2 className="text-xl font-semibold flex items-center gap-2">
                   <Check className="h-5 w-5" />
@@ -1158,7 +1162,7 @@ export default function Checkout() {
                   variant="outline"
                   size="lg"
                   onClick={prevStep}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 transition-all duration-300 hover:scale-[1.02]"
                 >
                   <ChevronLeft className="h-4 w-4" />
                   Volver
@@ -1173,10 +1177,11 @@ export default function Checkout() {
                     (selectedPaymentType !== "paypal" && !!orderId)
                   }
                   onClick={onConfirmOrder}
-                  className="inline-flex items-center gap-2 rounded-full 
+                  className="inline-flex items-center gap-2 rounded-full
                    bg-stone-100 px-8 py-4 text-sm font-bold 
-                   uppercase text-stone-950 transition 
-                   hover:scale-[1.02] hover:bg-stone-200"
+                   uppercase text-stone-950 transition-all duration-300
+                   hover:scale-[1.02] hover:bg-stone-200 hover:shadow-[0_0_26px_rgba(255,255,255,0.25)]
+                   disabled:opacity-50 disabled:hover:scale-100 disabled:hover:shadow-none"
                 >
                   <Lock className="h-4 w-4" />
                   Confirmar pedido — ${summary.total.toFixed(2)}
@@ -1190,7 +1195,7 @@ export default function Checkout() {
         <div className="flex flex-col gap-4">
           <OrderSummaryCard />
 
-          <Card>
+          <Card className="transition-all duration-300 hover:shadow-[0_0_24px_rgba(255,255,255,0.08)]">
             <CardContent className="p-4">
               <div className="flex items-center gap-3 text-sm">
                 <Shield className="h-5 w-5 text-green-600" />
