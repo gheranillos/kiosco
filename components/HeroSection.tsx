@@ -8,6 +8,41 @@ type GalleryItem = {
   image: string;
 };
 
+function PrimaryDropCta({
+  onClick,
+}: {
+  onClick: (e: MouseEvent<HTMLAnchorElement>) => void;
+}) {
+  return (
+    <a
+      href="#preregistro"
+      onClick={onClick}
+      className="anim-hero-cta-pulse anim-cursor-scale group relative inline-flex min-w-[min(260px,100%)] shrink-0 items-center justify-center overflow-hidden rounded-full bg-stone-100 px-8 py-4 text-sm font-bold uppercase leading-none text-stone-950 transition hover:scale-[1.02]"
+    >
+      <span className="relative z-10 inline-block whitespace-nowrap translate-x-1 transition-all duration-300 group-hover:translate-x-12 group-hover:opacity-0">
+        Quiero entrar al drop
+      </span>
+      <span className="absolute top-0 z-10 flex h-full w-full translate-x-12 items-center justify-center gap-2 whitespace-nowrap text-stone-100 opacity-0 transition-all duration-300 group-hover:-translate-x-1 group-hover:opacity-100">
+        <span className="whitespace-nowrap">Quiero entrar al drop</span>
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          className="h-4 w-4"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M5 12h14" />
+          <path d="m12 5 7 7-7 7" />
+        </svg>
+      </span>
+      <span className="absolute left-[20%] top-[40%] h-2 w-2 scale-0 rounded-lg bg-stone-950 opacity-0 transition-all duration-300 group-hover:left-[0%] group-hover:top-[0%] group-hover:h-full group-hover:w-full group-hover:scale-[1.8] group-hover:opacity-100" />
+    </a>
+  );
+}
+
 export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
   const heroBgRef = useRef<HTMLDivElement>(null);
   const shopEnabled = process.env.NEXT_PUBLIC_SHOP_ENABLED !== "false";
@@ -158,6 +193,14 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
           <span className="mt-2 block">Outsiders</span>
         </h1>
 
+        {!shopEnabled && (
+          <div className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none px-6">
+            <div className="pointer-events-auto w-full max-w-[min(320px,92vw)] flex justify-center">
+              <PrimaryDropCta onClick={scrollToPreregistro} />
+            </div>
+          </div>
+        )}
+
         <div className="absolute bottom-6 md:bottom-10 left-6 md:left-10 max-w-[min(580px,92vw)] space-y-3 md:space-y-4">
           <div className="inline-flex items-center rounded-full border border-stone-700 bg-stone-900/70 px-3 py-1 text-xs font-semibold uppercase text-stone-300">
             Kiosco — Drop #001 Not normal.
@@ -202,32 +245,9 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
-            <a
-              href="#preregistro"
-              onClick={scrollToPreregistro}
-              className="anim-hero-cta-pulse anim-cursor-scale group relative inline-flex min-w-[min(260px,100%)] shrink-0 items-center justify-center overflow-hidden rounded-full bg-stone-100 px-8 py-4 text-sm font-bold uppercase leading-none text-stone-950 transition hover:scale-[1.02]"
-            >
-              <span className="relative z-10 inline-block whitespace-nowrap translate-x-1 transition-all duration-300 group-hover:translate-x-12 group-hover:opacity-0">
-                Quiero entrar al drop
-              </span>
-              <span className="absolute top-0 z-10 flex h-full w-full translate-x-12 items-center justify-center gap-2 whitespace-nowrap text-stone-100 opacity-0 transition-all duration-300 group-hover:-translate-x-1 group-hover:opacity-100">
-                <span className="whitespace-nowrap">Quiero entrar al drop</span>
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  className="h-4 w-4"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M5 12h14" />
-                  <path d="m12 5 7 7-7 7" />
-                </svg>
-              </span>
-              <span className="absolute left-[20%] top-[40%] h-2 w-2 scale-0 rounded-lg bg-stone-950 opacity-0 transition-all duration-300 group-hover:left-[0%] group-hover:top-[0%] group-hover:h-full group-hover:w-full group-hover:scale-[1.8] group-hover:opacity-100" />
-            </a>
+            {shopEnabled && (
+              <PrimaryDropCta onClick={scrollToPreregistro} />
+            )}
 
             {shopEnabled ? (
               <a
