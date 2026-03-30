@@ -34,7 +34,6 @@ import {
   Wallet,
   Smartphone,
   Building2,
-  Clock,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -127,27 +126,11 @@ export default function Checkout() {
   const [agreeToTerms, setAgreeToTerms] = useState<boolean>(true);
 
   const shippingMethods = [
-    {
-      id: "standard",
-      name: "Envío estándar",
-      price: 9.99,
-      time: "5-7 business days",
-    },
-    {
-      id: "express",
-      name: "Envío express",
-      price: 19.99,
-      time: "2-3 business days",
-    },
-    {
-      id: "overnight",
-      name: "Envío urgente",
-      price: 39.99,
-      time: "Next business day",
-    },
+    { id: "mrw", name: "MRW" },
+    { id: "zoom", name: "Zoom" },
   ];
 
-  const [selectedShipping, setSelectedShipping] = useState("standard");
+  const [selectedShipping, setSelectedShipping] = useState("mrw");
 
   useEffect(() => {
     setIsLoading(true);
@@ -547,7 +530,7 @@ export default function Checkout() {
                     <Input
                       id="firstName"
                       size="lg"
-                      placeholder="John"
+                      placeholder="Carlos"
                       value={shippingAddress.firstName}
                       onChange={(e) =>
                         handleAddressChange("firstName", e.target.value)
@@ -560,7 +543,7 @@ export default function Checkout() {
                     <Input
                       id="lastName"
                       size="lg"
-                      placeholder="Doe"
+                      placeholder="Kuffaty"
                       value={shippingAddress.lastName}
                       onChange={(e) =>
                         handleAddressChange("lastName", e.target.value)
@@ -582,7 +565,7 @@ export default function Checkout() {
                     />
                   </div>
                   <div className="flex flex-col gap-2">
-                    <Label htmlFor="phone">Phone</Label>
+                    <Label htmlFor="phone">Teléfono</Label>
                     <Input
                       id="phone"
                       size="lg"
@@ -597,11 +580,11 @@ export default function Checkout() {
                   </div>
                 </div>
                 <div className="flex flex-col gap-2">
-                  <Label htmlFor="address">Address *</Label>
+                  <Label htmlFor="address">Dirección *</Label>
                   <Input
                     id="address"
                     size="lg"
-                    placeholder="123 Main Street"
+                    placeholder="Av. Principal, Caracas"
                     value={shippingAddress.address}
                     onChange={(e) =>
                       handleAddressChange("address", e.target.value)
@@ -610,11 +593,11 @@ export default function Checkout() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="flex flex-col gap-2">
-                    <Label htmlFor="city">City *</Label>
+                    <Label htmlFor="city">Ciudad *</Label>
                     <Input
                       id="city"
                       size="lg"
-                      placeholder="New York"
+                      placeholder="Caracas"
                       value={shippingAddress.city}
                       onChange={(e) =>
                         handleAddressChange("city", e.target.value)
@@ -622,7 +605,7 @@ export default function Checkout() {
                     />
                   </div>
                   <div className="flex flex-col gap-2">
-                    <Label htmlFor="state">State *</Label>
+                    <Label htmlFor="state">Estado *</Label>
                     <Select
                       value={shippingAddress.state}
                       onValueChange={(value) =>
@@ -630,32 +613,40 @@ export default function Checkout() {
                       }
                     >
                       <SelectTrigger className="text-sm" size={"lg"}>
-                        <SelectValue placeholder="Select state" />
+                        <SelectValue placeholder="Selecciona estado" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="CA">California</SelectItem>
-                        <SelectItem value="NY">New York</SelectItem>
-                        <SelectItem value="TX">Texas</SelectItem>
-                        <SelectItem value="FL">Florida</SelectItem>
+                        <SelectItem value="DT">Distrito Capital</SelectItem>
+                        <SelectItem value="MI">Miranda</SelectItem>
+                        <SelectItem value="AR">Aragua</SelectItem>
+                        <SelectItem value="CA">Carabobo</SelectItem>
+                        <SelectItem value="LA">Lara</SelectItem>
+                        <SelectItem value="ZU">Zulia</SelectItem>
+                        <SelectItem value="AN">Anzoátegui</SelectItem>
+                        <SelectItem value="BO">Bolívar</SelectItem>
+                        <SelectItem value="TA">Táchira</SelectItem>
+                        <SelectItem value="ME">Mérida</SelectItem>
+                        <SelectItem value="SU">Sucre</SelectItem>
+                        <SelectItem value="MO">Monagas</SelectItem>
+                        <SelectItem value="PO">Portuguesa</SelectItem>
+                        <SelectItem value="TR">Trujillo</SelectItem>
+                        <SelectItem value="BA">Barinas</SelectItem>
+                        <SelectItem value="YA">Yaracuy</SelectItem>
+                        <SelectItem value="CO">Cojedes</SelectItem>
+                        <SelectItem value="GU">Guárico</SelectItem>
+                        <SelectItem value="FA">Falcón</SelectItem>
+                        <SelectItem value="AM">Amazonas</SelectItem>
+                        <SelectItem value="AP">Apure</SelectItem>
+                        <SelectItem value="NV">Nueva Esparta</SelectItem>
+                        <SelectItem value="VG">La Guaira</SelectItem>
+                        <SelectItem value="DE">Dependencias Federales</SelectItem>
                       </SelectContent>
                     </Select>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <Label htmlFor="zipCode">Código postal *</Label>
-                    <Input
-                      id="zipCode"
-                      size="lg"
-                      placeholder="10001"
-                      value={shippingAddress.zipCode}
-                      onChange={(e) =>
-                        handleAddressChange("zipCode", e.target.value)
-                      }
-                    />
                   </div>
                 </div>
 
                 <div className="flex flex-col gap-3 border-t pt-4">
-                  <Label>Shipping Method</Label>
+                  <Label>Métodos de envíos</Label>
                   <div className="flex flex-col gap-4">
                     {shippingMethods.map((method) => (
                       <div
@@ -680,13 +671,7 @@ export default function Checkout() {
                             />
                             <div>
                               <div className="font-medium">{method.name}</div>
-                              <div className="text-sm text-muted-foreground">
-                                {method.time}
-                              </div>
                             </div>
-                          </div>
-                          <div className="font-semibold">
-                            ${method.price}
                           </div>
                         </div>
                       </div>
