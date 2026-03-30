@@ -77,26 +77,78 @@ export async function POST(req: Request) {
       return t ? t : null;
     };
 
-    const { data: order, error: orderErr } = await supabase
+    /** Si la tabla `orders` aún no tiene columnas de envío, guardamos tel + dirección en `phone`. */
+    const legacyPhoneWithShipping = (): string | null => {
+      const tel = String(body.phone ?? "").trim();
+      const addrParts = [
+        body.address_line?.trim(),
+        [body.city?.trim(), body.state?.trim()].filter(Boolean).join(", "),
+        body.zip_code?.trim(),
+        body.shipping_method?.trim()
+          ? `Envío: ${body.shipping_method}`
+          : "",
+      ].filter(Boolean);
+      const addrBlock = addrParts.join(" · ");
+      if (tel && addrBlock) return `${tel} | ${addrBlock}`;
+      if (tel) return tel;
+      if (addrBlock) return addrBlock;
+      return null;
+    };
+
+    const missingShippingColumnsError = (msg: string) => {
+      const m = msg.toLowerCase();
+      return (
+        m.includes("address_line") ||
+        m.includes("schema cache") ||
+        (m.includes("column") && m.includes("does not exist"))
+      );
+    };
+
+    const rowBase = {
+      status,
+      payment_method: body.payment_method,
+      currency: "USD",
+      subtotal_amount: subtotal,
+      name: trimOrNull(body.name),
+      email: trimOrNull(body.email),
+      phone: trimOrNull(body.phone),
+    };
+
+    const rowExtended = {
+      ...rowBase,
+      address_line: trimOrNull(body.address_line),
+      city: trimOrNull(body.city),
+      state: trimOrNull(body.state),
+      zip_code: trimOrNull(body.zip_code),
+      shipping_method: trimOrNull(body.shipping_method),
+    };
+
+    let order: { id: string } | null = null;
+    let orderErr: { message: string } | null = null;
+
+    const first = await supabase
       .from("orders")
-      .insert([
-        {
-          status,
-          payment_method: body.payment_method,
-          currency: "USD",
-          subtotal_amount: subtotal,
-          name: trimOrNull(body.name),
-          email: trimOrNull(body.email),
-          phone: trimOrNull(body.phone),
-          address_line: trimOrNull(body.address_line),
-          city: trimOrNull(body.city),
-          state: trimOrNull(body.state),
-          zip_code: trimOrNull(body.zip_code),
-          shipping_method: trimOrNull(body.shipping_method),
-        },
-      ])
+      .insert([rowExtended])
       .select("id")
       .single();
+
+    if (first.error && missingShippingColumnsError(first.error.message)) {
+      const legacy = await supabase
+        .from("orders")
+        .insert([
+          {
+            ...rowBase,
+            phone: legacyPhoneWithShipping(),
+          },
+        ])
+        .select("id")
+        .single();
+      order = legacy.data;
+      orderErr = legacy.error;
+    } else {
+      order = first.data;
+      orderErr = first.error;
+    }
 
     if (orderErr || !order) {
       return NextResponse.json(
