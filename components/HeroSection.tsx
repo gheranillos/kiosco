@@ -194,8 +194,8 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
         </h1>
 
         {!shopEnabled && (
-          <div className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none px-6">
-            <div className="pointer-events-auto w-full max-w-[min(320px,92vw)] flex justify-center">
+          <div className="pointer-events-none absolute bottom-[3rem] left-1/2 z-30 w-full max-w-[min(320px,92vw)] -translate-x-1/2 px-6 md:bottom-[3.5rem]">
+            <div className="pointer-events-auto flex justify-center">
               <PrimaryDropCta onClick={scrollToPreregistro} />
             </div>
           </div>
