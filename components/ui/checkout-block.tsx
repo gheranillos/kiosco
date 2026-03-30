@@ -30,7 +30,6 @@ import {
   Check,
   ChevronLeft,
   Percent,
-  X,
   Wallet,
   Smartphone,
   Building2,
@@ -122,13 +121,20 @@ export default function Checkout() {
     useState<CheckoutPaymentMethod>("paypal");
   const [sameAsShipping, setSameAsShipping] = useState<boolean>(true);
   const [savePaymentMethod, setSavePaymentMethod] = useState<boolean>(false);
-  const [appliedPromo, setAppliedPromo] = useState<string>("SAVE10");
+  const [couponInput, setCouponInput] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
+  const [couponFeedback, setCouponFeedback] = useState<string | null>(null);
   const [agreeToTerms, setAgreeToTerms] = useState<boolean>(true);
 
   const shippingMethods = [
     { id: "mrw", name: "MRW" },
     { id: "zoom", name: "Zoom" },
   ];
+  const couponCatalog: Record<string, number> = {
+    SAVE10: 0.1,
+    KIOSCO15: 0.15,
+    ARTISTA20: 0.2,
+  };
 
   const [selectedShipping, setSelectedShipping] = useState("mrw");
 
@@ -244,10 +250,11 @@ export default function Checkout() {
       (sum, item) => sum + item.price * item.quantity,
       0
     );
-    const discount = 0;
+    const couponRate = appliedCoupon ? couponCatalog[appliedCoupon] ?? 0 : 0;
+    const discount = subtotal * couponRate;
     const shipping = 0;
     const tax = 0;
-    const total = subtotal;
+    const total = Math.max(0, subtotal - discount);
 
     return {
       subtotal,
@@ -301,8 +308,19 @@ export default function Checkout() {
     setCurrentStep((prev) => Math.max(prev - 1, 1));
   };
 
-  const removePromo = () => {
-    setAppliedPromo("");
+  const applyCoupon = () => {
+    const normalized = couponInput.trim().toUpperCase();
+    if (!normalized) {
+      setCouponFeedback("Escribe un cupón.");
+      return;
+    }
+    if (!couponCatalog[normalized]) {
+      setAppliedCoupon(null);
+      setCouponFeedback("Cupón inválido o vencido.");
+      return;
+    }
+    setAppliedCoupon(normalized);
+    setCouponFeedback(`Cupón ${normalized} aplicado.`);
   };
 
   const summary = calculateSummary();
@@ -379,24 +397,32 @@ export default function Checkout() {
           ))}
         </div>
 
-        {appliedPromo && (
-          <div className="flex items-center justify-between p-3 bg-green-50 rounded-ele border border-green-200">
-            <div className="flex items-center gap-2">
-              <Percent className="h-4 w-4 text-green-600" />
-              <span className="text-sm font-medium text-green-800">
-                {appliedPromo}
-              </span>
-            </div>
+        <div className="rounded-ele border border-border p-3">
+          <p className="text-xs font-semibold uppercase text-muted-foreground">
+            Cupón canjeable
+          </p>
+          <div className="mt-2 flex gap-2">
+            <Input
+              value={couponInput}
+              onChange={(e) => setCouponInput(e.target.value)}
+              placeholder="Ej: SAVE10"
+              className="h-9"
+            />
             <Button
-              variant="ghost"
-              size="sm"
-              onClick={removePromo}
-              className="h-6 w-6 p-0 text-green-600 hover:text-green-800"
+              type="button"
+              onClick={applyCoupon}
+              variant="outline"
+              className="h-9"
             >
-              <X className="h-3 w-3" />
+              Aplicar
             </Button>
           </div>
-        )}
+          {couponFeedback && (
+            <p className="mt-2 text-xs text-muted-foreground">
+              {couponFeedback}
+            </p>
+          )}
+        </div>
 
         <div className="flex flex-col gap-2 border-t pt-4">
           <div className="flex justify-between text-sm">
@@ -405,7 +431,10 @@ export default function Checkout() {
           </div>
           {summary.discount > 0 && (
             <div className="flex justify-between text-sm text-green-600">
-              <span>Discount</span>
+              <span className="inline-flex items-center gap-1">
+                <Percent className="h-3.5 w-3.5" />
+                Descuento {appliedCoupon ? `(${appliedCoupon})` : ""}
+              </span>
               <span>-${summary.discount.toFixed(2)}</span>
             </div>
           )}
