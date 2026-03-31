@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { sendManualPaymentEmailNotification } from "@/lib/manual-payment-notifications";
 import { getSupabaseServerClient } from "@/lib/supabase-server";
 
 export async function POST(req: Request) {
@@ -52,6 +53,28 @@ export async function POST(req: Request) {
   // Ensure status is pending_verification for manual payments
   await supabase.from("orders").update({ status: "pending_verification" }).eq("id", orderId);
 
-  return NextResponse.json({ ok: true, path });
+  const { data: orderRow } = await supabase
+    .from("orders")
+    .select("subtotal_amount,currency,name,email")
+    .eq("id", orderId)
+    .maybeSingle();
+
+  const notifyResult = await sendManualPaymentEmailNotification({
+    orderId,
+    method,
+    reference: reference || null,
+    proofPath: path,
+    amount: orderRow?.subtotal_amount ?? null,
+    currency: orderRow?.currency ?? "USD",
+    customerName: orderRow?.name ?? null,
+    customerEmail: orderRow?.email ?? null,
+  });
+
+  return NextResponse.json({
+    ok: true,
+    path,
+    notificationSent: notifyResult.sent,
+    notificationReason: notifyResult.reason ?? null,
+  });
 }
 
