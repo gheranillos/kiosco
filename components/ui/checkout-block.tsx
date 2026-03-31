@@ -269,11 +269,16 @@ export default function Checkout() {
     };
     clear();
     setManualProofUploaded(true);
-    setMessage(
-      payload.notificationSent === false
-        ? "Comprobante recibido y pedido registrado. Aviso: el correo de notificacion fallo, pero tu comprobante si quedo guardado."
-        : "Recibimos tu comprobante. Validacion en breve."
-    );
+    if (payload.notificationSent === false) {
+      const reason = (payload.notificationReason || "unknown_error").toString().trim();
+      setMessage(
+        `Comprobante recibido y pedido registrado. Aviso: el correo de notificacion fallo (${reason}), pero tu comprobante si quedo guardado.`
+      );
+      return;
+    }
+
+    setMessage("Recibimos tu comprobante. Validacion en breve.");
+    router.push("/checkout/success?manual=1");
   };
 
   const onConfirmOrder = async () => {

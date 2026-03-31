@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { sendManualPaymentEmailNotification } from "@/lib/manual-payment-notifications";
+import { sendManualPaymentTelegramNotification } from "@/lib/telegram-notifications";
 import { getSupabaseServerClient } from "@/lib/supabase-server";
 
 export async function POST(req: Request) {
@@ -104,11 +105,31 @@ export async function POST(req: Request) {
     customerEmail: orderRow?.email ?? null,
   });
 
+  const supabaseUrl = String(
+    process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || ""
+  ).trim();
+  const proofUrl = supabaseUrl
+    ? `${supabaseUrl}/storage/v1/object/public/payment-proofs/${path}`
+    : path;
+
+  const telegramResult = await sendManualPaymentTelegramNotification({
+    orderId,
+    method,
+    reference: reference || null,
+    proofUrl,
+    amount: orderRow?.subtotal_amount ?? null,
+    currency: orderRow?.currency ?? "USD",
+    customerName: orderRow?.name ?? null,
+    customerEmail: orderRow?.email ?? null,
+  });
+
   return NextResponse.json({
     ok: true,
     path,
     notificationSent: notifyResult.sent,
     notificationReason: notifyResult.reason ?? null,
+    telegramSent: telegramResult.sent,
+    telegramReason: telegramResult.reason ?? null,
   });
 }
 
