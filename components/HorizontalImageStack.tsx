@@ -17,7 +17,8 @@ const images = products.map((p, i) => ({
 
 export function HorizontalImageStack() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [flipped, setFlipped] = useState<string | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [isCompact, setIsCompact] = useState(false);
   const lastNavigationTime = useRef(0);
   const navigationCooldown = 400;
 
@@ -59,25 +60,60 @@ export function HorizontalImageStack() {
     return () => window.removeEventListener("wheel", handleWheel);
   }, [handleWheel]);
 
+  useEffect(() => {
+    const update = () => setIsCompact(window.innerWidth < 768);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
   const getCardStyle = (index: number) => {
     const total = images.length;
     let diff = index - currentIndex;
     if (diff > total / 2) diff -= total;
     if (diff < -total / 2) diff += total;
 
+    const nearX = isCompact ? 132 : 220;
+    const farX = isCompact ? 212 : 380;
+    const offscreenX = isCompact ? 360 : 600;
+
     if (diff === 0) {
       return { x: 0, scale: 1, opacity: 1, zIndex: 5, rotateY: 0 };
     } else if (diff === -1) {
-      return { x: -220, scale: 0.85, opacity: 0.6, zIndex: 4, rotateY: -12 };
+      return {
+        x: -nearX,
+        scale: 0.85,
+        opacity: 0.6,
+        zIndex: 4,
+        rotateY: -12,
+      };
     } else if (diff === -2) {
-      return { x: -380, scale: 0.7, opacity: 0.3, zIndex: 3, rotateY: -20 };
+      return {
+        x: -farX,
+        scale: 0.7,
+        opacity: 0.3,
+        zIndex: 3,
+        rotateY: -20,
+      };
     } else if (diff === 1) {
-      return { x: 220, scale: 0.85, opacity: 0.6, zIndex: 4, rotateY: 12 };
+      return {
+        x: nearX,
+        scale: 0.85,
+        opacity: 0.6,
+        zIndex: 4,
+        rotateY: 12,
+      };
     } else if (diff === 2) {
-      return { x: 380, scale: 0.7, opacity: 0.3, zIndex: 3, rotateY: 20 };
+      return {
+        x: farX,
+        scale: 0.7,
+        opacity: 0.3,
+        zIndex: 3,
+        rotateY: 20,
+      };
     }
     return {
-      x: diff > 0 ? 600 : -600,
+      x: diff > 0 ? offscreenX : -offscreenX,
       scale: 0.6,
       opacity: 0,
       zIndex: 0,
@@ -94,14 +130,14 @@ export function HorizontalImageStack() {
   };
 
   return (
-    <div className="relative flex h-screen w-full items-center justify-center overflow-hidden bg-stone-950">
+    <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-stone-950">
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/2 top-1/2 h-[620px] w-[620px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/[0.02] blur-3xl" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-stone-950/70 to-transparent" />
       </div>
 
       <div
-        className="relative flex h-[480px] w-[700px] items-center justify-center"
+        className="relative flex h-[360px] w-[min(92vw,700px)] items-center justify-center md:h-[480px]"
         style={{ perspective: "1200px" }}
       >
         {images.map((image, index) => {
@@ -128,21 +164,24 @@ export function HorizontalImageStack() {
               style={{ transformStyle: "preserve-3d", zIndex: style.zIndex }}
             >
               <div
-                className="relative h-[420px] w-[280px] overflow-hidden rounded-3xl bg-stone-900 ring-1 ring-stone-800/40"
+                className="relative h-[310px] w-[208px] overflow-hidden rounded-3xl bg-stone-900 ring-1 ring-stone-800/40 md:h-[420px] md:w-[280px]"
                 style={{
                   boxShadow: isCurrent
                     ? "0 25px 50px -12px rgb(0 0 0 / 0.45), 0 0 0 1px rgb(255 255 255 / 0.06)"
                     : "0 10px 30px -10px rgb(0 0 0 / 0.4)",
                 }}
+                onMouseEnter={() => {
+                  if (isCurrent) setHoveredId(image.id);
+                }}
+                onMouseLeave={() => setHoveredId(null)}
               >
                 <div
-                  onMouseEnter={() => setFlipped(image.id)}
-                  onMouseLeave={() => setFlipped(null)}
                   style={{
                     transformStyle: "preserve-3d",
                     transition: "transform 0.6s",
+                    willChange: "transform",
                     transform:
-                      flipped === image.id ? "rotateY(180deg)" : "rotateY(0deg)",
+                      hoveredId === image.id ? "rotateY(180deg)" : "rotateY(0deg)",
                   }}
                   className="relative h-full w-full"
                 >
@@ -153,7 +192,7 @@ export function HorizontalImageStack() {
                     <img
                       src={image.src}
                       alt={image.alt}
-                      className="h-full w-full object-cover object-top"
+                      className="h-full w-full object-contain p-2 md:p-3"
                       draggable={false}
                     />
                   </div>
@@ -168,7 +207,7 @@ export function HorizontalImageStack() {
                     <img
                       src={image.back}
                       alt={`${image.alt} back`}
-                      className="h-full w-full object-cover object-top"
+                      className="h-full w-full object-contain p-2 md:p-3"
                       draggable={false}
                     />
                   </div>
@@ -243,7 +282,7 @@ export function HorizontalImageStack() {
         ))}
       </div>
 
-      <div className="absolute left-6 top-6 z-20">
+      <div className="absolute right-6 top-6 z-20">
         <div className="flex items-center gap-2">
           <span className="tabular-nums text-2xl font-black text-stone-100">
             {String(currentIndex + 1).padStart(2, "0")}
