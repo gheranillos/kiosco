@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+import { HorizontalImageStack } from "@/components/HorizontalImageStack";
 import { FooterSection } from "@/components/ui/footer";
 import { products } from "@/lib/products";
 
@@ -10,6 +11,16 @@ export default function ShopPage() {
 
   return (
     <div className="min-h-screen bg-stone-950 text-stone-100 selection:bg-stone-100 selection:text-stone-950">
+      <section className="relative h-screen w-full overflow-hidden border-b border-stone-800 bg-stone-950">
+        <div className="absolute left-6 top-8 z-10 md:left-10">
+          <p className="text-xs font-semibold uppercase tracking-widest text-stone-500">
+            Kiosco - Drop #001
+          </p>
+          <h1 className="text-2xl font-black uppercase text-stone-100">Shop</h1>
+        </div>
+        <HorizontalImageStack />
+      </section>
+
       <div className="mx-auto max-w-7xl px-6 pt-16 pb-10 md:px-10">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div className="space-y-3">
