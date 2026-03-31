@@ -23,6 +23,7 @@ export function CheckoutSuccessClient() {
   const params = useSearchParams();
   const token = params.get("token");
   const isManual = params.get("manual") === "1";
+  const whatsappUrl = "https://wa.me/584147613621";
   const { clear } = useCart();
   const [status, setStatus] = useState<"loading" | "ok" | "error">("loading");
   const [message, setMessage] = useState<string | null>(null);
@@ -32,7 +33,9 @@ export function CheckoutSuccessClient() {
       if (isManual) {
         clear();
         setStatus("ok");
-        setMessage("Comprobante recibido. Validaremos tu pago manual en breve.");
+        setMessage(
+          "Listo. Recibimos tu comprobante y tu pedido quedo registrado para validacion. Si deseas revisar el status contactanos por aca."
+        );
         return;
       }
 
@@ -91,7 +94,13 @@ export function CheckoutSuccessClient() {
           variant="outline"
           className="rounded-full border-stone-800 bg-stone-950/30 text-stone-200 hover:bg-stone-900/40 hover:text-stone-100"
         >
-          <Link href="/#preregistro">Preregistro</Link>
+          <Link
+            href={isManual ? whatsappUrl : "/#preregistro"}
+            target={isManual ? "_blank" : undefined}
+            rel={isManual ? "noopener noreferrer" : undefined}
+          >
+            {isManual ? "Contactar por WhatsApp" : "Preregistro"}
+          </Link>
         </Button>
       </div>
     </div>
