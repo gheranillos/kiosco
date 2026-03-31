@@ -77,28 +77,11 @@ export async function POST(req: Request) {
       return t ? t : null;
     };
 
-    /** Si la tabla `orders` aún no tiene columnas de envío, guardamos tel + dirección en `phone`. */
-    const legacyPhoneWithShipping = (): string | null => {
-      const tel = String(body.phone ?? "").trim();
-      const addrParts = [
-        body.address_line?.trim(),
-        [body.city?.trim(), body.state?.trim()].filter(Boolean).join(", "),
-        body.zip_code?.trim(),
-        body.shipping_method?.trim()
-          ? `Envío: ${body.shipping_method}`
-          : "",
-      ].filter(Boolean);
-      const addrBlock = addrParts.join(" · ");
-      if (tel && addrBlock) return `${tel} | ${addrBlock}`;
-      if (tel) return tel;
-      if (addrBlock) return addrBlock;
-      return null;
-    };
-
     const missingShippingColumnsError = (msg: string) => {
       const m = msg.toLowerCase();
       return (
         m.includes("address_line") ||
+        m.includes("shipping_method") ||
         m.includes("schema cache") ||
         (m.includes("column") && m.includes("does not exist"))
       );
@@ -123,9 +106,6 @@ export async function POST(req: Request) {
       shipping_method: trimOrNull(body.shipping_method),
     };
 
-    let order: { id: string } | null = null;
-    let orderErr: { message: string } | null = null;
-
     const first = await supabase
       .from("orders")
       .insert([rowExtended])
@@ -133,22 +113,17 @@ export async function POST(req: Request) {
       .single();
 
     if (first.error && missingShippingColumnsError(first.error.message)) {
-      const legacy = await supabase
-        .from("orders")
-        .insert([
-          {
-            ...rowBase,
-            phone: legacyPhoneWithShipping(),
-          },
-        ])
-        .select("id")
-        .single();
-      order = legacy.data;
-      orderErr = legacy.error;
-    } else {
-      order = first.data;
-      orderErr = first.error;
+      return NextResponse.json(
+        {
+          error:
+            "Tu tabla orders en Supabase no tiene las columnas nuevas de envio. Ejecuta la migracion de supabase/migrations/20260330120000_orders_shipping_columns.sql y vuelve a intentar.",
+        },
+        { status: 500 }
+      );
     }
+
+    const order = first.data;
+    const orderErr = first.error;
 
     if (orderErr || !order) {
       return NextResponse.json(

@@ -101,6 +101,7 @@ export default function Checkout() {
   const [proofFile, setProofFile] = useState<File | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [manualProofUploaded, setManualProofUploaded] = useState(false);
 
   const canPay = cartItems.length > 0 && subtotal > 0;
   const [shippingAddress, setShippingAddress] = useState<ShippingAddress>({
@@ -267,9 +268,10 @@ export default function Checkout() {
       notificationReason?: string | null;
     };
     clear();
+    setManualProofUploaded(true);
     setMessage(
       payload.notificationSent === false
-        ? "Comprobante recibido. Ojo: el correo no se pudo enviar, revisa la configuracion de notificaciones."
+        ? "Comprobante recibido y pedido registrado. Aviso: el correo de notificacion fallo, pero tu comprobante si quedo guardado."
         : "Recibimos tu comprobante. Validacion en breve."
     );
   };
@@ -278,6 +280,7 @@ export default function Checkout() {
     setIsSubmitting(true);
     setMessage(null);
     setOrderId(null);
+    setManualProofUploaded(false);
     try {
       const { orderId: createdOrderId } = await createOrder();
       setOrderId(createdOrderId);
@@ -1301,6 +1304,11 @@ export default function Checkout() {
                   <Lock className="h-4 w-4" />
                   Confirmar pedido — ${summary.total.toFixed(2)}
                 </button>
+                {selectedPaymentType !== "paypal" && manualProofUploaded && (
+                  <Button type="button" variant="outline" onClick={() => router.push("/shop")}>
+                    Finalizar
+                  </Button>
+                )}
               </CardFooter>
             </Card>
           )}

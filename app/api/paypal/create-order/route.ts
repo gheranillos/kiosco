@@ -44,10 +44,20 @@ export async function POST(req: Request) {
       cancelUrl: `${origin}/checkout/cancel`,
     });
 
-    await supabase
+    const { error: updateErr } = await supabase
       .from("orders")
       .update({ paypal_order_id: paypalOrderId, status: "pending_payment" })
       .eq("id", orderId);
+
+    if (updateErr) {
+      return NextResponse.json(
+        {
+          error:
+            `No se pudo guardar paypal_order_id en orders. Verifica que la columna exista. Detalle: ${updateErr.message}`,
+        },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({ paypalOrderId, approvalUrl });
   } catch (e) {
