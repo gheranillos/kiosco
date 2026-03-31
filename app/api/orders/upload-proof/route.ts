@@ -41,12 +41,26 @@ export async function POST(req: Request) {
   const path = `${orderId}/${Date.now()}-${Math.random().toString(16).slice(2)}.${ext}`;
 
   const arrayBuffer = await file.arrayBuffer();
-  const { error: uploadErr } = await supabase.storage
+  let { error: uploadErr } = await supabase.storage
     .from("payment-proofs")
     .upload(path, arrayBuffer, {
       contentType: file.type || "application/octet-stream",
       upsert: false,
     });
+
+  if (uploadErr?.message?.toLowerCase().includes("bucket not found")) {
+    await supabase.storage.createBucket("payment-proofs", {
+      public: true,
+      fileSizeLimit: "8MB",
+      allowedMimeTypes: ["image/png", "image/jpeg", "image/webp"],
+    });
+
+    const retry = await supabase.storage.from("payment-proofs").upload(path, arrayBuffer, {
+      contentType: file.type || "application/octet-stream",
+      upsert: false,
+    });
+    uploadErr = retry.error;
+  }
 
   if (uploadErr) {
     return NextResponse.json(
