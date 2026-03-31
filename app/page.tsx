@@ -24,6 +24,9 @@ export default function KioscoDropLanding() {
               <h2 className="text-3xl font-black uppercase leading-none md:text-5xl text-balance">
                 Preregistro del drop
               </h2>
+              <p className="text-sm font-black uppercase tracking-wide text-stone-100 md:text-base">
+                Regístrate y obtén 5% off
+              </p>
               <p className="max-w-md text-sm leading-6 text-stone-400 md:text-base">
                 No es solo ropa, es cultura. Regístrate y sé parte del próximo drop del Kiosco
                 prendas limitadas, comunidad creativa y acceso exclusivo antes del lanzamiento.

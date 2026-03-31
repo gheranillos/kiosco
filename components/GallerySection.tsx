@@ -61,21 +61,23 @@ export function GallerySection({ galleryPreview }: { galleryPreview: GalleryItem
           onClick={() => setSelected(null)}
         >
           <div
-            className="relative max-w-3xl w-full animate-in fade-in zoom-in-95 duration-200 max-h-[85vh] overflow-y-auto rounded-2xl bg-stone-950/95 border border-stone-800"
+            className="relative max-w-lg w-full animate-in fade-in zoom-in-95 duration-200 max-h-[85vh] overflow-y-auto rounded-2xl bg-stone-950/95 border border-stone-800"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={() => setSelected(null)}
-              className="absolute top-3 right-3 text-stone-400 hover:text-white text-xs uppercase tracking-widest font-semibold transition"
+              className="absolute top-3 right-3 z-10 text-stone-400 hover:text-white text-xs uppercase tracking-widest font-semibold transition"
             >
               Cerrar ✕
             </button>
 
-            <img
-              src={selected.image}
-              alt={selected.title}
-              className="w-full rounded-2xl object-cover max-h-[70vh] sm:max-h-[75vh]"
-            />
+            <div className="flex justify-center bg-stone-900/80 px-3 pt-12 pb-2 sm:px-4 sm:pt-14">
+              <img
+                src={selected.image}
+                alt={selected.title}
+                className="max-h-[45vh] w-auto max-w-full rounded-xl object-contain sm:max-h-[50vh]"
+              />
+            </div>
 
             <div className="mt-4 space-y-1 px-4 pb-4 sm:px-6 sm:pb-6">
               <h3 className="text-xs font-semibold uppercase tracking-widest text-stone-300">

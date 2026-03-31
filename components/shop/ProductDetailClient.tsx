@@ -146,7 +146,7 @@ export function ProductDetailClient() {
               <div className="pt-3 text-sm leading-6 text-stone-400">
                 <p>{product.caption}</p>
                 <p className="mt-2 text-xs text-stone-500">
-                  Fit cómodo. Material premium. Edición limitada.
+                  Tela algodón suave y duradero. Unisex. Edición limitada.
                 </p>
               </div>
             </details>
@@ -156,16 +156,112 @@ export function ProductDetailClient() {
                 <span className="text-stone-500 transition group-open:rotate-45">+</span>
               </summary>
               <div className="pt-3 text-sm leading-6 text-stone-400">
-                Usa tu talla usual. Si te gusta oversize, sube 1 talla.
+                <div className="overflow-x-auto rounded-xl border border-stone-800">
+                  <table className="w-full min-w-[280px] text-left text-xs text-stone-300">
+                    <thead>
+                      <tr className="border-b border-stone-800 bg-stone-950/50 text-[10px] font-bold uppercase tracking-wider text-stone-500">
+                        <th className="px-3 py-2">Talla</th>
+                        <th className="px-3 py-2">Pecho</th>
+                        <th className="px-3 py-2">Cintura</th>
+                        <th className="px-3 py-2">Largo</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-stone-800">
+                      {[
+                        { size: "XS", chest: 49, waist: 50, length: 64 },
+                        { size: "S", chest: 51, waist: 52, length: 66 },
+                        { size: "M", chest: 52, waist: 53, length: 67 },
+                        { size: "L", chest: 53, waist: 54, length: 68 },
+                        { size: "XL", chest: 57, waist: 58, length: 72 },
+                        { size: "XXL", chest: 59, waist: 60, length: 74 },
+                      ].map((row) => (
+                        <tr key={row.size} className="bg-stone-950/30">
+                          <td className="px-3 py-2 font-bold text-stone-200">{row.size}</td>
+                          <td className="px-3 py-2">{row.chest} cm</td>
+                          <td className="px-3 py-2">{row.waist} cm</td>
+                          <td className="px-3 py-2">{row.length} cm</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <p className="mt-3 text-sm text-stone-400">
+                  Usa tu talla usual. Si te gusta oversize, sube 1 talla.
+                </p>
               </div>
             </details>
             <details className="group p-4">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-xs font-bold uppercase text-stone-200">
-                Shipping, Exchanges & Returns
+                Antes de comprar
                 <span className="text-stone-500 transition group-open:rotate-45">+</span>
               </summary>
-              <div className="pt-3 text-sm leading-6 text-stone-400">
-                Envíos calculados en checkout. Cambios sujetos a disponibilidad del drop.
+              <div className="pt-3 space-y-4 text-sm leading-6 text-stone-400">
+                <h2 className="text-base font-black uppercase tracking-tight text-stone-100">
+                  Antes de comprar, entiende esto
+                </h2>
+                <p>
+                  Kiosco no es ropa hecha en masa.
+                  <br />
+                  Es ropa hecha por artistas para gente que no encaja.
+                </p>
+                <p>
+                  Cada drop es limitado.
+                  <br />
+                  Cada pieza tiene intención.
+                  <br />
+                  Si llegaste tarde… ya fue.
+                </p>
+                <h3 className="text-xs font-bold uppercase tracking-wide text-stone-300">
+                  No somos una marca normal
+                </h3>
+                <p>
+                  No producimos en volumen infinito.
+                  <br />
+                  No repetimos diseños por presión.
+                  <br />
+                  No seguimos tendencias.
+                </p>
+                <p>
+                  Si algo te gusta, no lo pienses mucho.
+                  <br />
+                  Aquí las cosas no duran.
+                </p>
+                <h3 className="text-xs font-bold uppercase tracking-wide text-stone-300">
+                  Cada prenda tiene proceso
+                </h3>
+                <p>
+                  Diseñamos, probamos, fallamos y volvemos a crear.
+                  <br />
+                  Lo que compras no es solo tela, es proceso.
+                </p>
+                <h3 className="text-xs font-bold uppercase tracking-wide text-stone-300">
+                  Reglas claras
+                </h3>
+                <ul className="list-disc space-y-1 pl-5 text-stone-400">
+                  <li>Todos los drops son limitados</li>
+                  <li>No garantizamos reposición de productos</li>
+                  <li>No realizamos cambios por talla</li>
+                  <li>Solo aplican cambios por defectos de fábrica</li>
+                  <li>Los precios pueden cambiar sin previo aviso</li>
+                </ul>
+              </div>
+            </details>
+            <details className="group p-4">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-xs font-bold uppercase text-stone-200">
+                Pagos y envíos
+                <span className="text-stone-500 transition group-open:rotate-45">+</span>
+              </summary>
+              <div className="pt-3 space-y-3 text-sm leading-6 text-stone-400">
+                <p>
+                  Aceptamos pagos mediante Zinli, pago móvil, Binance y otros métodos disponibles a
+                  consultar.
+                </p>
+                <p>
+                  Realizamos envíos a nivel nacional.
+                  <br />
+                  El tiempo de entrega estimado es de 2 a 5 días hábiles.
+                </p>
+                <p>No nos hacemos responsables por retrasos de la empresa de envíos.</p>
               </div>
             </details>
           </div>
