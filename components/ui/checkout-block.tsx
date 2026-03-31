@@ -408,14 +408,15 @@ export default function Checkout() {
           </CardContent>
         </Card>
       </div>
-      <div className="flex flex-col gap-4">
-        <Card>
+      <div className="flex flex-col gap-4 rounded-2xl border border-stone-800 bg-black p-5 lg:p-6">
+        <Skeleton className="hidden h-8 w-32 lg:block bg-stone-800" />
+        <Card className="border-stone-800 bg-stone-950/80">
           <CardContent className="p-4 flex flex-col gap-4">
-            <Skeleton className="h-6 w-24" />
+            <Skeleton className="h-6 w-24 bg-stone-800" />
             {Array.from({ length: 4 }).map((_, index) => (
               <div key={index} className="flex justify-between">
-                <Skeleton className="h-4 w-20" />
-                <Skeleton className="h-4 w-16" />
+                <Skeleton className="h-4 w-20 bg-stone-800" />
+                <Skeleton className="h-4 w-16 bg-stone-800" />
               </div>
             ))}
           </CardContent>
@@ -425,10 +426,10 @@ export default function Checkout() {
   );
 
   const OrderSummaryCard = () => (
-    <Card className="flex flex-col gap-5">
+    <Card className="flex flex-col gap-5 border-stone-700 bg-stone-950/70 text-stone-100 shadow-none">
       <CardHeader>
-        <h3 className="font-semibold flex items-center gap-2">
-          <ShoppingBag className="h-4 w-4" />
+        <h3 className="font-semibold flex items-center gap-2 text-stone-100">
+          <ShoppingBag className="h-4 w-4 text-stone-300" />
           Resumen del pedido
         </h3>
       </CardHeader>
@@ -440,31 +441,33 @@ export default function Checkout() {
                 <img
                   src={item.image}
                   alt={item.name}
-                  className="w-full h-full object-cover rounded-md"
+                  className="w-full h-full object-cover rounded-md ring-1 ring-stone-700"
                 />
                 <Badge
-                  className="absolute -top-1 -right-1 text-xs min-w-5 h-5 flex items-center justify-center"
+                  className="absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center border-0 bg-stone-100 text-xs text-stone-950"
                 >
                   {item.quantity}
                 </Badge>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate">{item.name}</p>
+                <p className="truncate text-sm font-medium text-stone-100">
+                  {item.name}
+                </p>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-semibold">
+                  <span className="text-sm font-semibold text-stone-200">
                     ${item.price}
                   </span>
                 </div>
               </div>
-              <div className="text-sm font-semibold">
+              <div className="text-sm font-semibold text-stone-100">
                 ${(item.price * item.quantity).toFixed(2)}
               </div>
             </div>
           ))}
         </div>
 
-        <div className="rounded-ele border border-border p-3">
-          <p className="text-xs font-semibold uppercase text-muted-foreground">
+        <div className="rounded-xl border border-stone-700 bg-stone-950/50 p-3">
+          <p className="text-xs font-semibold uppercase text-stone-500">
             Cupón canjeable
           </p>
           <div className="mt-2 flex gap-2">
@@ -472,31 +475,29 @@ export default function Checkout() {
               value={couponInput}
               onChange={(e) => setCouponInput(e.target.value)}
               placeholder="Ej: SAVE10"
-              className="h-9"
+              className="h-9 border-stone-600 bg-stone-950 text-stone-100 placeholder:text-stone-500"
             />
             <Button
               type="button"
               onClick={applyCoupon}
               variant="outline"
-              className="h-9"
+              className="h-9 shrink-0 border-stone-600 bg-transparent text-stone-100 hover:bg-stone-800 hover:text-stone-50"
             >
               Aplicar
             </Button>
           </div>
           {couponFeedback && (
-            <p className="mt-2 text-xs text-muted-foreground">
-              {couponFeedback}
-            </p>
+            <p className="mt-2 text-xs text-stone-400">{couponFeedback}</p>
           )}
         </div>
 
-        <div className="flex flex-col gap-2 border-t pt-4">
-          <div className="flex justify-between text-sm">
+        <div className="flex flex-col gap-2 border-t border-stone-700 pt-4">
+          <div className="flex justify-between text-sm text-stone-300">
             <span>Subtotal</span>
-            <span>${summary.subtotal.toFixed(2)}</span>
+            <span className="text-stone-100">${summary.subtotal.toFixed(2)}</span>
           </div>
           {summary.discount > 0 && (
-            <div className="flex justify-between text-sm text-green-600">
+            <div className="flex justify-between text-sm text-emerald-400">
               <span className="inline-flex items-center gap-1">
                 <Percent className="h-3.5 w-3.5" />
                 Descuento {appliedCoupon ? `(${appliedCoupon})` : ""}
@@ -504,15 +505,15 @@ export default function Checkout() {
               <span>-${summary.discount.toFixed(2)}</span>
             </div>
           )}
-          <div className="flex justify-between text-sm">
+          <div className="flex justify-between text-sm text-stone-300">
             <span>Shipping</span>
-            <span>${summary.shipping.toFixed(2)}</span>
+            <span className="text-stone-100">${summary.shipping.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between text-sm">
+          <div className="flex justify-between text-sm text-stone-300">
             <span>Tax</span>
-            <span>${summary.tax.toFixed(2)}</span>
+            <span className="text-stone-100">${summary.tax.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between font-semibold text-lg border-t pt-2">
+          <div className="flex justify-between border-t border-stone-700 pt-2 text-lg font-semibold text-stone-50">
             <span>Total</span>
             <span>${summary.total.toFixed(2)}</span>
           </div>
@@ -535,83 +536,82 @@ export default function Checkout() {
 
   return (
     <div className="w-full mx-auto p-6 flex flex-col gap-6 animate-in fade-in-0 duration-500">
-      <div className="flex items-center justify-between">
-        <div className="flex items-start gap-4 flex-col">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => router.back()}
-            className="flex items-center gap-1"
-          >
-            ← Volver al shop
-          </Button>
-          <div className="flex flex-col gap-2">
-            <h1 className="text-2xl font-black uppercase flex items-center gap-2">
-              CHECKOUT
-            </h1>
-            <p className="text-muted-foreground text-sm">
-              Completa tu compra de forma segura
-            </p>
-          </div>
-        </div>
-        <Badge
-          variant="secondary"
-          className="flex items-center gap-1 transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(255,255,255,0.18)]"
-        >
-          <Shield className="h-3 w-3" />
-          Pago seguro 🔒
-        </Badge>
-      </div>
-
-      {/* Progress Steps */}
-      <div className="flex items-center justify-start gap-4 sm:gap-6 py-4">
-        {[
-          { step: 1, label: "Datos de envío", icon: Truck },
-          { step: 2, label: "Método de pago", icon: CreditCard },
-          { step: 3, label: "Confirmar pedido", icon: Check },
-        ].map(({ step, label, icon: Icon }, index) => (
-          <div key={step} className="flex items-center gap-2">
-            <div className="flex items-center gap-2">
-              <div
-                className={cn(
-                  "flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all duration-300",
-                  currentStep >= step
-                    ? "bg-stone-100 border-stone-100 text-stone-950 shadow-[0_0_18px_rgba(255,255,255,0.28)]"
-                    : "border-border text-muted-foreground"
-                )}
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-10 lg:items-start">
+        {/* Main column: form + steps */}
+        <div className="flex flex-col gap-6 lg:col-span-2">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex flex-col items-start gap-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => router.back()}
+                className="flex items-center gap-1"
               >
-                {currentStep > step ? (
-                  <Check className="h-4 w-4" />
-                ) : (
-                  <Icon className="h-4 w-4" />
+                ← Volver al shop
+              </Button>
+              <div className="flex flex-col gap-2">
+                <h1 className="flex items-center gap-2 text-2xl font-black uppercase">
+                  CHECKOUT
+                </h1>
+                <p className="text-muted-foreground text-sm">
+                  Completa tu compra de forma segura
+                </p>
+              </div>
+            </div>
+            <Badge
+              variant="secondary"
+              className="flex shrink-0 items-center gap-1 transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(255,255,255,0.18)] lg:hidden"
+            >
+              <Shield className="h-3 w-3" />
+              Pago seguro 🔒
+            </Badge>
+          </div>
+
+          {/* Progress Steps */}
+          <div className="flex items-center justify-start gap-4 py-4 sm:gap-6">
+            {[
+              { step: 1, label: "Datos de envío", icon: Truck },
+              { step: 2, label: "Método de pago", icon: CreditCard },
+              { step: 3, label: "Confirmar pedido", icon: Check },
+            ].map(({ step, label, icon: Icon }, index) => (
+              <div key={step} className="flex items-center gap-2">
+                <div className="flex items-center gap-2">
+                  <div
+                    className={cn(
+                      "flex h-8 w-8 items-center justify-center rounded-full border-2 transition-all duration-300",
+                      currentStep >= step
+                        ? "border-stone-100 bg-stone-100 text-stone-950 shadow-[0_0_18px_rgba(255,255,255,0.28)]"
+                        : "border-border text-muted-foreground"
+                    )}
+                  >
+                    {currentStep > step ? (
+                      <Check className="h-4 w-4" />
+                    ) : (
+                      <Icon className="h-4 w-4" />
+                    )}
+                  </div>
+                  <span
+                    className={cn(
+                      "hidden text-sm font-medium sm:block",
+                      currentStep >= step
+                        ? "text-stone-950"
+                        : "text-muted-foreground"
+                    )}
+                  >
+                    {label}
+                  </span>
+                </div>
+                {index < 2 && (
+                  <div
+                    className={cn(
+                      "h-0.5 w-8 transition-all duration-300",
+                      currentStep > step ? "bg-stone-100" : "bg-border"
+                    )}
+                  />
                 )}
               </div>
-              <span
-                className={cn(
-                  "text-sm font-medium hidden sm:block",
-                  currentStep >= step
-                    ? "text-stone-950"
-                    : "text-muted-foreground"
-                )}
-              >
-                {label}
-              </span>
-            </div>
-            {index < 2 && (
-              <div
-                className={cn(
-                  "w-8 h-0.5 transition-all duration-300",
-                  currentStep > step ? "bg-stone-100" : "bg-border"
-                )}
-              />
-            )}
+            ))}
           </div>
-        ))}
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main Content */}
-        <div className="lg:col-span-2 flex flex-col gap-6">
           {/* Step 1: Datos de envío */}
           {currentStep === 1 && (
             <Card className="flex flex-col gap-6 transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.08)]">
@@ -1325,24 +1325,36 @@ export default function Checkout() {
           )}
         </div>
 
-        {/* Order Summary Sidebar */}
-        <div className="flex flex-col gap-4">
+        {/* Resumen: panel oscuro para contraste con el formulario */}
+        <aside className="flex flex-col gap-4 rounded-2xl border border-stone-800 bg-black p-5 text-stone-100 lg:sticky lg:top-20 lg:self-start lg:p-6">
+          <div className="hidden justify-end lg:flex">
+            <Badge
+              variant="secondary"
+              className="flex items-center gap-1 border-stone-600 bg-stone-900 text-stone-100 transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(255,255,255,0.12)]"
+            >
+              <Shield className="h-3 w-3 text-stone-300" />
+              Pago seguro 🔒
+            </Badge>
+          </div>
+
           <OrderSummaryCard />
 
-          <Card className="transition-all duration-300 hover:shadow-[0_0_24px_rgba(255,255,255,0.08)]">
+          <Card className="border-stone-700 bg-stone-950/80 text-stone-100 shadow-none transition-all duration-300 hover:shadow-[0_0_24px_rgba(255,255,255,0.06)]">
             <CardContent className="p-4">
               <div className="flex items-center gap-3 text-sm">
-                <Shield className="h-5 w-5 text-green-600" />
+                <Shield className="h-5 w-5 shrink-0 text-emerald-400" />
                 <div>
-                  <div className="font-medium">Seguro y encriptado</div>
-                  <div className="text-muted-foreground">
+                  <div className="font-medium text-stone-100">
+                    Seguro y encriptado
+                  </div>
+                  <div className="text-stone-400">
                     Tus datos están protegidos
                   </div>
                 </div>
               </div>
             </CardContent>
           </Card>
-        </div>
+        </aside>
       </div>
 
       {/* Link placeholders (no funcional) */}

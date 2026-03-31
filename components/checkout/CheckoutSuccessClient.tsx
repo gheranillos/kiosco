@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/shop/cart-context";
@@ -20,13 +20,20 @@ async function readApiError(res: Response): Promise<string> {
 }
 
 export function CheckoutSuccessClient() {
+  const router = useRouter();
   const params = useSearchParams();
   const token = params.get("token");
   const isManual = params.get("manual") === "1";
   const whatsappUrl = "https://wa.me/584147613621";
-  const { clear } = useCart();
+  const { clear, closeCart } = useCart();
   const [status, setStatus] = useState<"loading" | "ok" | "error">("loading");
   const [message, setMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    closeCart();
+    // Intentionally once on mount: drawer overlay (z-50) would block clicks on this page after client navigation.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- close cart on success entry only
+  }, []);
 
   useEffect(() => {
     const run = async () => {
@@ -84,10 +91,14 @@ export function CheckoutSuccessClient() {
 
       <div className="mt-6 flex flex-wrap gap-3">
         <Button
-          asChild
+          type="button"
           className="rounded-full bg-stone-100 text-stone-950 hover:bg-stone-200"
+          onClick={() => {
+            closeCart();
+            router.push("/shop");
+          }}
         >
-          <Link href="/shop">Volver al shop</Link>
+          Volver al shop
         </Button>
         <Button
           asChild
