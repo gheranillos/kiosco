@@ -1286,28 +1286,34 @@ export default function Checkout() {
                   Volver
                 </Button>
 
-                <button
-                  type="button"
-                  disabled={
-                    !validateStep(3) ||
-                    !canPay ||
-                    isSubmitting ||
-                    (selectedPaymentType !== "paypal" && !!orderId)
-                  }
-                  onClick={onConfirmOrder}
-                  className="inline-flex items-center gap-2 rounded-full
+                {selectedPaymentType !== "paypal" && manualProofUploaded && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => router.push("/checkout/success?manual=1")}
+                  >
+                    Finalizar
+                  </Button>
+                )}
+                {!(selectedPaymentType !== "paypal" && manualProofUploaded) && (
+                  <button
+                    type="button"
+                    disabled={
+                      !validateStep(3) ||
+                      !canPay ||
+                      isSubmitting ||
+                      (selectedPaymentType !== "paypal" && !!orderId)
+                    }
+                    onClick={onConfirmOrder}
+                    className="inline-flex items-center gap-2 rounded-full
                    bg-stone-100 px-8 py-4 text-sm font-bold 
                    uppercase text-stone-950 transition-all duration-300
                    hover:scale-[1.02] hover:bg-stone-200 hover:shadow-[0_0_26px_rgba(255,255,255,0.25)]
                    disabled:opacity-50 disabled:hover:scale-100 disabled:hover:shadow-none"
-                >
-                  <Lock className="h-4 w-4" />
-                  Confirmar pedido — ${summary.total.toFixed(2)}
-                </button>
-                {selectedPaymentType !== "paypal" && manualProofUploaded && (
-                  <Button type="button" variant="outline" onClick={() => router.push("/shop")}>
-                    Finalizar
-                  </Button>
+                  >
+                    <Lock className="h-4 w-4" />
+                    Confirmar pedido — ${summary.total.toFixed(2)}
+                  </button>
                 )}
               </CardFooter>
             </Card>

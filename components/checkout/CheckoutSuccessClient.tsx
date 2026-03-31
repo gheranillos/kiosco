@@ -22,12 +22,20 @@ async function readApiError(res: Response): Promise<string> {
 export function CheckoutSuccessClient() {
   const params = useSearchParams();
   const token = params.get("token");
+  const isManual = params.get("manual") === "1";
   const { clear } = useCart();
   const [status, setStatus] = useState<"loading" | "ok" | "error">("loading");
   const [message, setMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const run = async () => {
+      if (isManual) {
+        clear();
+        setStatus("ok");
+        setMessage("Comprobante recibido. Validaremos tu pago manual en breve.");
+        return;
+      }
+
       if (!token) {
         setStatus("error");
         setMessage("Falta token de PayPal.");
@@ -49,7 +57,7 @@ export function CheckoutSuccessClient() {
       }
     };
     run();
-  }, [token, clear]);
+  }, [token, clear, isManual]);
 
   return (
     <div className="rounded-[2rem] border border-stone-800 bg-stone-900/20 p-8">
@@ -63,7 +71,9 @@ export function CheckoutSuccessClient() {
         {status === "loading" &&
           "Estamos validando el pago con PayPal. No cierres esta pestaña."}
         {status === "ok" &&
-          "Listo. Recibimos tu pago. Te contactaremos con los detalles del envío."}
+          (isManual
+            ? "Listo. Recibimos tu comprobante y tu pedido quedo registrado para validacion."
+            : "Listo. Recibimos tu pago. Te contactaremos con los detalles del envío.")}
         {status === "error" &&
           (message?.trim() ||
             "Hubo un problema confirmando el pago. Intenta de nuevo o contáctanos.")}
