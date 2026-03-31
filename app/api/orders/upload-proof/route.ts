@@ -22,6 +22,21 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Missing orderId/method/file" }, { status: 400 });
   }
 
+  if (!file.type.startsWith("image/")) {
+    return NextResponse.json(
+      { error: "El comprobante debe ser una imagen (JPG, PNG o WEBP)." },
+      { status: 400 }
+    );
+  }
+
+  const maxBytes = 8 * 1024 * 1024;
+  if (file.size > maxBytes) {
+    return NextResponse.json(
+      { error: "La imagen supera el limite de 8MB." },
+      { status: 400 }
+    );
+  }
+
   const ext = (file.name.split(".").pop() || "png").toLowerCase();
   const path = `${orderId}/${Date.now()}-${Math.random().toString(16).slice(2)}.${ext}`;
 
@@ -34,7 +49,12 @@ export async function POST(req: Request) {
     });
 
   if (uploadErr) {
-    return NextResponse.json({ error: uploadErr.message }, { status: 500 });
+    return NextResponse.json(
+      {
+        error: `No se pudo subir la imagen. Verifica el bucket 'payment-proofs' y permisos de storage. Detalle: ${uploadErr.message}`,
+      },
+      { status: 500 }
+    );
   }
 
   const { error: proofErr } = await supabase.from("payment_proofs").insert([

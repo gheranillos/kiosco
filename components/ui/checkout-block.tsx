@@ -47,6 +47,11 @@ import { products } from "@/lib/products";
 import { useCart } from "@/components/shop/cart-context";
 
 type CheckoutPaymentMethod = "paypal" | "bolivares" | "binance_pay" | "zinli";
+type ManualPaymentData = {
+  label: string;
+  lines: string[];
+  qrUrl?: string | null;
+};
 
 interface OrderItem {
   id: string;
@@ -137,6 +142,34 @@ export default function Checkout() {
   };
 
   const [selectedShipping, setSelectedShipping] = useState("mrw");
+
+  const manualPaymentData: Record<Exclude<CheckoutPaymentMethod, "paypal">, ManualPaymentData> = {
+    bolivares: {
+      label: "Pago Movil / Transferencia",
+      lines: [
+        `Banco: ${process.env.NEXT_PUBLIC_PAGO_MOVIL_BANK || "Configurar en .env.local"}`,
+        `Telefono: ${process.env.NEXT_PUBLIC_PAGO_MOVIL_PHONE || "Configurar en .env.local"}`,
+        `Cedula: ${process.env.NEXT_PUBLIC_PAGO_MOVIL_ID || "Configurar en .env.local"}`,
+        `Beneficiario: ${process.env.NEXT_PUBLIC_PAGO_MOVIL_NAME || "Configurar en .env.local"}`,
+      ],
+    },
+    binance_pay: {
+      label: "Binance Pay",
+      lines: [
+        `Binance ID/Pay ID: ${process.env.NEXT_PUBLIC_BINANCE_PAY_ID || "Configurar en .env.local"}`,
+        `Email Binance: ${process.env.NEXT_PUBLIC_BINANCE_EMAIL || "Configurar en .env.local"}`,
+      ],
+      qrUrl: process.env.NEXT_PUBLIC_BINANCE_QR_URL || null,
+    },
+    zinli: {
+      label: "Zinli",
+      lines: [
+        `Correo Zinli: ${process.env.NEXT_PUBLIC_ZINLI_EMAIL || "Configurar en .env.local"}`,
+        `Titular: ${process.env.NEXT_PUBLIC_ZINLI_NAME || "Configurar en .env.local"}`,
+      ],
+      qrUrl: process.env.NEXT_PUBLIC_ZINLI_QR_URL || null,
+    },
+  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -229,8 +262,16 @@ export default function Checkout() {
 
     const res = await fetch("/api/orders/upload-proof", { method: "POST", body: fd });
     if (!res.ok) throw new Error(await readApiError(res));
+    const payload = (await res.json()) as {
+      notificationSent?: boolean;
+      notificationReason?: string | null;
+    };
     clear();
-    setMessage("Recibimos tu comprobante. Validación en breve.");
+    setMessage(
+      payload.notificationSent === false
+        ? "Comprobante recibido. Ojo: el correo no se pudo enviar, revisa la configuracion de notificaciones."
+        : "Recibimos tu comprobante. Validacion en breve."
+    );
   };
 
   const onConfirmOrder = async () => {
@@ -1108,25 +1149,25 @@ export default function Checkout() {
                 </div>
 
                 {message && (
-                  <p className="text-xs leading-5 text-amber-200/90">
+                  <p className="rounded-ele border border-border bg-muted/40 px-3 py-2 text-sm leading-5 text-foreground">
                     {message}
                   </p>
                 )}
 
                 {selectedPaymentType !== "paypal" && orderId && (
                   <div className="flex flex-col gap-4 border-t pt-4">
-                    <div className="rounded-2xl border border-stone-800 bg-stone-950/30 p-4">
-                      <p className="text-xs font-semibold uppercase text-stone-400">
+                    <div className="rounded-2xl border border-border bg-muted/40 p-4">
+                      <p className="text-xs font-semibold uppercase text-muted-foreground">
                         Instrucciones
                       </p>
-                      <p className="mt-2 text-sm leading-6 text-stone-300">
+                      <p className="mt-2 text-sm leading-6 text-foreground">
                         Tu orden es{" "}
-                        <span className="font-black text-stone-100">
+                        <span className="font-black text-foreground">
                           {orderId}
                         </span>
                         . Usa este ID como referencia.
                       </p>
-                      <p className="mt-2 text-xs leading-5 text-stone-500">
+                      <p className="mt-2 text-xs leading-5 text-muted-foreground">
                         {selectedPaymentType === "bolivares" &&
                           "Paga por Pago Móvil/transferencia y sube el comprobante."}
                         {selectedPaymentType === "binance_pay" &&
@@ -1134,33 +1175,61 @@ export default function Checkout() {
                         {selectedPaymentType === "zinli" &&
                           "Realiza el pago por Zinli y sube el comprobante."}
                       </p>
+                      <div className="mt-4 rounded-xl border border-border bg-background p-3">
+                        <p className="text-xs font-semibold uppercase text-muted-foreground">
+                          Datos de pago
+                        </p>
+                        <p className="mt-2 text-sm font-medium text-foreground">
+                          {manualPaymentData[selectedPaymentType].label}
+                        </p>
+                        <ul className="mt-2 space-y-1 text-sm text-foreground">
+                          {manualPaymentData[selectedPaymentType].lines.map((line) => (
+                            <li key={line}>{line}</li>
+                          ))}
+                        </ul>
+                        {manualPaymentData[selectedPaymentType].qrUrl && (
+                          <div className="mt-3">
+                            <p className="mb-2 text-xs font-semibold uppercase text-muted-foreground">
+                              QR
+                            </p>
+                            <img
+                              src={manualPaymentData[selectedPaymentType].qrUrl || ""}
+                              alt="QR de pago"
+                              className="h-44 w-44 rounded-lg border border-border object-cover"
+                            />
+                          </div>
+                        )}
+                      </div>
                     </div>
 
                     <div className="grid gap-3">
                       <div>
-                        <label className="mb-2 block text-xs font-semibold uppercase text-stone-400">
+                        <label className="mb-2 block text-xs font-semibold uppercase text-muted-foreground">
                           Referencia (opcional)
                         </label>
                         <input
                           value={reference}
                           onChange={(e) => setReference(e.target.value)}
-                          className="w-full rounded-2xl border border-stone-800 bg-stone-950/30 px-4 py-3 text-sm text-stone-100 placeholder:text-stone-600 outline-none"
+                          className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none"
                           placeholder="Ej: 000123 / teléfono / nota"
                         />
                       </div>
 
                       <div>
-                        <label className="mb-2 block text-xs font-semibold uppercase text-stone-400">
+                        <label className="mb-2 block text-xs font-semibold uppercase text-muted-foreground">
                           Comprobante (imagen)
                         </label>
                         <input
                           type="file"
-                          accept="image/*"
+                          accept="image/png,image/jpeg,image/webp"
                           onChange={(e) =>
                             setProofFile(e.target.files?.[0] ?? null)
                           }
-                          className="block w-full text-xs text-stone-300 file:mr-3 file:rounded-full file:border-0 file:bg-stone-100 file:px-4 file:py-2 file:text-xs file:font-bold file:uppercase file:text-stone-950"
+                          className="block w-full text-sm text-foreground file:mr-3 file:rounded-full file:border file:border-border file:bg-muted file:px-4 file:py-2 file:text-xs file:font-bold file:uppercase file:text-foreground"
                         />
+                        <p className="mt-2 text-xs text-muted-foreground">
+                          Formatos permitidos: JPG, PNG, WEBP. Maximo 8MB.
+                        </p>
                       </div>
 
                       <Button
@@ -1178,7 +1247,7 @@ export default function Checkout() {
                             setIsSubmitting(false);
                           }
                         }}
-                        className="rounded-full bg-stone-100 text-stone-950 hover:bg-stone-200"
+                        className="rounded-full"
                       >
                         Enviar comprobante
                       </Button>
