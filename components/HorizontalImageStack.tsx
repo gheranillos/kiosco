@@ -137,7 +137,7 @@ export function HorizontalImageStack() {
       </div>
 
       <div
-        className="relative flex h-[360px] w-[min(92vw,700px)] items-center justify-center md:h-[480px]"
+        className="relative flex h-[340px] w-[min(92vw,700px)] items-center justify-center pb-16 pt-4 md:h-[480px] md:pb-0 md:pt-0"
         style={{ perspective: "1200px" }}
       >
         {images.map((image, index) => {
@@ -214,16 +214,16 @@ export function HorizontalImageStack() {
                 </div>
 
                 {isCurrent && (
-                  <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-5">
-                    <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-stone-400">
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/55 via-black/25 to-transparent p-4 md:from-black/80 md:via-transparent md:p-5">
+                    <p className="mb-0.5 text-[10px] font-medium uppercase tracking-wider text-stone-500 md:mb-1 md:text-xs md:font-semibold md:tracking-widest md:text-stone-400">
                       {image.title}
                     </p>
-                    <p className="mb-3 text-lg font-black text-stone-100">
+                    <p className="mb-2 text-base font-bold text-stone-200 md:mb-3 md:text-lg md:font-black md:text-stone-100">
                       ${image.price}
                     </p>
                     <Link
                       href={`/shop/${image.id}`}
-                      className="pointer-events-auto inline-flex items-center gap-2 rounded-full border border-stone-700 bg-stone-950/80 px-4 py-2 text-xs font-semibold uppercase text-stone-300 backdrop-blur-sm transition-all duration-300 hover:border-stone-500 hover:text-stone-100"
+                      className="pointer-events-auto inline-flex items-center gap-2 rounded-full border border-stone-700/80 bg-stone-950/70 px-3 py-1.5 text-[10px] font-semibold uppercase text-stone-400 backdrop-blur-sm transition-all duration-300 hover:border-stone-500 hover:text-stone-100 md:px-4 md:py-2 md:text-xs md:text-stone-300 md:bg-stone-950/80"
                     >
                       Ver producto →
                     </Link>
@@ -236,8 +236,9 @@ export function HorizontalImageStack() {
       </div>
 
       <button
+        type="button"
         onClick={() => navigate(-1)}
-        className="absolute left-4 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-stone-700 bg-stone-950/80 text-stone-300 backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:border-stone-500 hover:text-stone-100"
+        className="absolute left-2 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-stone-700 bg-stone-950/80 text-stone-300 backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:border-stone-500 hover:text-stone-100 md:left-4 md:h-10 md:w-10"
         aria-label="Previous product"
       >
         <svg
@@ -252,8 +253,9 @@ export function HorizontalImageStack() {
       </button>
 
       <button
+        type="button"
         onClick={() => navigate(1)}
-        className="absolute right-4 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-stone-700 bg-stone-950/80 text-stone-300 backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:border-stone-500 hover:text-stone-100"
+        className="absolute right-2 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-stone-700 bg-stone-950/80 text-stone-300 backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:border-stone-500 hover:text-stone-100 md:right-4 md:h-10 md:w-10"
         aria-label="Next product"
       >
         <svg
@@ -267,34 +269,39 @@ export function HorizontalImageStack() {
         </svg>
       </button>
 
-      <div className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 flex-row gap-2">
+      <div className="absolute bottom-3 left-1/2 z-20 flex -translate-x-1/2 flex-row items-center gap-1 md:bottom-6 md:gap-2">
         {images.map((_, index) => (
           <button
             key={index}
+            type="button"
             onClick={() => setCurrentIndex(index)}
-            className={`h-1.5 rounded-full transition-all duration-300 ${
-              index === currentIndex
-                ? "w-6 bg-stone-100"
-                : "w-1.5 bg-stone-600 hover:bg-stone-400"
-            }`}
+            className="flex min-h-10 min-w-10 items-center justify-center touch-manipulation md:min-h-0 md:min-w-0"
             aria-label={`Go to product ${index + 1}`}
-          />
+          >
+            <span
+              className={`block rounded-full transition-all duration-300 ${
+                index === currentIndex
+                  ? "h-1.5 w-7 bg-stone-100 md:w-6"
+                  : "h-2 w-2 bg-stone-600 md:h-1.5 md:w-1.5 md:hover:bg-stone-400"
+              }`}
+            />
+          </button>
         ))}
       </div>
 
-      <div className="absolute right-6 top-6 z-20">
-        <div className="flex items-center gap-2">
-          <span className="tabular-nums text-2xl font-black text-stone-100">
+      <div className="absolute right-4 top-[4.5rem] z-20 md:right-6 md:top-6">
+        <div className="flex items-center gap-1.5 md:gap-2">
+          <span className="tabular-nums text-lg font-black text-stone-200 md:text-2xl md:text-stone-100">
             {String(currentIndex + 1).padStart(2, "0")}
           </span>
-          <div className="h-px w-6 bg-stone-700" />
-          <span className="tabular-nums text-sm text-stone-500">
+          <div className="h-px w-4 bg-stone-700 md:w-6" />
+          <span className="tabular-nums text-xs text-stone-500 md:text-sm">
             {String(images.length).padStart(2, "0")}
           </span>
         </div>
       </div>
 
-      <div className="absolute bottom-6 right-6 z-20 flex items-center gap-2 text-stone-600">
+      <div className="absolute bottom-3 right-4 z-20 hidden items-center gap-2 text-stone-600 md:bottom-6 md:right-6 md:flex">
         <svg
           viewBox="0 0 24 24"
           className="h-4 w-4"

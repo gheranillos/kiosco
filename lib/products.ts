@@ -16,7 +16,7 @@ export const products: Product[] = [
     image: "/tshirt1.jpg",
     description:
       "Drop #001. Arte, textura y construcción pensadas para outsiders. Pieza limitada.",
-    price: 0.1,
+    price: 25,
     images: ["/tshirt1.jpg", "/tshirt1.jpg", "/tshirt1.jpg"],
   },
   {
@@ -27,7 +27,7 @@ export const products: Product[] = [
     image: "/tshirt2.jpg",
     description:
       "Una pieza para los que crean sin permiso. Fit cómodo y detalles que se sienten.",
-    price: 0.1,
+    price: 25,
     images: ["/tshirt2.jpg", "/tshirt2.jpg", "/tshirt2.jpg"],
   },
   {
@@ -37,7 +37,7 @@ export const products: Product[] = [
     image: "/tshirt3.jpg",
     description:
       "Hecha para romper lo normal. Diseño directo, statement fuerte, drop limitado.",
-    price: 0.1,
+    price: 25,
     images: ["/tshirt3.jpg", "/tshirt3.jpg", "/tshirt3.jpg"],
   },
   {
@@ -47,7 +47,7 @@ export const products: Product[] = [
     image: "/tshirt4.jpg",
     description:
       "Para los que no encajan. Materiales y print para durar. Sin restock.",
-    price: 0.1,
+    price: 25,
     images: ["/tshirt4.jpg", "/tshirt4.jpg", "/tshirt4.jpg"],
   },
 ];

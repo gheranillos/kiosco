@@ -177,7 +177,8 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
           </svg>
         </button>
 
-        <div className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 gap-1">
+        {/* Móvil: puntos abajo; CTAs más arriba (md+) para que no compitan en la misma línea */}
+        <div className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 gap-1 md:bottom-6 md:z-20">
           {slides.map((_, index) => (
             <button
               key={index}
@@ -185,7 +186,7 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
               aria-label={`Ir al slide ${index + 1}`}
               aria-current={index === currentSlide ? "true" : undefined}
               onClick={() => setCurrentSlide(index)}
-              className="flex min-h-11 min-w-11 items-center justify-center touch-manipulation"
+              className="flex min-h-10 min-w-10 items-center justify-center touch-manipulation md:min-h-11 md:min-w-11"
             >
               <span
                 className={`block rounded-full transition-all duration-300 ${
@@ -205,15 +206,15 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
         </h1>
 
         {!shopEnabled && (
-          <div className="pointer-events-none absolute bottom-[3rem] left-1/2 z-30 w-full max-w-[min(320px,92vw)] -translate-x-1/2 px-6 md:bottom-[3.5rem]">
+          <div className="pointer-events-none absolute bottom-[5.25rem] left-1/2 z-30 w-full max-w-[min(320px,92vw)] -translate-x-1/2 px-6 md:bottom-[3.5rem]">
             <div className="pointer-events-auto flex justify-center">
               <PrimaryDropCta onClick={scrollToPreregistro} />
             </div>
           </div>
         )}
 
-        <div className="absolute bottom-6 md:bottom-10 left-6 md:left-10 max-w-[min(580px,92vw)] space-y-3 md:space-y-4">
-          <div className="inline-flex items-center rounded-full border border-stone-700 bg-stone-900/70 px-3 py-1 text-xs font-semibold uppercase text-stone-300">
+        <div className="absolute bottom-[7.5rem] left-6 z-20 max-w-[min(580px,92vw)] space-y-4 md:bottom-10 md:left-10 md:space-y-4">
+          <div className="inline-flex items-center rounded-full border border-stone-700 bg-stone-900/70 px-3 py-1 text-[11px] font-semibold uppercase text-stone-300 md:text-xs">
             Kiosco — Drop #001 Not normal.
           </div>
 
@@ -243,19 +244,19 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
             </p>
           )}
 
-          <div className="flex flex-wrap gap-3 text-xs font-medium uppercase text-stone-400">
-            <span className="rounded-full border border-stone-800 px-3 py-2">
+          <div className="flex flex-wrap gap-2 text-[11px] font-medium uppercase text-stone-500 md:gap-3 md:text-xs md:text-stone-400">
+            <span className="rounded-full border border-stone-800 px-2.5 py-1.5 md:px-3 md:py-2">
               Exclusividad
             </span>
-            <span className="rounded-full border border-stone-800 px-3 py-2">
+            <span className="rounded-full border border-stone-800 px-2.5 py-1.5 md:px-3 md:py-2">
               Early Access
             </span>
-            <span className="rounded-full border border-stone-800 px-3 py-2">
+            <span className="rounded-full border border-stone-800 px-2.5 py-1.5 md:px-3 md:py-2">
               Comunidad
             </span>
           </div>
 
-          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
+          <div className="relative z-30 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:gap-4 md:gap-3">
             {shopEnabled && (
               <PrimaryDropCta onClick={scrollToPreregistro} />
             )}
@@ -263,7 +264,7 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
             {shopEnabled ? (
               <a
                 href="/shop"
-                className="anim-cursor-scale inline-flex min-w-[min(260px,100%)] shrink-0 items-center justify-center rounded-full border border-stone-700 bg-stone-950/40 px-8 py-4 text-sm font-bold uppercase leading-none text-stone-100 transition hover:scale-[1.02] hover:bg-stone-950/60"
+                className="anim-cursor-scale relative z-30 inline-flex min-w-[min(260px,100%)] shrink-0 items-center justify-center rounded-full border border-stone-700 bg-stone-950/90 px-8 py-3.5 text-sm font-bold uppercase leading-none text-stone-100 backdrop-blur-sm transition hover:scale-[1.02] hover:bg-stone-950 md:bg-stone-950/40 md:py-4 md:backdrop-blur-none"
               >
                 Shop
               </a>
