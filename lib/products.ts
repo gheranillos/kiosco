@@ -21,8 +21,9 @@ export const products: Product[] = [
   },
   {
     slug: "fuck-i-want-to-creative",
-    title: "Fuck i want to creative",
-    caption: "Muestra detalles del arte, textura y construcción de la pieza.",
+    title: "Fuck i want to be creative",
+    caption:
+      "Por qué debemos ser normal si lo mejor es romper el esquema",
     image: "/tshirt2.jpg",
     description:
       "Una pieza para los que crean sin permiso. Fit cómodo y detalles que se sienten.",

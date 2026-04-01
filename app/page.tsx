@@ -20,9 +20,8 @@ export default function KioscoDropLanding() {
         <section id="preregistro" data-reveal className="anim-reveal mx-auto max-w-7xl px-6 py-16 md:px-10">
           <div className="grid gap-8 lg:grid-cols-[1fr_1.1fr]">
             <div className="space-y-4">
-              <p className="text-xs font-semibold uppercase text-stone-400">Base de datos</p>
               <h2 className="text-3xl font-black uppercase leading-none md:text-5xl text-balance">
-                Preregistro del drop
+                Datos para el drop
               </h2>
               <p className="text-sm font-black uppercase tracking-wide text-stone-100 md:text-base">
                 Regístrate y obtén 5% off
