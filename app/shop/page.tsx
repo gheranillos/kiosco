@@ -11,7 +11,7 @@ export default function ShopPage() {
 
   return (
     <div className="min-h-screen bg-stone-950 text-stone-100 selection:bg-stone-100 selection:text-stone-950">
-      <section className="relative h-[76vh] min-h-[520px] w-full overflow-hidden border-b border-stone-800 bg-stone-950 md:h-[84vh]">
+      <section className="relative h-[76dvh] min-h-[min(520px,88dvh)] w-full overflow-hidden border-b border-stone-800 bg-stone-950 md:h-[84dvh] md:min-h-[520px]">
         <div className="absolute left-6 top-8 z-10 md:left-10">
           <p className="text-xs font-semibold uppercase tracking-widest text-stone-500">
             Kiosco - Drop #001

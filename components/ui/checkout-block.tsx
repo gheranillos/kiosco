@@ -567,14 +567,14 @@ export default function Checkout() {
             </Badge>
           </div>
 
-          {/* Progress Steps */}
-          <div className="flex items-center justify-start gap-4 py-4 sm:gap-6">
+          {/* Progress Steps — scroll horizontal en pantallas muy estrechas */}
+          <div className="-mx-1 flex items-center justify-start gap-3 overflow-x-auto px-1 py-4 [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-6 [&::-webkit-scrollbar]:hidden">
             {[
               { step: 1, label: "Datos de envío", icon: Truck },
               { step: 2, label: "Método de pago", icon: CreditCard },
               { step: 3, label: "Confirmar pedido", icon: Check },
             ].map(({ step, label, icon: Icon }, index) => (
-              <div key={step} className="flex items-center gap-2">
+              <div key={step} className="flex shrink-0 items-center gap-2">
                 <div className="flex items-center gap-2">
                   <div
                     className={cn(

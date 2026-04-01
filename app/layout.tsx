@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import Script from 'next/script'
@@ -12,6 +12,12 @@ import { CartDrawer } from '@/components/shop/CartDrawer'
 const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 const shopEnabled = process.env.NEXT_PUBLIC_SHOP_ENABLED !== "false";
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#0c0a09',
+}
 
 export const metadata: Metadata = {
   title: 'El Kiosco',

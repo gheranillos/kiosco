@@ -125,7 +125,7 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      <div className="sticky top-0 z-0 h-[100vh] w-full overflow-hidden">
+      <div className="sticky top-0 z-0 h-[100dvh] min-h-[100dvh] w-full overflow-hidden">
         <div ref={heroBgRef} className="absolute inset-0 will-change-transform">
           <div className="absolute inset-0">
             {slides.map((item, index) => (
@@ -144,8 +144,10 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
         </div>
 
         <button
+          type="button"
           onClick={goToPrev}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full border border-white/20 bg-black/30 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300 hover:scale-110"
+          aria-label="Slide anterior"
+          className="absolute left-2 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 touch-manipulation items-center justify-center rounded-full border border-white/20 bg-black/30 text-white backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:bg-white/20 sm:left-4"
         >
           <svg
             viewBox="0 0 24 24"
@@ -159,8 +161,10 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
         </button>
 
         <button
+          type="button"
           onClick={goToNext}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full border border-white/20 bg-black/30 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300 hover:scale-110"
+          aria-label="Slide siguiente"
+          className="absolute right-2 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 touch-manipulation items-center justify-center rounded-full border border-white/20 bg-black/30 text-white backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:bg-white/20 sm:right-4"
         >
           <svg
             viewBox="0 0 24 24"
@@ -173,17 +177,24 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
           </svg>
         </button>
 
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+        <div className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 gap-1">
           {slides.map((_, index) => (
             <button
               key={index}
+              type="button"
+              aria-label={`Ir al slide ${index + 1}`}
+              aria-current={index === currentSlide ? "true" : undefined}
               onClick={() => setCurrentSlide(index)}
-              className={`transition-all duration-300 rounded-full ${
-                index === currentSlide
-                  ? "w-6 h-1.5 bg-white"
-                  : "w-1.5 h-1.5 bg-white/40 hover:bg-white/70"
-              }`}
-            />
+              className="flex min-h-11 min-w-11 items-center justify-center touch-manipulation"
+            >
+              <span
+                className={`block rounded-full transition-all duration-300 ${
+                  index === currentSlide
+                    ? "h-1.5 w-6 bg-white"
+                    : "h-2 w-2 bg-white/40 hover:bg-white/70"
+                }`}
+              />
+            </button>
           ))}
         </div>
 

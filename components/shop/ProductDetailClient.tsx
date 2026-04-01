@@ -74,9 +74,11 @@ export function ProductDetailClient() {
             <p className="text-sm text-stone-400 leading-6">{product.description}</p>
           </div>
 
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
             <p className="text-lg font-black text-stone-100">${product.price}</p>
-            <p className="text-xs text-stone-500">Impuestos y envío calculados en checkout</p>
+            <p className="text-xs text-stone-500 sm:max-w-[min(100%,14rem)] sm:text-right">
+              Impuestos y envío calculados en checkout
+            </p>
           </div>
 
           <div className="space-y-3">
@@ -102,7 +104,7 @@ export function ProductDetailClient() {
 
             <div className="space-y-2">
               <p className="text-xs font-semibold uppercase text-stone-500">Talla</p>
-              <div className="grid grid-cols-6 gap-2">
+              <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
                 {sizes.map((s) => (
                   <button
                     key={s}

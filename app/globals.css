@@ -119,7 +119,12 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    /* Evita scroll horizontal por elementos que sobresalen en viewports estrechos */
+    overflow-x: clip;
+  }
   body {
     @apply bg-background text-foreground;
+    overflow-x: clip;
   }
 }
