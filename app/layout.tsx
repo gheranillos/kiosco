@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import Script from 'next/script'
 import './globals.css'
 import './animations.css'
@@ -76,6 +77,7 @@ export default function RootLayout({
           </>
         )}
         <Analytics />
+        <SpeedInsights />
         <Script src="/validation.js" strategy="afterInteractive" />
         <Script src="/animations.js" strategy="afterInteractive" />
       </body>
