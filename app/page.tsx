@@ -24,7 +24,7 @@ export default function KioscoDropLanding() {
                 Datos para el drop
               </h2>
               <p className="text-sm font-black uppercase tracking-wide text-stone-100 md:text-base">
-                Regístrate y obtén 5% off
+                Regístrate y sé de los primeros
               </p>
               <p className="max-w-md text-sm leading-6 text-stone-400 md:text-base">
                 No es solo ropa, es cultura. Regístrate y sé parte del próximo drop del Kiosco
@@ -129,9 +129,6 @@ export default function KioscoDropLanding() {
                 >
                   Unirme al preregistro
                 </button>
-                <p className="text-xs leading-5 text-stone-500">
-                  Luego se puede conectar este botón a una base de datos real sin rehacer el diseño.
-                </p>
               </div>
             </form>
           </div>
