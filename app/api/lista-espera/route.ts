@@ -40,11 +40,11 @@ export async function POST(request: Request) {
     const supabase = getSupabaseServerClient();
     const { error } = await supabase.from("registro_drop").insert([
       {
-        nombre: null,
-        instagram: null,
+        nombre: "Lista de espera",
+        instagram: "N/A",
         telefono: whatsapp,
         correo: email,
-        ciudad: null,
+        ciudad: "N/A",
         talla,
         origen: "lista_espera",
       },
@@ -64,6 +64,20 @@ export async function POST(request: Request) {
           {
             error:
               "Falta ajustar la tabla registro_drop en Supabase. Ejecuta el SQL de supabase/lista_espera.sql.",
+          },
+          { status: 500 }
+        );
+      }
+
+      if (
+        msg.includes("schema cache") ||
+        msg.includes("not-null") ||
+        msg.includes("null value")
+      ) {
+        return NextResponse.json(
+          {
+            error:
+              "Tu tabla registro_drop aun no coincide con el backend. Vuelve a ejecutar supabase/lista_espera.sql y refresca el proyecto en Supabase.",
           },
           { status: 500 }
         );
