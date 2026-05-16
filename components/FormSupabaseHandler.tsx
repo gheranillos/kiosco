@@ -73,7 +73,7 @@ export function FormSupabaseHandler() {
         }
 
         const { error } = await supabase.from('registro_drop').insert([
-          { nombre, instagram, telefono, correo, ciudad, talla },
+          { nombre, instagram, telefono, correo, ciudad, talla, origen: 'preregistro' },
         ])
 
         if (error) {

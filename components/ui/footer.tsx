@@ -3,7 +3,7 @@ import Link from "next/link";
 const links = [
   { title: "Galería", href: "#" },
   { title: "Comunidad", href: "#" },
-  { title: "Contacto", href: "https://wa.me/584147613621" },
+  { title: "Lista de espera", href: "/lista-espera" },
 ];
 
 export function FooterSection() {
