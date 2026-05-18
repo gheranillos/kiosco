@@ -100,6 +100,15 @@ export default function ListaEsperaPage() {
           </div>
         </div>
 
+        <div className="space-y-2 text-center">
+          <p className="text-base font-semibold uppercase tracking-wide">
+            Acceso anticipado + 5% OFF en el Drop #001
+          </p>
+          <p className="text-sm text-stone-600">
+            Solo para los primeros. Una vez que se acabe, se acaba.
+          </p>
+        </div>
+
         <form onSubmit={handleSubmit} className="w-full space-y-3">
           <input
             type="tel"
