@@ -33,6 +33,7 @@ import {
   Wallet,
   Smartphone,
   Building2,
+  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -43,7 +44,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { products } from "@/lib/products";
 import { useCart } from "@/components/shop/cart-context";
 
 type CheckoutPaymentMethod = "paypal" | "bolivares" | "binance_pay" | "zinli";
@@ -91,7 +91,7 @@ interface PaymentMethod {
 
 export default function Checkout() {
   const router = useRouter();
-  const { items: cartItems, subtotal, clear } = useCart();
+  const { items: cartItems, subtotal, clear, removeItem } = useCart();
 
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -181,18 +181,7 @@ export default function Checkout() {
       quantity: it.quantity,
     }));
 
-    // Si el carrito está vacío, mostramos las piezas “reales” como fallback visual.
-    setOrderItems(
-      hydratedFromCart.length
-        ? hydratedFromCart
-        : products.map((p) => ({
-            id: p.slug,
-            name: p.title,
-            price: p.price,
-            image: p.image,
-            quantity: 1,
-          }))
-    );
+    setOrderItems(hydratedFromCart);
 
     setIsLoading(false);
   }, [cartItems]);
@@ -433,35 +422,49 @@ export default function Checkout() {
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <div className="flex flex-col gap-4">
-          {orderItems.map((item) => (
-            <div key={item.id} className="flex gap-3">
-              <div className="relative w-12 h-12 flex-shrink-0">
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="w-full h-full object-cover rounded-md ring-1 ring-stone-700"
-                />
-                <Badge
-                  className="absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center border-0 bg-stone-100 text-xs text-stone-950"
-                >
-                  {item.quantity}
-                </Badge>
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="truncate text-sm font-medium text-stone-100">
-                  {item.name}
-                </p>
+          {orderItems.length === 0 ? (
+            <p className="text-sm text-stone-400">Tu carrito está vacío.</p>
+          ) : (
+            orderItems.map((item) => (
+              <div key={item.id} className="flex gap-3">
+                <div className="relative w-12 h-12 flex-shrink-0">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-full h-full object-cover rounded-md ring-1 ring-stone-700"
+                  />
+                  <Badge
+                    className="absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center border-0 bg-stone-100 text-xs text-stone-950"
+                  >
+                    {item.quantity}
+                  </Badge>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="truncate text-sm font-medium text-stone-100">
+                    {item.name}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-semibold text-stone-200">
+                      ${item.price}
+                    </span>
+                  </div>
+                </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-semibold text-stone-200">
-                    ${item.price}
-                  </span>
+                  <div className="text-sm font-semibold text-stone-100">
+                    ${(item.price * item.quantity).toFixed(2)}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => removeItem(item.id)}
+                    aria-label={`Eliminar ${item.name}`}
+                    className="ml-1 flex h-7 w-7 items-center justify-center rounded-full text-stone-500 transition hover:bg-stone-800 hover:text-stone-100"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
                 </div>
               </div>
-              <div className="text-sm font-semibold text-stone-100">
-                ${(item.price * item.quantity).toFixed(2)}
-              </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
 
         <div className="rounded-xl border border-stone-700 bg-stone-950/50 p-3">
