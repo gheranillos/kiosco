@@ -472,7 +472,7 @@ export default function Checkout() {
             <Input
               value={couponInput}
               onChange={(e) => setCouponInput(e.target.value)}
-              placeholder="Ej: EARLY100"
+              placeholder="Código"
               className="h-9 border-stone-600 bg-stone-950 text-stone-100 placeholder:text-stone-500"
             />
             <Button

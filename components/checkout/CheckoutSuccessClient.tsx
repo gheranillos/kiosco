@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/shop/cart-context";
@@ -20,7 +20,6 @@ async function readApiError(res: Response): Promise<string> {
 }
 
 export function CheckoutSuccessClient() {
-  const router = useRouter();
   const params = useSearchParams();
   const token = params.get("token");
   const isManual = params.get("manual") === "1";
@@ -74,7 +73,7 @@ export function CheckoutSuccessClient() {
       <p className="text-xs font-semibold uppercase text-stone-500">Pago</p>
       <h1 className="mt-2 text-3xl font-black uppercase leading-none md:text-4xl">
         {status === "loading" && "Confirmando…"}
-        {status === "ok" && "Pago confirmado"}
+        {status === "ok" && (isManual ? "Pago por confirmar" : "Pago confirmado")}
         {status === "error" && "No se pudo confirmar"}
       </h1>
       <p className="mt-4 text-sm leading-6 text-stone-400">
@@ -82,7 +81,7 @@ export function CheckoutSuccessClient() {
           "Estamos validando el pago con PayPal. No cierres esta pestaña."}
         {status === "ok" &&
           (isManual
-            ? "Listo. Recibimos tu comprobante y tu pedido quedo registrado para validacion."
+            ? "Listo. Recibimos tu comprobante y tu pedido quedo registrado para validacion. Escríbenos por Whatsapp."
             : "Listo. Recibimos tu pago. Te contactaremos con los detalles del envío.")}
         {status === "error" &&
           (message?.trim() ||
@@ -91,14 +90,12 @@ export function CheckoutSuccessClient() {
 
       <div className="mt-6 flex flex-wrap gap-3">
         <Button
-          type="button"
+          asChild
           className="rounded-full bg-stone-100 text-stone-950 hover:bg-stone-200"
-          onClick={() => {
-            closeCart();
-            router.push("/");
-          }}
         >
-          Volver al shop
+          <Link href="/" onClick={closeCart}>
+            Volver al shop
+          </Link>
         </Button>
         <Button
           asChild
@@ -106,7 +103,7 @@ export function CheckoutSuccessClient() {
           className="rounded-full border-stone-800 bg-stone-950/30 text-stone-200 hover:bg-stone-900/40 hover:text-stone-100"
         >
           <Link
-            href={isManual ? whatsappUrl : "/drop-registro#preregistro"}
+            href={isManual ? whatsappUrl : "/drop-registro"}
             target={isManual ? "_blank" : undefined}
             rel={isManual ? "noopener noreferrer" : undefined}
           >

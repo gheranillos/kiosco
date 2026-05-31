@@ -3,7 +3,7 @@ import Link from "next/link";
 const brandLinks = [
   { title: "Drop #001", href: "/" },
   { title: "Lista de espera", href: "/lista-espera" },
-  { title: "Sobre Kiosco", href: "/drop-registro#preregistro" },
+  { title: "Sobre Kiosco", href: "/drop-registro" },
 ];
 
 const supportLinks = [

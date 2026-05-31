@@ -6,7 +6,7 @@ export function middleware(req: NextRequest) {
 
   const url = req.nextUrl.clone();
   url.pathname = "/drop-registro";
-  url.hash = "preregistro";
+  url.hash = "";
   return NextResponse.redirect(url);
 }
 

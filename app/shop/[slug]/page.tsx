@@ -10,7 +10,7 @@ export function generateStaticParams() {
 
 export default function ProductPage({ params }: { params: { slug: string } }) {
   const shopEnabled = process.env.NEXT_PUBLIC_SHOP_ENABLED !== "false";
-  if (!shopEnabled) redirect("/drop-registro#preregistro");
+  if (!shopEnabled) redirect("/drop-registro");
 
   return (
     <div className="min-h-screen bg-white text-stone-900 selection:bg-stone-900 selection:text-stone-100">

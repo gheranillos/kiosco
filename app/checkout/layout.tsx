@@ -6,7 +6,7 @@ export default function CheckoutLayout({
   children: React.ReactNode;
 }) {
   const shopEnabled = process.env.NEXT_PUBLIC_SHOP_ENABLED !== "false";
-  if (!shopEnabled) redirect("/drop-registro#preregistro");
+  if (!shopEnabled) redirect("/drop-registro");
   return children;
 }
 
