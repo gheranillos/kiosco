@@ -206,18 +206,16 @@
 
 /* --- 6. Header fijo: padding reducido + backdrop-blur al scroll --- */
 .anim-header {
-  transition:
-    padding 300ms ease,
-    backdrop-filter 300ms ease,
-    background-color 300ms ease;
+  background-color: transparent;
+  transition: padding 300ms ease;
 }
 
 .anim-header.scrolled {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   background-color: transparent;
-  backdrop-filter: saturate(180%) blur(8px);
-  -webkit-backdrop-filter: saturate(180%) blur(8px);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 /* Contraste en header transparente sobre fondos claros */

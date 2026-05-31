@@ -11,23 +11,34 @@ import { CartDrawer } from "@/components/shop/CartDrawer";
 type Props = {
   shopEnabled: boolean;
   children: ReactNode;
+  /** When false, content starts at top (hero/full-bleed under transparent header). */
+  headerOffset?: boolean;
 };
 
-const DARK_HERO_PATHS = ["/drop-registro"];
+/** Full-bleed hero: no top padding (avoids white band under fixed header). */
+const HERO_BLEED_PATHS = ["/", "/drop-registro"];
+
+function pathMatches(pathname: string, base: string) {
+  return pathname === base || pathname.startsWith(`${base}/`);
+}
+
+function isHeroBleed(pathname: string) {
+  return HERO_BLEED_PATHS.some((p) => pathMatches(pathname, p));
+}
 
 function headerLogoSrc(pathname: string): string {
-  if (DARK_HERO_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`))) {
+  if (pathMatches(pathname, "/drop-registro")) {
     return "/kiosco-logo-white.png";
   }
   return "/kiosco-logo-black.png";
 }
 
-export function SiteShell({ shopEnabled, children }: Props) {
+export function SiteShell({ shopEnabled, children, headerOffset }: Props) {
   const pathname = usePathname();
   const logoSrc = headerLogoSrc(pathname);
-  const useDarkHeaderChrome = !DARK_HERO_PATHS.some(
-    (p) => pathname === p || pathname.startsWith(`${p}/`)
-  );
+  const heroBleed = isHeroBleed(pathname);
+  const useDarkHeaderChrome = heroBleed;
+  const showHeaderOffset = headerOffset ?? !heroBleed;
 
   const headerClass =
     "anim-header fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 md:px-10 text-sm font-semibold uppercase bg-transparent" +
@@ -45,12 +56,14 @@ export function SiteShell({ shopEnabled, children }: Props) {
     </header>
   );
 
+  const content = showHeaderOffset ? <div className="pt-14">{children}</div> : children;
+
   if (shopEnabled) {
     return (
       <CartProvider>
         {headerEl}
         <CartDrawer />
-        <div className="pt-14">{children}</div>
+        {content}
       </CartProvider>
     );
   }
@@ -58,7 +71,7 @@ export function SiteShell({ shopEnabled, children }: Props) {
   return (
     <>
       {headerEl}
-      <div className="pt-14">{children}</div>
+      {content}
     </>
   );
 }
