@@ -7,15 +7,15 @@ const brandLinks = [
 ];
 
 const supportLinks = [
-  { title: "FAQ", href: "#" },
-  { title: "Envíos", href: "#" },
+  { title: "FAQ", href: "/faq" },
+  { title: "Envíos", href: "/faq#envios" },
   { title: "Contacto", href: "https://wa.me/584147613621" },
 ];
 
 const legalLinks = [
-  { title: "Aviso legal", href: "#" },
-  { title: "Política de privacidad", href: "#" },
-  { title: "Términos y condiciones", href: "#" },
+  { title: "Aviso legal", href: "/aviso-legal" },
+  { title: "Política de privacidad", href: "/politica-de-privacidad" },
+  { title: "Términos y condiciones", href: "/terminos-y-condiciones" },
 ];
 
 export function FooterSection() {
