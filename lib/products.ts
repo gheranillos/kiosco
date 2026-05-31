@@ -13,42 +13,72 @@ export const products: Product[] = [
     slug: "mom-im-an-artist",
     title: "Mom im an artist",
     caption: "Ser artista no es una carrera, es una forma de existir.",
-    image: "/tshirt1.jpg",
+    image: "/shirt1front.png",
     description:
       "Drop #001. Arte, textura y construcción pensadas para outsiders. Pieza limitada.",
     price: 25,
-    images: ["/tshirt1.jpg", "/tshirt1.jpg", "/tshirt1.jpg"],
+    images: ["/shirt1front.png", "/shirt1back.png"],
   },
   {
     slug: "fuck-i-want-to-creative",
     title: "Fuck i want to be creative",
     caption:
       "Por qué debemos ser normal si lo mejor es romper el esquema",
-    image: "/tshirt2.jpg",
+    image: "/shirt2front.png",
     description:
       "Una pieza para los que crean sin permiso. Fit cómodo y detalles que se sienten.",
     price: 25,
-    images: ["/tshirt2.jpg", "/tshirt2.jpg", "/tshirt2.jpg"],
+    images: ["/shirt2front.png", "/shirt2back.png"],
   },
   {
     slug: "created-not-aproved",
     title: "Created not aproved",
     caption: "Las piezas que cambian la cultura nunca pasan por aprobación.",
-    image: "/tshirt3.jpg",
+    image: "/shirt3front.png",
     description:
       "Hecha para romper lo normal. Diseño directo, statement fuerte, drop limitado.",
     price: 25,
-    images: ["/tshirt3.jpg", "/tshirt3.jpg", "/tshirt3.jpg"],
+    images: ["/shirt3front.png", "/shirt3back.png"],
   },
   {
     slug: "normal-never-built-anything",
     title: "Normal never built anything",
     caption: "Lo normal nunca ha construido nada.",
-    image: "/tshirt4.jpg",
+    image: "/shirt4front.png",
     description:
       "Para los que no encajan. Materiales y print para durar. Sin restock.",
     price: 25,
-    images: ["/tshirt4.jpg", "/tshirt4.jpg", "/tshirt4.jpg"],
+    images: ["/shirt4front.png", "/shirt4back.png"],
+  },
+  {
+    slug: "outsiders-only",
+    title: "Outsiders only",
+    caption: "Para los que no encajan en lo normal.",
+    image: "/hoodie1.png",
+    description:
+      "Hoodie del Drop #001. Construcción gruesa, fit relajado y print pensado para los que no piden permiso.",
+    price: 35,
+    images: ["/hoodie1.png", "/hoodie1back.png"],
+  },
+  {
+    slug: "built-by-outsiders",
+    title: "Built by outsiders",
+    caption: "Hecho por los que no esperaron a que les abrieran la puerta.",
+    image: "/hoodie2.png",
+    description:
+      "Hoodie pesado, abrigado y con peso de declaración. Edición limitada del Drop #001.",
+    price: 35,
+    images: ["/hoodie2.png", "/hoodie2back.png"],
+  },
+  {
+    slug: "late-to-normal",
+    title: "Late to normal",
+    caption: "Si llegaste tarde a lo normal, llegaste justo a tiempo.",
+    image: "/hoodie3.png",
+    description:
+      "Hoodie del Drop #001. Statement directo, sin sobrediseño. Para outsiders, no para masas.",
+    price: 35,
+    images: ["/hoodie3.png", "/hoodie3back.png"],
   },
 ];
 

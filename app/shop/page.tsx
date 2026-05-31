@@ -26,16 +26,20 @@ export default function ShopPage() {
 
       <section className="mx-auto max-w-7xl px-4 pb-24 md:px-6 md:pb-32">
         <div className="grid grid-cols-2 gap-x-2 gap-y-10 md:grid-cols-4 md:gap-x-3 md:gap-y-14">
-          {products.map((p, i) => (
-            <ShopProductCard
-              key={p.slug}
-              slug={p.slug}
-              title={p.title}
-              price={p.price}
-              frontSrc={`/shirt${i + 1}front.png`}
-              backSrc={`/shirt${i + 1}back.png`}
-            />
-          ))}
+          {products.map((p) => {
+            const frontSrc = p.images[0] ?? p.image;
+            const backSrc = p.images[1] ?? frontSrc;
+            return (
+              <ShopProductCard
+                key={p.slug}
+                slug={p.slug}
+                title={p.title}
+                price={p.price}
+                frontSrc={frontSrc}
+                backSrc={backSrc}
+              />
+            );
+          })}
         </div>
       </section>
 
