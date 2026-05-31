@@ -147,7 +147,7 @@ export function ProductDetailClient() {
               <div className="pt-3 text-sm leading-6 text-stone-600">
                 <p>{product.caption}</p>
                 <p className="mt-2 text-xs text-stone-500">
-                  Tela algodón suave y duradero. Unisex. Edición limitada.
+                  Tela algodón con poliéster suave y duradero. Unisex. Edición limitada.
                 </p>
               </div>
             </details>
