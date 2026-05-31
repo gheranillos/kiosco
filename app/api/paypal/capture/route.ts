@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { sendCustomerOrderEmail } from "@/lib/customer-order-email";
 import { getSupabaseServerClient } from "@/lib/supabase-server";
 import { paypalCaptureOrder } from "@/lib/paypal";
 
@@ -70,7 +71,19 @@ export async function POST(req: Request) {
           { status: 500 }
         );
       }
-      return NextResponse.json({ ok: true, note: "duplicate_capture" });
+
+      const customerEmail = await sendCustomerOrderEmail({
+        supabase,
+        orderId: orderRow.id,
+        kind: "paid",
+      });
+
+      return NextResponse.json({
+        ok: true,
+        note: "duplicate_capture",
+        customerEmailSent: customerEmail.sent,
+        customerEmailReason: customerEmail.reason ?? null,
+      });
     }
 
     const { data: updated, error } = await supabase
@@ -90,7 +103,18 @@ export async function POST(req: Request) {
       );
     }
 
-    return NextResponse.json({ ok: true, capture: result.capture });
+    const customerEmail = await sendCustomerOrderEmail({
+      supabase,
+      orderId: orderRow.id,
+      kind: "paid",
+    });
+
+    return NextResponse.json({
+      ok: true,
+      capture: result.capture,
+      customerEmailSent: customerEmail.sent,
+      customerEmailReason: customerEmail.reason ?? null,
+    });
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
     return NextResponse.json({ error: msg }, { status: 500 });

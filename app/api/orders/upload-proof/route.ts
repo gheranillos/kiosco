@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { sendCustomerOrderEmail } from "@/lib/customer-order-email";
 import { sendManualPaymentEmailNotification } from "@/lib/manual-payment-notifications";
 import { sendManualPaymentTelegramNotification } from "@/lib/telegram-notifications";
 import { getSupabaseServerClient } from "@/lib/supabase-server";
@@ -137,6 +138,12 @@ export async function POST(req: Request) {
     items,
   });
 
+  const customerEmail = await sendCustomerOrderEmail({
+    supabase,
+    orderId,
+    kind: "pending_review",
+  });
+
   return NextResponse.json({
     ok: true,
     path,
@@ -144,6 +151,8 @@ export async function POST(req: Request) {
     notificationReason: notifyResult.reason ?? null,
     telegramSent: telegramResult.sent,
     telegramReason: telegramResult.reason ?? null,
+    customerEmailSent: customerEmail.sent,
+    customerEmailReason: customerEmail.reason ?? null,
   });
 }
 
