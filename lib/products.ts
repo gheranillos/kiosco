@@ -13,32 +13,32 @@ export const products: Product[] = [
     slug: "mom-im-an-artist",
     title: "Mom im an artist",
     caption: "Ser artista no es una carrera, es una forma de existir.",
-    image: "/shirt1front.png",
+    image: "/KSCO%201.1.png",
     description:
       "Drop #001. Arte, textura y construcción pensadas para outsiders. Pieza limitada.",
     price: 25,
-    images: ["/shirt1front.png", "/shirt1back.png"],
+    images: ["/KSCO%201.1.png", "/KSCO%201.2.png", "/KSCO%201.3.png"],
   },
   {
     slug: "fuck-i-want-to-creative",
     title: "Fuck i want to be creative",
     caption:
       "Por qué debemos ser normal si lo mejor es romper el esquema",
-    image: "/shirt2front.png",
+    image: "/KSCO%202.1.png",
     description:
       "Una pieza para los que crean sin permiso. Fit cómodo y detalles que se sienten.",
     price: 25,
-    images: ["/shirt2front.png", "/shirt2back.png"],
+    images: ["/KSCO%202.1.png", "/KSCO%202.2.png", "/KSCO%202.3.png"],
   },
   {
     slug: "created-not-aproved",
     title: "Created not aproved",
     caption: "Las piezas que cambian la cultura nunca pasan por aprobación.",
-    image: "/shirt3front.png",
+    image: "/KSCO%204.1.png",
     description:
       "Hecha para romper lo normal. Diseño directo, statement fuerte, drop limitado.",
     price: 25,
-    images: ["/shirt3front.png", "/shirt3back.png"],
+    images: ["/KSCO%204.1.png", "/KSCO%204.2.png", "/KSCO%204.3.png"],
   },
   {
     slug: "normal-never-built-anything",

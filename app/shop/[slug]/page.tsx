@@ -13,13 +13,13 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
   if (!shopEnabled) redirect("/#preregistro");
 
   return (
-    <div className="min-h-screen bg-stone-950 text-stone-100 selection:bg-stone-100 selection:text-stone-950">
+    <div className="min-h-screen bg-white text-stone-900 selection:bg-stone-900 selection:text-stone-100">
       <ProductDetailClient />
 
       <div className="mx-auto max-w-7xl px-6 pb-12 md:px-10">
         <Link
           href="/checkout"
-          className="w-full rounded-full bg-stone-100 py-4 text-sm font-bold uppercase text-stone-950 text-center transition hover:bg-stone-200 hover:scale-[1.02] block"
+          className="w-full rounded-full bg-stone-900 py-4 text-sm font-bold uppercase text-stone-100 text-center transition hover:bg-stone-800 hover:scale-[1.02] block"
         >
           Quiero esta pieza
         </Link>

@@ -19,7 +19,7 @@ export default function ShopPage() {
             Shop
           </h1>
           <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-stone-500 md:text-xs">
-            30 unidades. Sin restock.
+            50 unidades.
           </p>
         </div>
       </section>
