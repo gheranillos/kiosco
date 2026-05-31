@@ -61,8 +61,8 @@ export const products: Product[] = [
     images: ["/hoodie1.png", "/hoodie1back.png"],
   },
   {
-    slug: "built-by-outsiders",
-    title: "Built by outsiders",
+    slug: "creme-normal",
+    title: "Creme normal",
     caption: "Hecho por los que no esperaron a que les abrieran la puerta.",
     image: "/hoodie2.png",
     description:
@@ -71,8 +71,8 @@ export const products: Product[] = [
     images: ["/hoodie2.png", "/hoodie2back.png"],
   },
   {
-    slug: "late-to-normal",
-    title: "Late to normal",
+    slug: "black-normal",
+    title: "black normal",
     caption: "Si llegaste tarde a lo normal, llegaste justo a tiempo.",
     image: "/hoodie3.png",
     description:

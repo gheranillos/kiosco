@@ -21,7 +21,7 @@ export function ShopProductCard({ slug, title, price, frontSrc, backSrc }: Props
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="relative aspect-[4/5] w-full overflow-hidden bg-stone-900">
+      <div className="relative aspect-[4/5] w-full overflow-hidden bg-stone-100">
         <img
           src={frontSrc}
           alt={title}
@@ -43,8 +43,8 @@ export function ShopProductCard({ slug, title, price, frontSrc, backSrc }: Props
       </div>
 
       <div className="mt-3 flex flex-col gap-0.5">
-        <h3 className="text-xs font-medium text-stone-100">{title}</h3>
-        <span className="text-xs text-stone-400">${price} USD</span>
+        <h3 className="text-xs font-medium text-stone-900">{title}</h3>
+        <span className="text-xs text-stone-500">${price} USD</span>
       </div>
     </Link>
   );

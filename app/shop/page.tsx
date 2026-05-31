@@ -9,16 +9,16 @@ export default function ShopPage() {
   if (!shopEnabled) redirect("/#preregistro");
 
   return (
-    <div className="min-h-screen bg-stone-950 text-stone-100 selection:bg-stone-100 selection:text-stone-950">
+    <div className="min-h-screen bg-white text-stone-900 selection:bg-stone-900 selection:text-stone-100">
       <section className="mx-auto max-w-7xl px-6 pt-16 pb-12 md:px-10 md:pt-28 md:pb-20">
         <div className="flex flex-col items-center gap-4 text-center md:gap-5">
-          <p className="text-[11px] font-medium uppercase tracking-[0.32em] text-[#d6c8a8] md:text-xs">
+          <p className="text-[11px] font-medium uppercase tracking-[0.32em] text-stone-500 md:text-xs">
             Drop · 001
           </p>
-          <h1 className="text-5xl font-bold uppercase leading-none tracking-tight text-stone-100 md:text-7xl">
+          <h1 className="text-5xl font-bold uppercase leading-none tracking-tight text-stone-900 md:text-7xl">
             Shop
           </h1>
-          <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-stone-400 md:text-xs">
+          <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-stone-500 md:text-xs">
             30 unidades. Sin restock.
           </p>
         </div>
