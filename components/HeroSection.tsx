@@ -278,7 +278,7 @@ export function HeroSection({
 
             {shopEnabled && showShopCta ? (
               <a
-                href="/shop"
+                href="/"
                 className="anim-cursor-scale relative z-30 inline-flex min-w-[min(260px,100%)] shrink-0 items-center justify-center rounded-full border border-stone-700 bg-stone-950/90 px-8 py-3.5 text-sm font-bold uppercase leading-none text-stone-100 backdrop-blur-sm transition hover:scale-[1.02] hover:bg-stone-950 md:bg-stone-950/40 md:py-4 md:backdrop-blur-none"
               >
                 Shop

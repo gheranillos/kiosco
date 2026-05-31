@@ -29,14 +29,14 @@ export function ProductDetailClient() {
     <div className="mx-auto max-w-7xl px-6 pt-10 pb-12 md:px-10">
       <div className="flex items-center justify-between gap-4">
         <Link
-          href="/shop"
+          href="/"
           className="inline-flex items-center gap-2 text-xs font-semibold uppercase text-stone-500 hover:text-stone-900 transition"
         >
           <span className="text-stone-400">←</span>
           Volver al shop
         </Link>
         <Link
-          href="/#preregistro"
+          href="/drop-registro#preregistro"
           className="inline-flex items-center justify-center rounded-full border border-stone-200 bg-stone-50 px-5 py-2.5 text-[11px] font-bold uppercase text-stone-900 transition hover:bg-stone-100"
         >
           Preregistro
@@ -275,7 +275,7 @@ export function ProductDetailClient() {
             Más del drop
           </h2>
           <Link
-            href="/shop"
+            href="/"
             className="text-xs font-semibold uppercase text-stone-500 hover:text-stone-900 transition"
           >
             Ver todo

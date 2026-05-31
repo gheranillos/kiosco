@@ -1357,7 +1357,7 @@ export default function Checkout() {
 
       {/* Link placeholders (no funcional) */}
       <div className="hidden">
-        <Link href="/shop" />
+        <Link href="/" />
       </div>
     </div>
   );

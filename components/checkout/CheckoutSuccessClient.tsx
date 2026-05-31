@@ -95,7 +95,7 @@ export function CheckoutSuccessClient() {
           className="rounded-full bg-stone-100 text-stone-950 hover:bg-stone-200"
           onClick={() => {
             closeCart();
-            router.push("/shop");
+            router.push("/");
           }}
         >
           Volver al shop
@@ -106,7 +106,7 @@ export function CheckoutSuccessClient() {
           className="rounded-full border-stone-800 bg-stone-950/30 text-stone-200 hover:bg-stone-900/40 hover:text-stone-100"
         >
           <Link
-            href={isManual ? whatsappUrl : "/#preregistro"}
+            href={isManual ? whatsappUrl : "/drop-registro#preregistro"}
             target={isManual ? "_blank" : undefined}
             rel={isManual ? "noopener noreferrer" : undefined}
           >

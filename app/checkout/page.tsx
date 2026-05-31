@@ -126,7 +126,7 @@ export default function CheckoutPage() {
           </div>
 
           <Link
-            href="/shop"
+            href="/"
             className="inline-flex w-fit items-center justify-center rounded-full border border-stone-800 bg-stone-900/40 px-6 py-3 text-xs font-bold uppercase text-stone-200 transition hover:bg-stone-900/70"
           >
             Volver al shop

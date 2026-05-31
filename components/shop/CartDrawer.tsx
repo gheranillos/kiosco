@@ -40,7 +40,7 @@ export function CartDrawer() {
                 Agrega una prenda para empezar.
               </p>
               <Button asChild className="rounded-full bg-stone-100 text-stone-950 hover:bg-stone-200">
-                <Link href="/shop" onClick={closeCart}>
+                <Link href="/" onClick={closeCart}>
                   Ir al shop
                 </Link>
               </Button>

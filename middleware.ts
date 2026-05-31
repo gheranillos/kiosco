@@ -5,7 +5,7 @@ export function middleware(req: NextRequest) {
   if (shopEnabled) return NextResponse.next();
 
   const url = req.nextUrl.clone();
-  url.pathname = "/";
+  url.pathname = "/drop-registro";
   url.hash = "preregistro";
   return NextResponse.redirect(url);
 }

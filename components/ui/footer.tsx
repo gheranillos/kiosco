@@ -1,9 +1,9 @@
 import Link from "next/link";
 
 const brandLinks = [
-  { title: "Drop #001", href: "/shop" },
+  { title: "Drop #001", href: "/" },
   { title: "Lista de espera", href: "/lista-espera" },
-  { title: "Sobre Kiosco", href: "/#sobre" },
+  { title: "Sobre Kiosco", href: "/drop-registro#preregistro" },
 ];
 
 const supportLinks = [

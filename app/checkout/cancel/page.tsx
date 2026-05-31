@@ -30,7 +30,7 @@ export default function CheckoutCancelPage() {
               variant="outline"
               className="rounded-full border-stone-800 bg-stone-950/30 text-stone-200 hover:bg-stone-900/40 hover:text-stone-100"
             >
-              <Link href="/shop">Volver al shop</Link>
+              <Link href="/">Volver al shop</Link>
             </Button>
           </div>
         </div>

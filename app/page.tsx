@@ -1,141 +1,177 @@
-import { FormSupabaseHandler } from '@/components/FormSupabaseHandler'
-import { GallerySection } from '@/components/GallerySection'
-import { HeroSection } from '@/components/HeroSection'
-import { StepsSection } from '@/components/StepsSection'
-import { FooterSection } from '@/components/ui/footer'
-import { products } from '@/lib/products'
+import { redirect } from "next/navigation";
 
-export default function KioscoDropLanding() {
-  const galleryPreview = products;
+import { HeroSection } from "@/components/HeroSection";
+import { ShopProductCard } from "@/components/shop/ShopProductCard";
+import { FooterSection } from "@/components/ui/footer";
+import { products } from "@/lib/products";
+
+const FADE_OVERLAY = "linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%)";
+
+type BlockAProps = { images: [string, string, string]; label: string; headline: string };
+type BlockBProps = { images: [string, string]; label: string; headline: string };
+type BlockCProps = { image: string; label: string; headline: string };
+
+function EditorialLabel({ label, headline }: { label: string; headline: string }) {
+  return (
+    <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10">
+      <p
+        className="text-[11px] font-semibold uppercase text-white"
+        style={{ letterSpacing: "0.2em" }}
+      >
+        {label}
+      </p>
+      <h2
+        className="mt-2 font-bold uppercase leading-[0.95] text-white"
+        style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
+      >
+        {headline}
+      </h2>
+    </div>
+  );
+}
+
+function BlockA({ images, label, headline }: BlockAProps) {
+  return (
+    <section className="relative w-full overflow-hidden" style={{ height: "70vh" }}>
+      <div className="grid h-full grid-cols-1 md:grid-cols-3">
+        <div className="relative h-full overflow-hidden">
+          <img src={images[0]} alt="" loading="lazy" className="h-full w-full object-cover" />
+        </div>
+        <div className="relative hidden h-full overflow-hidden md:block">
+          <img src={images[1]} alt="" loading="lazy" className="h-full w-full object-cover" />
+        </div>
+        <div className="relative hidden h-full overflow-hidden md:block">
+          <img src={images[2]} alt="" loading="lazy" className="h-full w-full object-cover" />
+        </div>
+      </div>
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{ background: FADE_OVERLAY }}
+        aria-hidden="true"
+      />
+      <EditorialLabel label={label} headline={headline} />
+    </section>
+  );
+}
+
+function BlockB({ images, label, headline }: BlockBProps) {
+  return (
+    <section className="relative w-full overflow-hidden" style={{ height: "80vh" }}>
+      <div className="grid h-full grid-cols-1 md:grid-cols-[3fr_2fr]">
+        <div className="relative h-full overflow-hidden">
+          <img src={images[0]} alt="" loading="lazy" className="h-full w-full object-cover" />
+        </div>
+        <div className="relative hidden h-full overflow-hidden md:block">
+          <img src={images[1]} alt="" loading="lazy" className="h-full w-full object-cover" />
+        </div>
+      </div>
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{ background: FADE_OVERLAY }}
+        aria-hidden="true"
+      />
+      <EditorialLabel label={label} headline={headline} />
+    </section>
+  );
+}
+
+function BlockC({ image, label, headline }: BlockCProps) {
+  return (
+    <section className="relative w-full overflow-hidden" style={{ height: "70vh" }}>
+      <img
+        src={image}
+        alt=""
+        loading="lazy"
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{ background: FADE_OVERLAY }}
+        aria-hidden="true"
+      />
+      <EditorialLabel label={label} headline={headline} />
+    </section>
+  );
+}
+
+export default function ShopPage() {
+  const shopEnabled = process.env.NEXT_PUBLIC_SHOP_ENABLED !== "false";
+  if (!shopEnabled) redirect("/drop-registro#preregistro");
 
   return (
-    <div className="min-h-screen bg-stone-950 text-stone-100 selection:bg-stone-100 selection:text-stone-950">
-      <HeroSection gallery={products} />
+    <div className="min-h-screen bg-white text-stone-900 selection:bg-stone-900 selection:text-stone-100">
+      <HeroSection
+        gallery={products}
+        primaryCtaHref="/lista-espera"
+        showShopCta={false}
+      />
 
-      <div className="relative z-10 bg-stone-950">
-        <GallerySection galleryPreview={galleryPreview} />
-
-        <StepsSection />
-
-        <section id="preregistro" data-reveal className="anim-reveal mx-auto max-w-7xl px-6 py-16 md:px-10">
-          <div className="grid gap-8 lg:grid-cols-[1fr_1.1fr]">
-            <div className="space-y-4">
-              <h2 className="text-3xl font-black uppercase leading-none md:text-5xl text-balance">
-                Datos para el drop
-              </h2>
-              <p className="text-sm font-black uppercase tracking-wide text-stone-100 md:text-base">
-                Regístrate y sé de los primeros
-              </p>
-              <p className="max-w-md text-sm leading-6 text-stone-400 md:text-base">
-                No es solo ropa, es cultura. Regístrate y sé parte del próximo drop del Kiosco
-                prendas limitadas, comunidad creativa y acceso exclusivo antes del lanzamiento.
-              </p>
-            </div>
-
-            <form data-cta-container className="anim-cta-container grid gap-4 rounded-[2rem] border border-stone-800 bg-stone-900 p-6 md:grid-cols-2 md:p-8">
-              <FormSupabaseHandler />
-              <div className="md:col-span-1">
-                <label className="mb-2 block text-xs font-semibold uppercase text-stone-400">
-                  Nombre
-                </label>
-                <input
-                  name="nombre"
-                  type="text"
-                  placeholder="Tu nombre"
-                  required
-                  minLength={2}
-                  maxLength={50}
-                  pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+"
-                  className="w-full rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3 text-sm text-stone-100 placeholder:text-stone-500 outline-none transition focus:border-stone-500"
-                />
-              </div>
-              <div className="md:col-span-1">
-                <label className="mb-2 block text-xs font-semibold uppercase text-stone-400">
-                  Instagram
-                </label>
-                <input
-                  name="instagram"
-                  type="text"
-                  placeholder="@tuusuario"
-                  required
-                  maxLength={31}
-                  className="w-full rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3 text-sm text-stone-100 placeholder:text-stone-500 outline-none transition focus:border-stone-500"
-                />
-              </div>
-              <div className="md:col-span-2">
-                <label className="mb-2 block text-xs font-semibold uppercase text-stone-400">
-                  Correo electrónico
-                </label>
-                <input
-                  name="email"
-                  type="email"
-                  placeholder="tumail@email.com"
-                  required
-                  className="w-full rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3 text-sm text-stone-100 placeholder:text-stone-500 outline-none transition focus:border-stone-500"
-                />
-              </div>
-              <div className="md:col-span-2">
-                <label className="mb-2 block text-xs font-semibold uppercase text-stone-400">
-                  Número telefónico
-                </label>
-                <input
-                  name="telefono"
-                  type="tel"
-                  placeholder="+58 412 1234567"
-                  required
-                  minLength={7}
-                  maxLength={16}
-                  className="w-full rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3 text-sm text-stone-100 placeholder:text-stone-500 outline-none transition focus:border-stone-500"
-                />
-              </div>
-              <div>
-                <label className="mb-2 block text-xs font-semibold uppercase text-stone-400">
-                  Talla de interés
-                </label>
-                <select name="talla" required className="w-full rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3 text-sm text-stone-100 outline-none transition focus:border-stone-500">
-                  <option value="">Selecciona tu talla</option>
-                  <option>S</option>
-                  <option>M</option>
-                  <option>L</option>
-                  <option>XL</option>
-                </select>
-              </div>
-              <div>
-                <label className="mb-2 block text-xs font-semibold uppercase text-stone-400">
-                  Ciudad
-                </label>
-                <input
-                  name="ciudad"
-                  type="text"
-                  placeholder="Lechería / Valencia / etc"
-                  required
-                  minLength={2}
-                  maxLength={50}
-                  pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+"
-                  className="w-full rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3 text-sm text-stone-100 placeholder:text-stone-500 outline-none transition focus:border-stone-500"
-                />
-              </div>
-              <div className="md:col-span-2 flex items-start gap-3 rounded-2xl border border-stone-800 bg-stone-950 p-4 text-sm text-stone-400">
-                <input type="checkbox" className="mt-1 accent-stone-100" />
-                <p>
-                  Acepto recibir información del drop, acceso anticipado y próximos lanzamientos de Kiosco.
-                </p>
-              </div>
-              <div className="md:col-span-2 flex flex-col gap-3 sm:flex-row sm:items-center">
-                <button
-                  type="submit"
-                  data-cta-submit
-                  className="anim-cta-submit-btn anim-cursor-scale inline-flex justify-center rounded-full bg-stone-100 px-6 py-3 text-sm font-bold uppercase text-stone-950 transition hover:scale-[1.02] hover:bg-stone-200"
-                >
-                  Unirme al preregistro
-                </button>
-              </div>
-            </form>
+      <div className="relative z-10 bg-white">
+        <section className="mx-auto max-w-7xl px-6 pt-16 pb-12 md:px-10 md:pt-28 md:pb-20">
+          <div className="flex flex-col items-center gap-4 text-center md:gap-5">
+            <p className="text-[11px] font-medium uppercase text-stone-500 md:text-xs">
+              Drop · 001
+            </p>
+            <h1 className="text-5xl font-bold uppercase leading-none tracking-tight text-stone-900 md:text-7xl">
+              Shop
+            </h1>
+            <p className="text-[11px] font-medium uppercase text-stone-500 md:text-xs">
+              50 unidades.
+            </p>
           </div>
         </section>
-      </div>
 
-      <FooterSection />
+        <section className="mx-auto max-w-7xl px-4 pb-24 md:px-6 md:pb-32">
+          <div className="grid grid-cols-2 gap-x-2 gap-y-10 md:grid-cols-4 md:gap-x-3 md:gap-y-14">
+            {products.map((p) => {
+              const frontSrc = p.images[0] ?? p.image;
+              const backSrc = p.images[1] ?? frontSrc;
+              return (
+                <ShopProductCard
+                  key={p.slug}
+                  slug={p.slug}
+                  title={p.title}
+                  price={p.price}
+                  frontSrc={frontSrc}
+                  backSrc={backSrc}
+                />
+              );
+            })}
+          </div>
+        </section>
+
+        <BlockA
+          images={["/kscopage2.jpg", "/kscopage3.jpg", "/kscopage4.jpg"]}
+          label="Kiosco · 2026"
+          headline="Made by artists."
+        />
+
+        <BlockB
+          images={["/kscopage5.png", "/kscopage6.jpg"]}
+          label="Drop · 001"
+          headline="Worn by outsiders."
+        />
+
+        <BlockC
+          image="/kscopage7.png"
+          label="Lechería · VE"
+          headline="Normal never built anything."
+        />
+
+        <BlockA
+          images={["/kscopage8.jpg", "/kscopage9.jpg", "/kscopage10.jpg"]}
+          label="Drop · 001"
+          headline="Limited drop. Sin restock."
+        />
+
+        <BlockB
+          images={["/kscopage11.jpg", "/kscopage12.png"]}
+          label="Kiosco · VE"
+          headline="Outsiders only."
+        />
+
+        <FooterSection />
+      </div>
     </div>
   );
 }
