@@ -17,17 +17,17 @@ export function ShopProductCard({ slug, title, price, frontSrc, backSrc }: Props
   return (
     <Link
       href={`/shop/${slug}`}
-      className="group block pb-10"
+      className="group block"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="relative w-full overflow-hidden bg-stone-900" style={{ aspectRatio: "3 / 4" }}>
+      <div className="relative aspect-[4/5] w-full overflow-hidden bg-stone-100">
         <img
           src={frontSrc}
           alt={title}
           loading="lazy"
           draggable={false}
-          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ease-out ${
+          className={`absolute inset-0 h-full w-full object-contain p-4 transition-opacity duration-300 ease-out md:p-6 ${
             isHovered ? "opacity-0" : "opacity-100"
           }`}
         />
@@ -36,20 +36,15 @@ export function ShopProductCard({ slug, title, price, frontSrc, backSrc }: Props
           alt={`${title} - vista trasera`}
           loading="lazy"
           draggable={false}
-          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ease-out ${
+          className={`absolute inset-0 h-full w-full object-contain p-4 transition-opacity duration-300 ease-out md:p-6 ${
             isHovered ? "opacity-100" : "opacity-0"
           }`}
         />
       </div>
 
-      <div className="px-4 pt-3">
-        <h3
-          className="text-[12px] font-medium uppercase text-white"
-          style={{ letterSpacing: "0.15em" }}
-        >
-          {title}
-        </h3>
-        <p className="mt-1 text-[12px] text-white/50">${price} USD</p>
+      <div className="mt-3 flex flex-col gap-0.5">
+        <h3 className="text-xs font-medium text-stone-900">{title}</h3>
+        <span className="text-xs text-stone-500">${price} USD</span>
       </div>
     </Link>
   );

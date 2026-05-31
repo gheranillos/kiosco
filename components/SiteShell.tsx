@@ -1,6 +1,5 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { AnimatedLogo } from "@/components/AnimatedLogo";
@@ -14,13 +13,8 @@ type Props = {
 };
 
 export function SiteShell({ shopEnabled, children }: Props) {
-  const pathname = usePathname();
-  const isShop = pathname === "/shop";
-
-  const baseHeaderClass =
-    "anim-header fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 md:px-10 text-sm font-semibold uppercase text-stone-100";
-  const headerClass = `${baseHeaderClass} ${isShop ? "bg-transparent" : "bg-stone-950"}`;
-  const contentWrapperClass = isShop ? "" : "pt-14";
+  const headerClass =
+    "anim-header fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 md:px-10 text-sm font-semibold uppercase text-stone-100 bg-stone-950";
 
   const headerEl = (
     <header data-animate-header className={headerClass} aria-label="Navegación">
@@ -34,7 +28,7 @@ export function SiteShell({ shopEnabled, children }: Props) {
       <CartProvider>
         {headerEl}
         <CartDrawer />
-        <div className={contentWrapperClass}>{children}</div>
+        <div className="pt-14">{children}</div>
       </CartProvider>
     );
   }
@@ -42,7 +36,7 @@ export function SiteShell({ shopEnabled, children }: Props) {
   return (
     <>
       {headerEl}
-      <div className={contentWrapperClass}>{children}</div>
+      <div className="pt-14">{children}</div>
     </>
   );
 }
