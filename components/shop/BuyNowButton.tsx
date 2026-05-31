@@ -3,12 +3,14 @@
 import { useRouter, useParams } from "next/navigation";
 
 import { useCart } from "@/components/shop/cart-context";
-import { getProductBySlug } from "@/lib/products";
+import { useProductSelection } from "@/components/shop/product-selection-context";
+import { getProductBySlug, isHoodie } from "@/lib/products";
 
 export function BuyNowButton() {
   const params = useParams<{ slug: string }>();
   const router = useRouter();
   const { addItem, closeCart } = useCart();
+  const { size, fit } = useProductSelection();
 
   const handleClick = () => {
     const product = getProductBySlug(params?.slug ?? "");
@@ -16,7 +18,10 @@ export function BuyNowButton() {
       router.push("/checkout");
       return;
     }
-    addItem(product, 1);
+    addItem(
+      product,
+      isHoodie(product) ? { quantity: 1, size } : { quantity: 1, size, fit }
+    );
     closeCart();
     router.push("/checkout");
   };

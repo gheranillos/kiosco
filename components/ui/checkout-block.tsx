@@ -45,6 +45,8 @@ import {
 } from "@/components/ui/select";
 
 import { useCart } from "@/components/shop/cart-context";
+import { isHoodie } from "@/lib/products";
+import { fitLabel } from "@/lib/shop-options";
 
 type CheckoutPaymentMethod = "paypal" | "bolivares" | "binance_pay" | "zinli";
 type ManualPaymentData = {
@@ -174,8 +176,11 @@ export default function Checkout() {
     setIsLoading(true);
 
     const hydratedFromCart: OrderItem[] = cartItems.map((it) => ({
-      id: it.slug,
-      name: it.title,
+      id: it.lineId,
+      name:
+        it.fit && !isHoodie(it.slug)
+          ? `${it.title} · ${fitLabel(it.fit)} · ${it.size}`
+          : `${it.title} · ${it.size}`,
       price: it.price,
       image: it.image,
       quantity: it.quantity,
@@ -208,6 +213,8 @@ export default function Checkout() {
         items: cartItems.map((it) => ({
           slug: it.slug,
           quantity: it.quantity,
+          size: it.size,
+          ...(it.fit && !isHoodie(it.slug) ? { fit: it.fit } : {}),
         })),
         name,
         email: shippingAddress.email.trim(),

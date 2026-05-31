@@ -100,6 +100,17 @@ export const products: Product[] = [
   },
 ];
 
+const HOODIE_SLUGS = new Set([
+  "outsiders-only",
+  "creme-normal",
+  "black-normal",
+]);
+
+export function isHoodie(product: Pick<Product, "slug"> | string): boolean {
+  const slug = typeof product === "string" ? product : product.slug;
+  return HOODIE_SLUGS.has(slug);
+}
+
 export function getProductBySlug(slug: string) {
   const normalized = normalizeSlug(slug);
   return products.find((p) => p.slug === normalized);

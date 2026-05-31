@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/components/shop/cart-context";
+import { isHoodie } from "@/lib/products";
+import { fitLabel } from "@/lib/shop-options";
 
 export function CartDrawer() {
   const { items, isOpen, closeCart, setQuantity, removeItem, count, subtotal, clear } =
@@ -50,7 +52,7 @@ export function CartDrawer() {
               <div className="space-y-3">
                 {items.map((it) => (
                   <div
-                    key={it.slug}
+                    key={it.lineId}
                     className="flex gap-3 rounded-2xl border border-stone-800 bg-stone-900/20 p-3"
                   >
                     <div className="h-16 w-16 overflow-hidden rounded-xl bg-stone-950">
@@ -68,13 +70,16 @@ export function CartDrawer() {
                             {it.title}
                           </p>
                           <p className="mt-0.5 text-xs text-stone-400">
-                            ${it.price}
+                            {it.fit && !isHoodie(it.slug)
+                              ? `${fitLabel(it.fit)} · ${it.size}`
+                              : it.size}{" "}
+                            · ${it.price}
                           </p>
                         </div>
 
                         <button
                           type="button"
-                          onClick={() => removeItem(it.slug)}
+                          onClick={() => removeItem(it.lineId)}
                           className="text-stone-500 hover:text-stone-100 transition"
                           aria-label="Eliminar"
                         >
@@ -86,7 +91,7 @@ export function CartDrawer() {
                         <div className="flex items-center gap-2">
                           <button
                             type="button"
-                            onClick={() => setQuantity(it.slug, it.quantity - 1)}
+                            onClick={() => setQuantity(it.lineId, it.quantity - 1)}
                             className={cn(
                               "inline-flex h-8 w-8 items-center justify-center rounded-full border transition",
                               "border-stone-800 bg-stone-950/30 text-stone-200 hover:bg-stone-900/40"
@@ -102,7 +107,7 @@ export function CartDrawer() {
 
                           <button
                             type="button"
-                            onClick={() => setQuantity(it.slug, it.quantity + 1)}
+                            onClick={() => setQuantity(it.lineId, it.quantity + 1)}
                             className={cn(
                               "inline-flex h-8 w-8 items-center justify-center rounded-full border transition",
                               "border-stone-800 bg-stone-950/30 text-stone-200 hover:bg-stone-900/40"

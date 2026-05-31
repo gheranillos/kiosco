@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 
 import { getSupabaseServerClient } from "@/lib/supabase-server";
-import { products } from "@/lib/products";
+import { isHoodie, products } from "@/lib/products";
 
 type Body = {
   payment_method: "paypal" | "bolivares" | "binance_pay" | "zinli";
-  items: Array<{ slug: string; quantity: number }>;
+  items: Array<{ slug: string; quantity: number; size?: string; fit?: string }>;
   name?: string;
   email?: string;
   phone?: string;
@@ -35,6 +35,8 @@ export async function POST(req: Request) {
       .map((it) => ({
         slug: String(it.slug || ""),
         quantity: Number(it.quantity || 0),
+        size: String(it.size || "").trim().toUpperCase(),
+        fit: String(it.fit || "").trim().toLowerCase(),
       }))
       .filter((it) => it.slug && Number.isFinite(it.quantity) && it.quantity > 0);
 
@@ -46,9 +48,16 @@ export async function POST(req: Request) {
     const itemRows = items.map((it) => {
       const p = products.find((x) => x.slug === it.slug);
       if (!p) return null;
+      const variant = it.size
+        ? isHoodie(it.slug)
+          ? ` · ${it.size}`
+          : it.fit
+            ? ` · ${it.fit === "boxy" ? "Boxy / Oversize" : "Regular"} · ${it.size}`
+            : ""
+        : "";
       return {
         product_slug: p.slug,
-        title: p.title,
+        title: `${p.title}${variant}`,
         unit_price: p.price,
         quantity: it.quantity,
         image: p.image ?? p.images?.[0] ?? null,

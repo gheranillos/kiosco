@@ -5,20 +5,26 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 
 import type { Product } from "@/lib/products";
-import { getProductBySlug, products } from "@/lib/products";
+import { getProductBySlug, isHoodie, products } from "@/lib/products";
 import { useCart } from "@/components/shop/cart-context";
-
-const sizes = ["XS", "S", "M", "L", "XL", "XXL"] as const;
+import {
+  PRODUCT_FITS,
+  PRODUCT_SIZES,
+  useProductSelection,
+} from "@/components/shop/product-selection-context";
+import { fitLabel } from "@/lib/shop-options";
 
 export function ProductDetailClient() {
   const params = useParams<{ slug: string }>();
   const product: Product = getProductBySlug(params?.slug ?? "") ?? products[0];
   const { addItem } = useCart();
+  const { size: activeSize, fit: activeFit, setSize: setActiveSize, setFit: setActiveFit } =
+    useProductSelection();
   const images = product.images?.length ? product.images : [product.image].filter(Boolean);
   const safeImages = images.length ? images : ["/tshirt1.jpg"];
 
   const [activeImage, setActiveImage] = useState(0);
-  const [activeSize, setActiveSize] = useState<(typeof sizes)[number]>("M");
+  const hoodie = isHoodie(product);
 
   const related = useMemo(
     () => products.filter((p) => p.slug !== product.slug).slice(0, 6),
@@ -101,10 +107,32 @@ export function ProductDetailClient() {
               ))}
             </div>
 
+            {!hoodie ? (
+              <div className="space-y-2">
+                <p className="text-xs font-semibold uppercase text-stone-500">Corte</p>
+                <div className="grid grid-cols-2 gap-2">
+                  {PRODUCT_FITS.map((option) => (
+                    <button
+                      key={option.id}
+                      type="button"
+                      onClick={() => setActiveFit(option.id)}
+                      className={`h-10 rounded-xl border text-xs font-bold uppercase transition ${
+                        activeFit === option.id
+                          ? "border-stone-900 bg-stone-900 text-stone-100"
+                          : "border-stone-300 bg-white text-stone-500 hover:text-stone-900 hover:border-stone-700"
+                      }`}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
             <div className="space-y-2">
               <p className="text-xs font-semibold uppercase text-stone-500">Talla</p>
               <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
-                {sizes.map((s) => (
+                {PRODUCT_SIZES.map((s) => (
                   <button
                     key={s}
                     type="button"
@@ -125,16 +153,32 @@ export function ProductDetailClient() {
           <div className="space-y-3">
             <button
               type="button"
-                onClick={() => addItem(product, 1)}
+              onClick={() =>
+                addItem(
+                  product,
+                  hoodie
+                    ? { quantity: 1, size: activeSize }
+                    : { quantity: 1, size: activeSize, fit: activeFit }
+                )
+              }
               className="w-full rounded-full bg-stone-900 px-6 py-4 text-sm font-black uppercase text-stone-100 transition hover:bg-stone-800"
             >
               Add to cart
             </button>
 
             <p className="text-[11px] leading-5 text-stone-500">
-              Seleccionaste talla{" "}
-              <span className="font-semibold text-stone-800">{activeSize}</span>. Carrito y
-              checkout se conectan en la siguiente fase.
+              {hoodie ? (
+                <>
+                  Seleccionaste talla{" "}
+                  <span className="font-semibold text-stone-800">{activeSize}</span>.
+                </>
+              ) : (
+                <>
+                  Seleccionaste corte{" "}
+                  <span className="font-semibold text-stone-800">{fitLabel(activeFit)}</span> ·
+                  talla <span className="font-semibold text-stone-800">{activeSize}</span>.
+                </>
+              )}
             </p>
           </div>
 
@@ -187,7 +231,9 @@ export function ProductDetailClient() {
                   </table>
                 </div>
                 <p className="mt-3 text-sm text-stone-600">
-                  Usa tu talla usual. Si te gusta oversize, sube 1 talla.
+                  {hoodie
+                    ? "Usa tu talla usual. El hoodie tiene un solo corte."
+                    : "Usa tu talla usual con corte Regular. Para un fit más amplio, elige Boxy en la misma talla."}
                 </p>
               </div>
             </details>

@@ -1,6 +1,7 @@
 import { FooterSection } from "@/components/ui/footer";
 import { BuyNowButton } from "@/components/shop/BuyNowButton";
 import { ProductDetailClient } from "@/components/shop/ProductDetailClient";
+import { ProductSelectionProvider } from "@/components/shop/product-selection-context";
 import { products } from "@/lib/products";
 import { redirect } from "next/navigation";
 
@@ -14,11 +15,13 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
 
   return (
     <div className="min-h-screen bg-white text-stone-900 selection:bg-stone-900 selection:text-stone-100">
-      <ProductDetailClient />
+      <ProductSelectionProvider>
+        <ProductDetailClient />
 
-      <div className="mx-auto max-w-7xl px-6 pb-12 md:px-10">
-        <BuyNowButton />
-      </div>
+        <div className="mx-auto max-w-7xl px-6 pb-12 md:px-10">
+          <BuyNowButton />
+        </div>
+      </ProductSelectionProvider>
 
       <FooterSection />
     </div>

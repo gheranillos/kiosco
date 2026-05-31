@@ -2,14 +2,29 @@
 
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 
-import type { Product } from "@/lib/products";
+import { isHoodie, type Product } from "@/lib/products";
+import {
+  cartLineId,
+  type ProductFit,
+  type ProductSize,
+} from "@/lib/shop-options";
 
 export type CartItem = {
+  lineId: string;
   slug: string;
   title: string;
   image: string;
   price: number;
   quantity: number;
+  size: ProductSize;
+  /** Solo camisetas; hoodies tienen un único corte. */
+  fit?: ProductFit;
+};
+
+export type AddToCartOptions = {
+  quantity?: number;
+  size?: ProductSize;
+  fit?: ProductFit;
 };
 
 type CartContextValue = {
@@ -17,9 +32,9 @@ type CartContextValue = {
   isOpen: boolean;
   openCart: () => void;
   closeCart: () => void;
-  addItem: (product: Product, quantity?: number) => void;
-  removeItem: (slug: string) => void;
-  setQuantity: (slug: string, quantity: number) => void;
+  addItem: (product: Product, options?: AddToCartOptions) => void;
+  removeItem: (lineId: string) => void;
+  setQuantity: (lineId: string, quantity: number) => void;
   clear: () => void;
   count: number;
   subtotal: number;
@@ -27,7 +42,7 @@ type CartContextValue = {
 
 const CartContext = createContext<CartContextValue | null>(null);
 
-const STORAGE_KEY = "kiosco_cart_v1";
+const STORAGE_KEY = "kiosco_cart_v2";
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
@@ -57,12 +72,18 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const openCart = () => setIsOpen(true);
     const closeCart = () => setIsOpen(false);
 
-    const addItem = (product: Product, quantity = 1) => {
+    const addItem = (product: Product, options?: AddToCartOptions) => {
+      const quantity = options?.quantity ?? 1;
+      const size = options?.size ?? "M";
+      const hoodie = isHoodie(product);
+      const fit = hoodie ? undefined : (options?.fit ?? "regular");
+      const lineId = cartLineId(product.slug, size, fit ?? "regular", { hoodie });
+
       setItems((prev) => {
-        const existing = prev.find((it) => it.slug === product.slug);
+        const existing = prev.find((it) => it.lineId === lineId);
         if (existing) {
           return prev.map((it) =>
-            it.slug === product.slug
+            it.lineId === lineId
               ? { ...it, quantity: it.quantity + quantity }
               : it
           );
@@ -70,25 +91,28 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         return [
           ...prev,
           {
+            lineId,
             slug: product.slug,
             title: product.title,
             image: product.image ?? product.images?.[0] ?? "",
             price: product.price,
             quantity,
+            size,
+            ...(fit ? { fit } : {}),
           },
         ];
       });
       setIsOpen(true);
     };
 
-    const removeItem = (slug: string) => {
-      setItems((prev) => prev.filter((it) => it.slug !== slug));
+    const removeItem = (lineId: string) => {
+      setItems((prev) => prev.filter((it) => it.lineId !== lineId));
     };
 
-    const setQuantity = (slug: string, quantity: number) => {
+    const setQuantity = (lineId: string, quantity: number) => {
       setItems((prev) => {
-        if (quantity <= 0) return prev.filter((it) => it.slug !== slug);
-        return prev.map((it) => (it.slug === slug ? { ...it, quantity } : it));
+        if (quantity <= 0) return prev.filter((it) => it.lineId !== lineId);
+        return prev.map((it) => (it.lineId === lineId ? { ...it, quantity } : it));
       });
     };
 
