@@ -19,6 +19,7 @@ export const products: Product[] = [
     price: 25,
     images: [
       "/shirt1front.png",
+      "/shirt1back.png",
       "/KSCO%201.1.png",
       "/KSCO%201.2.png",
       "/KSCO%201.3.png",
@@ -35,6 +36,7 @@ export const products: Product[] = [
     price: 25,
     images: [
       "/shirt2front.png",
+      "/shirt2back.png",
       "/KSCO%202.1.png",
       "/KSCO%202.2.png",
       "/KSCO%202.3.png",
@@ -50,6 +52,7 @@ export const products: Product[] = [
     price: 25,
     images: [
       "/shirt3front.png",
+      "/shirt3back.png",
       "/KSCO%204.1.png",
       "/KSCO%204.2.png",
       "/KSCO%204.3.png",
