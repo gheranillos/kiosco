@@ -20,31 +20,31 @@ const legalLinks = [
 
 export function FooterSection() {
   return (
-    <footer className="bg-stone-950 text-stone-100">
+    <footer className="bg-white text-stone-900">
       <div className="mx-auto w-full max-w-7xl px-6 pt-16 pb-10 md:px-10 md:pt-20">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-4 md:gap-12">
           <div className="space-y-4">
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-stone-100">
+            <h3 className="text-[11px] font-semibold uppercase text-stone-900">
               Quédate en el loop
             </h3>
-            <p className="text-xs leading-5 text-stone-400">
+            <p className="text-xs leading-5 text-stone-600">
               Suscríbete y entérate del próximo drop antes que nadie.
             </p>
             <form
               method="get"
               action="/lista-espera"
-              className="flex items-center gap-3 border-b border-stone-700 pb-1.5 transition focus-within:border-stone-300"
+              className="flex items-center gap-3 border-b border-stone-300 pb-1.5 transition focus-within:border-stone-900"
             >
               <input
                 type="email"
                 name="email"
                 required
                 placeholder="tucorreo@email.com"
-                className="w-full bg-transparent py-1 text-sm text-stone-100 placeholder:text-stone-500 outline-none"
+                className="w-full bg-transparent py-1 text-sm text-stone-900 placeholder:text-stone-400 outline-none"
               />
               <button
                 type="submit"
-                className="shrink-0 text-[11px] font-semibold uppercase tracking-[0.18em] text-stone-100 transition hover:text-stone-300"
+                className="shrink-0 text-[11px] font-semibold uppercase text-stone-900 transition hover:text-stone-600"
               >
                 Suscribirme
               </button>
@@ -52,7 +52,7 @@ export function FooterSection() {
           </div>
 
           <div className="space-y-4">
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-stone-100">
+            <h3 className="text-[11px] font-semibold uppercase text-stone-900">
               Brand
             </h3>
             <ul className="space-y-2.5">
@@ -60,7 +60,7 @@ export function FooterSection() {
                 <li key={link.title}>
                   <Link
                     href={link.href}
-                    className="text-xs text-stone-400 transition hover:text-stone-100"
+                    className="text-xs text-stone-600 transition hover:text-stone-900"
                   >
                     {link.title}
                   </Link>
@@ -70,7 +70,7 @@ export function FooterSection() {
           </div>
 
           <div className="space-y-4">
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-stone-100">
+            <h3 className="text-[11px] font-semibold uppercase text-stone-900">
               Support
             </h3>
             <ul className="space-y-2.5">
@@ -78,7 +78,7 @@ export function FooterSection() {
                 <li key={link.title}>
                   <Link
                     href={link.href}
-                    className="text-xs text-stone-400 transition hover:text-stone-100"
+                    className="text-xs text-stone-600 transition hover:text-stone-900"
                   >
                     {link.title}
                   </Link>
@@ -88,7 +88,7 @@ export function FooterSection() {
           </div>
 
           <div className="space-y-4">
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-stone-100">
+            <h3 className="text-[11px] font-semibold uppercase text-stone-900">
               Boring stuff
             </h3>
             <ul className="space-y-2.5">
@@ -96,7 +96,7 @@ export function FooterSection() {
                 <li key={link.title}>
                   <Link
                     href={link.href}
-                    className="text-xs text-stone-400 transition hover:text-stone-100"
+                    className="text-xs text-stone-600 transition hover:text-stone-900"
                   >
                     {link.title}
                   </Link>
@@ -106,23 +106,23 @@ export function FooterSection() {
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col gap-6 border-t border-stone-800 pt-8 md:flex-row md:items-center md:justify-between">
-          <div className="flex flex-wrap items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.18em]">
-            <span className="text-stone-100">País &amp; Idioma</span>
-            <span className="text-stone-400">VE</span>
-            <span className="text-stone-700">|</span>
-            <span className="text-stone-400">USD $</span>
-            <span className="text-stone-700">|</span>
-            <span className="text-stone-400">Español</span>
+        <div className="mt-14 flex flex-col gap-6 border-t border-stone-200 pt-8 md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-wrap items-center gap-3 text-[11px] font-semibold uppercase">
+            <span className="text-stone-900">País &amp; Idioma</span>
+            <span className="text-stone-600">VE</span>
+            <span className="text-stone-300">|</span>
+            <span className="text-stone-600">USD $</span>
+            <span className="text-stone-300">|</span>
+            <span className="text-stone-600">Español</span>
           </div>
 
-          <div className="flex items-center gap-5 text-stone-400">
+          <div className="flex items-center gap-5 text-stone-600">
             <Link
               href="https://x.com/wearekiosco"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="X/Twitter"
-              className="transition hover:text-stone-100"
+              className="transition hover:text-stone-900"
             >
               <svg
                 className="size-5"
@@ -141,7 +141,7 @@ export function FooterSection() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
-              className="transition hover:text-stone-100"
+              className="transition hover:text-stone-900"
             >
               <svg
                 className="size-5"
@@ -160,7 +160,7 @@ export function FooterSection() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="TikTok"
-              className="transition hover:text-stone-100"
+              className="transition hover:text-stone-900"
             >
               <svg
                 className="size-5"
@@ -180,14 +180,14 @@ export function FooterSection() {
         <div className="pt-10 md:pt-16">
           <p
             aria-hidden="true"
-            className="select-none whitespace-nowrap font-black uppercase leading-[0.82] tracking-tight text-stone-100"
+            className="select-none whitespace-nowrap font-black uppercase leading-[0.82] tracking-tight text-stone-900"
             style={{ fontSize: "clamp(3.5rem, 17vw, 14rem)" }}
           >
             El Kiosco
           </p>
         </div>
 
-        <div className="mt-8 flex flex-col items-start gap-2 text-[10px] uppercase tracking-[0.2em] text-stone-500 md:flex-row md:items-center md:justify-between">
+        <div className="mt-8 flex flex-col items-start gap-2 text-[10px] uppercase text-stone-500 md:flex-row md:items-center md:justify-between">
           <span>© {new Date().getFullYear()} El Kiosco</span>
           <span>Made by artists. Worn by outsiders. by @gheranillos</span>
         </div>

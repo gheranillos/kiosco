@@ -159,7 +159,7 @@ export default function ListaEsperaPage() {
           </button>
         </form>
 
-        <p className="text-center text-xs uppercase tracking-[0.2em] text-stone-500">
+        <p className="text-center text-xs uppercase text-stone-500">
           Cuenta regresiva hasta el 31 de mayo
         </p>
 

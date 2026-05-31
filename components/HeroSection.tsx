@@ -9,13 +9,15 @@ type GalleryItem = {
 };
 
 function PrimaryDropCta({
+  href,
   onClick,
 }: {
-  onClick: (e: MouseEvent<HTMLAnchorElement>) => void;
+  href: string;
+  onClick?: (e: MouseEvent<HTMLAnchorElement>) => void;
 }) {
   return (
     <a
-      href="#preregistro"
+      href={href}
       onClick={onClick}
       className="anim-hero-cta-pulse anim-cursor-scale group relative inline-flex min-w-[min(260px,100%)] shrink-0 items-center justify-center overflow-hidden rounded-full bg-stone-100 px-8 py-4 text-sm font-bold uppercase leading-none text-stone-950 transition hover:scale-[1.02]"
     >
@@ -43,7 +45,17 @@ function PrimaryDropCta({
   );
 }
 
-export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
+type HeroSectionProps = {
+  gallery: GalleryItem[];
+  primaryCtaHref?: string;
+  showShopCta?: boolean;
+};
+
+export function HeroSection({
+  gallery,
+  primaryCtaHref,
+  showShopCta = true,
+}: HeroSectionProps) {
   const heroBgRef = useRef<HTMLDivElement>(null);
   const shopEnabled = process.env.NEXT_PUBLIC_SHOP_ENABLED !== "false";
   const slides = [
@@ -118,6 +130,9 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
       window.history.replaceState(null, "", "#preregistro");
     }
   };
+
+  const ctaHref = primaryCtaHref ?? "#preregistro";
+  const ctaOnClick = primaryCtaHref ? undefined : scrollToPreregistro;
 
   return (
     <section
@@ -208,7 +223,7 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
         {!shopEnabled && (
           <div className="pointer-events-none absolute bottom-[5.25rem] left-1/2 z-30 w-full max-w-[min(320px,92vw)] -translate-x-1/2 px-6 md:bottom-[3.5rem]">
             <div className="pointer-events-auto flex justify-center">
-              <PrimaryDropCta onClick={scrollToPreregistro} />
+              <PrimaryDropCta href={ctaHref} onClick={ctaOnClick} />
             </div>
           </div>
         )}
@@ -258,17 +273,17 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
 
           <div className="relative z-30 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:gap-4 md:gap-3">
             {shopEnabled && (
-              <PrimaryDropCta onClick={scrollToPreregistro} />
+              <PrimaryDropCta href={ctaHref} onClick={ctaOnClick} />
             )}
 
-            {shopEnabled ? (
+            {shopEnabled && showShopCta ? (
               <a
                 href="/shop"
                 className="anim-cursor-scale relative z-30 inline-flex min-w-[min(260px,100%)] shrink-0 items-center justify-center rounded-full border border-stone-700 bg-stone-950/90 px-8 py-3.5 text-sm font-bold uppercase leading-none text-stone-100 backdrop-blur-sm transition hover:scale-[1.02] hover:bg-stone-950 md:bg-stone-950/40 md:py-4 md:backdrop-blur-none"
               >
                 Shop
               </a>
-            ) : (
+            ) : !shopEnabled ? (
               <button
                 type="button"
                 disabled
@@ -277,7 +292,7 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
               >
                 Shop (Próximamente)
               </button>
-            )}
+            ) : null}
           </div>
         </div>
       </div>
