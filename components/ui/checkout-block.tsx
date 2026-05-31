@@ -139,7 +139,7 @@ export default function Checkout() {
     { id: "zoom", name: "Zoom" },
   ];
   const couponCatalog: Record<string, number> = {
-    EARLY100: 0.05,
+    EARLY100: 0.12,
   };
 
   const [selectedShipping, setSelectedShipping] = useState("mrw");
