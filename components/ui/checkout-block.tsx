@@ -91,6 +91,175 @@ interface PaymentMethod {
   nameOnCard: string;
 }
 
+function CheckoutSkeleton() {
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="lg:col-span-2 flex flex-col gap-6">
+        <Card>
+          <CardContent className="p-6 flex flex-col gap-4">
+            <Skeleton className="h-6 w-32" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {Array.from({ length: 6 }).map((_, index) => (
+                <div key={index} className="flex flex-col gap-2">
+                  <Skeleton className="h-4 w-20" />
+                  <Skeleton className="h-10 w-full" />
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+      <div className="flex flex-col gap-4 rounded-2xl border border-stone-800 bg-black p-5 lg:p-6">
+        <Skeleton className="hidden h-8 w-32 lg:block bg-stone-800" />
+        <Card className="border-stone-800 bg-stone-950/80">
+          <CardContent className="p-4 flex flex-col gap-4">
+            <Skeleton className="h-6 w-24 bg-stone-800" />
+            {Array.from({ length: 4 }).map((_, index) => (
+              <div key={index} className="flex justify-between">
+                <Skeleton className="h-4 w-20 bg-stone-800" />
+                <Skeleton className="h-4 w-16 bg-stone-800" />
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
+
+type OrderSummaryCardProps = {
+  orderItems: OrderItem[];
+  couponInput: string;
+  onCouponInputChange: (value: string) => void;
+  onApplyCoupon: () => void;
+  couponFeedback: string | null;
+  summary: CheckoutSummary;
+  appliedCoupon: string | null;
+  onRemoveItem: (lineId: string) => void;
+};
+
+function OrderSummaryCard({
+  orderItems,
+  couponInput,
+  onCouponInputChange,
+  onApplyCoupon,
+  couponFeedback,
+  summary,
+  appliedCoupon,
+  onRemoveItem,
+}: OrderSummaryCardProps) {
+  return (
+    <Card className="flex flex-col gap-5 border-stone-700 bg-stone-950/70 text-stone-100 shadow-none">
+      <CardHeader>
+        <h3 className="font-semibold flex items-center gap-2 text-stone-100">
+          <ShoppingBag className="h-4 w-4 text-stone-300" />
+          Resumen del pedido
+        </h3>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4">
+          {orderItems.length === 0 ? (
+            <p className="text-sm text-stone-400">Tu carrito está vacío.</p>
+          ) : (
+            orderItems.map((item) => (
+              <div key={item.id} className="flex gap-3">
+                <div className="relative w-12 h-12 flex-shrink-0">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-full h-full object-cover rounded-md ring-1 ring-stone-700"
+                  />
+                  <Badge
+                    className="absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center border-0 bg-stone-100 text-xs text-stone-950"
+                  >
+                    {item.quantity}
+                  </Badge>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="truncate text-sm font-medium text-stone-100">
+                    {item.name}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-semibold text-stone-200">
+                      ${item.price}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="text-sm font-semibold text-stone-100">
+                    ${(item.price * item.quantity).toFixed(2)}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => onRemoveItem(item.id)}
+                    aria-label={`Eliminar ${item.name}`}
+                    className="ml-1 flex h-7 w-7 items-center justify-center rounded-full text-stone-500 transition hover:bg-stone-800 hover:text-stone-100"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        <div className="rounded-xl border border-stone-700 bg-stone-950/50 p-3">
+          <p className="text-xs font-semibold uppercase text-stone-500">
+            Cupón canjeable
+          </p>
+          <div className="mt-2 flex gap-2">
+            <Input
+              value={couponInput}
+              onChange={(e) => onCouponInputChange(e.target.value)}
+              placeholder="Código"
+              className="h-9 border-stone-600 bg-stone-950 text-stone-100 placeholder:text-stone-500"
+            />
+            <Button
+              type="button"
+              onClick={onApplyCoupon}
+              variant="outline"
+              className="h-9 shrink-0 border-stone-600 bg-transparent text-stone-100 hover:bg-stone-800 hover:text-stone-50"
+            >
+              Aplicar
+            </Button>
+          </div>
+          {couponFeedback && (
+            <p className="mt-2 text-xs text-stone-400">{couponFeedback}</p>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-2 border-t border-stone-700 pt-4">
+          <div className="flex justify-between text-sm text-stone-300">
+            <span>Subtotal</span>
+            <span className="text-stone-100">${summary.subtotal.toFixed(2)}</span>
+          </div>
+          {summary.discount > 0 && (
+            <div className="flex justify-between text-sm text-emerald-400">
+              <span className="inline-flex items-center gap-1">
+                <Percent className="h-3.5 w-3.5" />
+                Descuento {appliedCoupon ? `(${appliedCoupon})` : ""}
+              </span>
+              <span>-${summary.discount.toFixed(2)}</span>
+            </div>
+          )}
+          <div className="flex justify-between text-sm text-stone-300">
+            <span>Shipping</span>
+            <span className="text-stone-100">${summary.shipping.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between text-sm text-stone-300">
+            <span>Tax</span>
+            <span className="text-stone-100">${summary.tax.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between border-t border-stone-700 pt-2 text-lg font-semibold text-stone-50">
+            <span>Total</span>
+            <span>${summary.total.toFixed(2)}</span>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 export default function Checkout() {
   const router = useRouter();
   const { items: cartItems, subtotal, clear, removeItem } = useCart();
@@ -384,151 +553,6 @@ export default function Checkout() {
   };
 
   const summary = calculateSummary();
-
-  const CheckoutSkeleton = () => (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div className="lg:col-span-2 flex flex-col gap-6">
-        <Card>
-          <CardContent className="p-6 flex flex-col gap-4">
-            <Skeleton className="h-6 w-32" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {Array.from({ length: 6 }).map((_, index) => (
-                <div key={index} className="flex flex-col gap-2">
-                  <Skeleton className="h-4 w-20" />
-                  <Skeleton className="h-10 w-full" />
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-      <div className="flex flex-col gap-4 rounded-2xl border border-stone-800 bg-black p-5 lg:p-6">
-        <Skeleton className="hidden h-8 w-32 lg:block bg-stone-800" />
-        <Card className="border-stone-800 bg-stone-950/80">
-          <CardContent className="p-4 flex flex-col gap-4">
-            <Skeleton className="h-6 w-24 bg-stone-800" />
-            {Array.from({ length: 4 }).map((_, index) => (
-              <div key={index} className="flex justify-between">
-                <Skeleton className="h-4 w-20 bg-stone-800" />
-                <Skeleton className="h-4 w-16 bg-stone-800" />
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
-
-  const OrderSummaryCard = () => (
-    <Card className="flex flex-col gap-5 border-stone-700 bg-stone-950/70 text-stone-100 shadow-none">
-      <CardHeader>
-        <h3 className="font-semibold flex items-center gap-2 text-stone-100">
-          <ShoppingBag className="h-4 w-4 text-stone-300" />
-          Resumen del pedido
-        </h3>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-4">
-        <div className="flex flex-col gap-4">
-          {orderItems.length === 0 ? (
-            <p className="text-sm text-stone-400">Tu carrito está vacío.</p>
-          ) : (
-            orderItems.map((item) => (
-              <div key={item.id} className="flex gap-3">
-                <div className="relative w-12 h-12 flex-shrink-0">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-full h-full object-cover rounded-md ring-1 ring-stone-700"
-                  />
-                  <Badge
-                    className="absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center border-0 bg-stone-100 text-xs text-stone-950"
-                  >
-                    {item.quantity}
-                  </Badge>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="truncate text-sm font-medium text-stone-100">
-                    {item.name}
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-stone-200">
-                      ${item.price}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="text-sm font-semibold text-stone-100">
-                    ${(item.price * item.quantity).toFixed(2)}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => removeItem(item.id)}
-                    aria-label={`Eliminar ${item.name}`}
-                    className="ml-1 flex h-7 w-7 items-center justify-center rounded-full text-stone-500 transition hover:bg-stone-800 hover:text-stone-100"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-
-        <div className="rounded-xl border border-stone-700 bg-stone-950/50 p-3">
-          <p className="text-xs font-semibold uppercase text-stone-500">
-            Cupón canjeable
-          </p>
-          <div className="mt-2 flex gap-2">
-            <Input
-              value={couponInput}
-              onChange={(e) => setCouponInput(e.target.value)}
-              placeholder="Código"
-              className="h-9 border-stone-600 bg-stone-950 text-stone-100 placeholder:text-stone-500"
-            />
-            <Button
-              type="button"
-              onClick={applyCoupon}
-              variant="outline"
-              className="h-9 shrink-0 border-stone-600 bg-transparent text-stone-100 hover:bg-stone-800 hover:text-stone-50"
-            >
-              Aplicar
-            </Button>
-          </div>
-          {couponFeedback && (
-            <p className="mt-2 text-xs text-stone-400">{couponFeedback}</p>
-          )}
-        </div>
-
-        <div className="flex flex-col gap-2 border-t border-stone-700 pt-4">
-          <div className="flex justify-between text-sm text-stone-300">
-            <span>Subtotal</span>
-            <span className="text-stone-100">${summary.subtotal.toFixed(2)}</span>
-          </div>
-          {summary.discount > 0 && (
-            <div className="flex justify-between text-sm text-emerald-400">
-              <span className="inline-flex items-center gap-1">
-                <Percent className="h-3.5 w-3.5" />
-                Descuento {appliedCoupon ? `(${appliedCoupon})` : ""}
-              </span>
-              <span>-${summary.discount.toFixed(2)}</span>
-            </div>
-          )}
-          <div className="flex justify-between text-sm text-stone-300">
-            <span>Shipping</span>
-            <span className="text-stone-100">${summary.shipping.toFixed(2)}</span>
-          </div>
-          <div className="flex justify-between text-sm text-stone-300">
-            <span>Tax</span>
-            <span className="text-stone-100">${summary.tax.toFixed(2)}</span>
-          </div>
-          <div className="flex justify-between border-t border-stone-700 pt-2 text-lg font-semibold text-stone-50">
-            <span>Total</span>
-            <span>${summary.total.toFixed(2)}</span>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
 
   if (isLoading) {
     return (
@@ -1345,7 +1369,16 @@ export default function Checkout() {
             </Badge>
           </div>
 
-          <OrderSummaryCard />
+          <OrderSummaryCard
+            orderItems={orderItems}
+            couponInput={couponInput}
+            onCouponInputChange={setCouponInput}
+            onApplyCoupon={applyCoupon}
+            couponFeedback={couponFeedback}
+            summary={summary}
+            appliedCoupon={appliedCoupon}
+            onRemoveItem={removeItem}
+          />
 
           <Card className="border-stone-700 bg-stone-950/80 text-stone-100 shadow-none transition-all duration-300 hover:shadow-[0_0_24px_rgba(255,255,255,0.06)]">
             <CardContent className="p-4">
