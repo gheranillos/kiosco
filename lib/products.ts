@@ -13,32 +13,47 @@ export const products: Product[] = [
     slug: "mom-im-an-artist",
     title: "Mom im an artist",
     caption: "Ser artista no es una carrera, es una forma de existir.",
-    image: "/KSCO%201.1.png",
+    image: "/shirt1front.png",
     description:
       "Drop #001. Arte, textura y construcción pensadas para outsiders. Pieza limitada.",
     price: 25,
-    images: ["/KSCO%201.1.png", "/KSCO%201.2.png", "/KSCO%201.3.png"],
+    images: [
+      "/shirt1front.png",
+      "/KSCO%201.1.png",
+      "/KSCO%201.2.png",
+      "/KSCO%201.3.png",
+    ],
   },
   {
     slug: "fuck-i-want-to-creative",
     title: "Fuck i want to be creative",
     caption:
       "Por qué debemos ser normal si lo mejor es romper el esquema",
-    image: "/KSCO%202.1.png",
+    image: "/shirt2front.png",
     description:
       "Una pieza para los que crean sin permiso. Fit cómodo y detalles que se sienten.",
     price: 25,
-    images: ["/KSCO%202.1.png", "/KSCO%202.2.png", "/KSCO%202.3.png"],
+    images: [
+      "/shirt2front.png",
+      "/KSCO%202.1.png",
+      "/KSCO%202.2.png",
+      "/KSCO%202.3.png",
+    ],
   },
   {
     slug: "created-not-aproved",
     title: "Created not aproved",
     caption: "Las piezas que cambian la cultura nunca pasan por aprobación.",
-    image: "/KSCO%204.1.png",
+    image: "/shirt3front.png",
     description:
       "Hecha para romper lo normal. Diseño directo, statement fuerte, drop limitado.",
     price: 25,
-    images: ["/KSCO%204.1.png", "/KSCO%204.2.png", "/KSCO%204.3.png"],
+    images: [
+      "/shirt3front.png",
+      "/KSCO%204.1.png",
+      "/KSCO%204.2.png",
+      "/KSCO%204.3.png",
+    ],
   },
   {
     slug: "normal-never-built-anything",
