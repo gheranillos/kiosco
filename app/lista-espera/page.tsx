@@ -43,6 +43,14 @@ export default function ListaEsperaPage() {
     return () => window.clearInterval(timer);
   }, [targetTime]);
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const prefill = params.get("email");
+    if (prefill) {
+      setEmail(prefill);
+    }
+  }, []);
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setMessage("");
