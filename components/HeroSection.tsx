@@ -55,7 +55,7 @@ export function HeroSection({ gallery }: { gallery: GalleryItem[] }) {
     },
     {
       image: "/hero2.jpg",
-      badge: "5% OFF pre-registro",
+      badge: null as string | null,
       bullets: ["Early Access"],
       quote: "Los que están adentro, son los verdaderos.",
     },

@@ -137,9 +137,7 @@ export default function Checkout() {
     { id: "zoom", name: "Zoom" },
   ];
   const couponCatalog: Record<string, number> = {
-    SAVE10: 0.1,
-    KIOSCO15: 0.15,
-    ARTISTA20: 0.2,
+    EARLY100: 0.05,
   };
 
   const [selectedShipping, setSelectedShipping] = useState("mrw");
@@ -474,7 +472,7 @@ export default function Checkout() {
             <Input
               value={couponInput}
               onChange={(e) => setCouponInput(e.target.value)}
-              placeholder="Ej: SAVE10"
+              placeholder="Ej: EARLY100"
               className="h-9 border-stone-600 bg-stone-950 text-stone-100 placeholder:text-stone-500"
             />
             <Button

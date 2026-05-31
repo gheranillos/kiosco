@@ -102,7 +102,7 @@ export default function ListaEsperaPage() {
 
         <div className="space-y-2 text-center">
           <p className="text-base font-semibold uppercase tracking-wide">
-            Acceso anticipado + 5% OFF en el Drop #001
+            Acceso anticipado al Drop #001
           </p>
           <p className="text-sm text-stone-600">
             Solo para los primeros. Una vez que se acabe, se acaba.

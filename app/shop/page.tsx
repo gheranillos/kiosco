@@ -24,8 +24,8 @@ export default function ShopPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 pb-24 md:px-10 md:pb-32">
-        <div className="grid grid-cols-1 gap-x-6 gap-y-14 md:grid-cols-2 md:gap-x-8 md:gap-y-20">
+      <section className="mx-auto max-w-7xl px-4 pb-24 md:px-6 md:pb-32">
+        <div className="grid grid-cols-2 gap-x-2 gap-y-10 md:grid-cols-4 md:gap-x-3 md:gap-y-14">
           {products.map((p, i) => (
             <ShopProductCard
               key={p.slug}
