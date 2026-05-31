@@ -94,6 +94,18 @@ export async function POST(req: Request) {
     .eq("id", orderId)
     .maybeSingle();
 
+  const { data: orderItems } = await supabase
+    .from("order_items")
+    .select("title,quantity,unit_price,product_slug")
+    .eq("order_id", orderId);
+
+  const items = (orderItems ?? []).map((row) => ({
+    title: String(row.title ?? ""),
+    quantity: Number(row.quantity) || 1,
+    unit_price: Number(row.unit_price) || 0,
+    product_slug: row.product_slug ?? null,
+  }));
+
   const notifyResult = await sendManualPaymentEmailNotification({
     orderId,
     method,
@@ -103,6 +115,7 @@ export async function POST(req: Request) {
     currency: orderRow?.currency ?? "USD",
     customerName: orderRow?.name ?? null,
     customerEmail: orderRow?.email ?? null,
+    items,
   });
 
   const supabaseUrl = String(
@@ -121,6 +134,7 @@ export async function POST(req: Request) {
     currency: orderRow?.currency ?? "USD",
     customerName: orderRow?.name ?? null,
     customerEmail: orderRow?.email ?? null,
+    items,
   });
 
   return NextResponse.json({

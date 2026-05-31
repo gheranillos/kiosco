@@ -1,3 +1,8 @@
+import {
+  formatOrderItemsBlock,
+  type OrderItemNotification,
+} from "@/lib/order-notification-format";
+
 type TelegramNotificationInput = {
   orderId: string;
   method: string;
@@ -7,6 +12,7 @@ type TelegramNotificationInput = {
   currency?: string | null;
   customerName?: string | null;
   customerEmail?: string | null;
+  items?: OrderItemNotification[];
 };
 
 function trimOrNull(v: string | undefined): string | null {
@@ -42,6 +48,8 @@ export async function sendManualPaymentTelegramNotification(
   const amountText = formatAmount(input.amount, input.currency);
   const safeMethod = input.method || "manual";
 
+  const itemsBlock = formatOrderItemsBlock(input.items ?? [], { heading: "🛍 Pedido:" });
+
   const textLines = [
     "🧾 Nuevo pago manual pendiente",
     "",
@@ -51,6 +59,9 @@ export async function sendManualPaymentTelegramNotification(
     `Referencia: ${input.reference || "N/A"}`,
     `Cliente: ${input.customerName || "N/A"}`,
     `Email: ${input.customerEmail || "N/A"}`,
+    "",
+    itemsBlock,
+    "",
     `Comprobante: ${input.proofUrl}`,
   ];
 

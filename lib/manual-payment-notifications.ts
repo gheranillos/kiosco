@@ -1,3 +1,8 @@
+import {
+  formatOrderItemsBlock,
+  type OrderItemNotification,
+} from "@/lib/order-notification-format";
+
 type ManualPaymentNotificationInput = {
   orderId: string;
   method: string;
@@ -7,6 +12,7 @@ type ManualPaymentNotificationInput = {
   currency?: string | null;
   customerName?: string | null;
   customerEmail?: string | null;
+  items?: OrderItemNotification[];
 };
 
 function trimOrNull(v: string | undefined): string | null {
@@ -49,6 +55,8 @@ export async function sendManualPaymentEmailNotification(
   const safeMethod = input.method || "manual";
   const subject = `Nuevo comprobante por revisar (${safeMethod}) - Orden ${input.orderId}`;
 
+  const itemsBlock = formatOrderItemsBlock(input.items ?? []);
+
   const lines = [
     "Nuevo pago manual pendiente de verificacion.",
     "",
@@ -58,6 +66,9 @@ export async function sendManualPaymentEmailNotification(
     `Referencia: ${input.reference || "N/A"}`,
     `Cliente: ${input.customerName || "N/A"}`,
     `Email cliente: ${input.customerEmail || "N/A"}`,
+    "",
+    itemsBlock,
+    "",
     `Comprobante: ${proofUrl}`,
   ];
 
