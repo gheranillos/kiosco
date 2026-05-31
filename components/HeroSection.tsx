@@ -58,26 +58,8 @@ export function HeroSection({
 }: HeroSectionProps) {
   const heroBgRef = useRef<HTMLDivElement>(null);
   const shopEnabled = process.env.NEXT_PUBLIC_SHOP_ENABLED !== "false";
-  const slides = [
-    {
-      image: "/hero1.jpg",
-      badge: null as string | null,
-      bullets: [] as string[],
-      quote: null as string | null,
-    },
-    {
-      image: "/hero2.jpg",
-      badge: null as string | null,
-      bullets: ["Early Access"],
-      quote: "Los que están adentro, son los verdaderos.",
-    },
-    {
-      image: "/hero3.jpg",
-      badge: "EXCLUSIVIDAD / FOMO",
-      bullets: ["Limited Drop", "Solo X piezas disponibles", "No restock"],
-      quote: null,
-    },
-  ];
+  const showDropCta = process.env.NEXT_PUBLIC_HERO_DROP_CTA_ENABLED === "true";
+  const slides = [{ image: "/hero1.jpg" }, { image: "/hero2.jpg" }, { image: "/hero3.jpg" }];
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -220,7 +202,7 @@ export function HeroSection({
           <span className="mt-2 block">Outsiders</span>
         </h1>
 
-        {!shopEnabled && (
+        {!shopEnabled && showDropCta && (
           <div className="pointer-events-none absolute bottom-[5.25rem] left-1/2 z-30 w-full max-w-[min(320px,92vw)] -translate-x-1/2 px-6 md:bottom-[3.5rem]">
             <div className="pointer-events-auto flex justify-center">
               <PrimaryDropCta href={ctaHref} onClick={ctaOnClick} />
@@ -233,46 +215,8 @@ export function HeroSection({
             Kiosco — Drop #001 Not normal.
           </div>
 
-          {slides[currentSlide].badge && (
-            <div className="inline-flex items-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm px-3 py-1 text-xs font-semibold uppercase text-white animate-in fade-in duration-500">
-              {slides[currentSlide].badge}
-            </div>
-          )}
-
-          {slides[currentSlide].bullets.length > 0 && (
-            <ul className="flex flex-col gap-1 animate-in fade-in duration-500">
-              {slides[currentSlide].bullets.map((bullet) => (
-                <li
-                  key={bullet}
-                  className="flex items-center gap-2 text-xs uppercase font-semibold tracking-widest text-white/80"
-                >
-                  <span className="w-1 h-1 rounded-full bg-white/60" />
-                  {bullet}
-                </li>
-              ))}
-            </ul>
-          )}
-
-          {slides[currentSlide].quote && (
-            <p className="text-sm italic text-white/60 font-light max-w-xs animate-in fade-in duration-500">
-              "{slides[currentSlide].quote}"
-            </p>
-          )}
-
-          <div className="flex flex-wrap gap-2 text-[11px] font-medium uppercase text-stone-500 md:gap-3 md:text-xs md:text-stone-400">
-            <span className="rounded-full border border-stone-800 px-2.5 py-1.5 md:px-3 md:py-2">
-              Exclusividad
-            </span>
-            <span className="rounded-full border border-stone-800 px-2.5 py-1.5 md:px-3 md:py-2">
-              Early Access
-            </span>
-            <span className="rounded-full border border-stone-800 px-2.5 py-1.5 md:px-3 md:py-2">
-              Comunidad
-            </span>
-          </div>
-
           <div className="relative z-30 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:gap-4 md:gap-3">
-            {shopEnabled && (
+            {shopEnabled && showDropCta && (
               <PrimaryDropCta href={ctaHref} onClick={ctaOnClick} />
             )}
 
