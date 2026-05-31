@@ -5,7 +5,13 @@ import { ShoppingBagIcon } from "lucide-react";
 import { useCart } from "@/components/shop/cart-context";
 import { cn } from "@/lib/utils";
 
-export function CartButton({ className = "" }: { className?: string }) {
+export function CartButton({
+  className = "",
+  variant = "light",
+}: {
+  className?: string;
+  variant?: "light" | "dark";
+}) {
   const { openCart, count } = useCart();
 
   return (
@@ -13,7 +19,10 @@ export function CartButton({ className = "" }: { className?: string }) {
       type="button"
       onClick={openCart}
       className={cn(
-        "relative inline-flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full border border-stone-800 bg-stone-950/40 px-3 py-2 text-stone-100 transition hover:bg-stone-900/40",
+        "relative inline-flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full border px-3 py-2 transition",
+        variant === "dark"
+          ? "border-stone-700/60 bg-stone-950/30 text-stone-100 hover:bg-stone-900/50"
+          : "border-stone-300 bg-white/80 text-stone-900 hover:bg-stone-100/90",
         className
       )}
       aria-label="Abrir carrito"

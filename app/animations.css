@@ -215,9 +215,23 @@
 .anim-header.scrolled {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-  background-color: rgba(12, 10, 9, 0.85);
-  backdrop-filter: saturate(180%) blur(12px);
-  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  background-color: transparent;
+  backdrop-filter: saturate(180%) blur(8px);
+  -webkit-backdrop-filter: saturate(180%) blur(8px);
+}
+
+/* Contraste en header transparente sobre fondos claros */
+header[data-header-theme="light"] {
+  color: rgb(28 25 23);
+}
+
+header[data-header-theme="light"] button {
+  border-color: rgb(28 25 23 / 0.35);
+  color: rgb(28 25 23);
+}
+
+header[data-header-theme="light"] button:hover {
+  background-color: rgb(28 25 23 / 0.08);
 }
 
 /* --- 7. Cursor personalizado (opcional) --- */
