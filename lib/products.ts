@@ -6,6 +6,8 @@ export type Product = {
   description: string;
   price: number;
   images: string[];
+  /** false = mostrar "Sin stock" y desactivar compra */
+  inStock?: boolean;
 };
 
 export const products: Product[] = [
@@ -77,6 +79,7 @@ export const products: Product[] = [
       "Hoodie del Drop #001. Construcción gruesa, fit relajado y print pensado para los que no piden permiso.",
     price: 35,
     images: ["/hoodie1.png", "/hoodie1back.png"],
+    inStock: false,
   },
   {
     slug: "creme-normal",
@@ -87,6 +90,7 @@ export const products: Product[] = [
       "Hoodie pesado, abrigado y con peso de declaración. Edición limitada del Drop #001.",
     price: 35,
     images: ["/hoodie2.png", "/hoodie2back.png"],
+    inStock: false,
   },
   {
     slug: "black-normal",
@@ -97,8 +101,16 @@ export const products: Product[] = [
       "Hoodie del Drop #001. Statement directo, sin sobrediseño. Para outsiders, no para masas.",
     price: 35,
     images: ["/hoodie3.png", "/hoodie3back.png"],
+    inStock: false,
   },
 ];
+
+export function isInStock(product: Pick<Product, "slug" | "inStock"> | string): boolean {
+  const p =
+    typeof product === "string" ? products.find((x) => x.slug === product) : product;
+  if (!p) return true;
+  return p.inStock !== false;
+}
 
 const HOODIE_SLUGS = new Set([
   "outsiders-only",

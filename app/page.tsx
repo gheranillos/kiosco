@@ -134,6 +134,7 @@ export default function ShopPage() {
                   price={p.price}
                   frontSrc={frontSrc}
                   backSrc={backSrc}
+                  soldOut={p.inStock === false}
                 />
               );
             })}

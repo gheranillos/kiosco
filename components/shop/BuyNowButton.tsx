@@ -4,18 +4,18 @@ import { useRouter, useParams } from "next/navigation";
 
 import { useCart } from "@/components/shop/cart-context";
 import { useProductSelection } from "@/components/shop/product-selection-context";
-import { getProductBySlug, isHoodie } from "@/lib/products";
+import { getProductBySlug, isHoodie, isInStock } from "@/lib/products";
 
 export function BuyNowButton() {
   const params = useParams<{ slug: string }>();
   const router = useRouter();
   const { addItem, closeCart } = useCart();
   const { size, fit } = useProductSelection();
+  const product = getProductBySlug(params?.slug ?? "");
+  const inStock = product ? isInStock(product) : false;
 
   const handleClick = () => {
-    const product = getProductBySlug(params?.slug ?? "");
-    if (!product) {
-      router.push("/checkout");
+    if (!product || !inStock) {
       return;
     }
     addItem(
@@ -25,6 +25,10 @@ export function BuyNowButton() {
     closeCart();
     router.push("/checkout");
   };
+
+  if (!inStock) {
+    return null;
+  }
 
   return (
     <button

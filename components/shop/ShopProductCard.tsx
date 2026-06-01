@@ -9,19 +9,36 @@ type Props = {
   price: number;
   frontSrc: string;
   backSrc: string;
+  soldOut?: boolean;
 };
 
-export function ShopProductCard({ slug, title, price, frontSrc, backSrc }: Props) {
+export function ShopProductCard({
+  slug,
+  title,
+  price,
+  frontSrc,
+  backSrc,
+  soldOut = false,
+}: Props) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <Link
       href={`/shop/${slug}`}
       className="group block"
-      onMouseEnter={() => setIsHovered(true)}
+      onMouseEnter={() => !soldOut && setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="relative aspect-[4/5] w-full overflow-hidden bg-stone-100">
+      <div
+        className={`relative aspect-[4/5] w-full overflow-hidden bg-stone-100 ${
+          soldOut ? "opacity-75" : ""
+        }`}
+      >
+        {soldOut ? (
+          <span className="absolute left-2 top-2 z-10 rounded-full bg-stone-900 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-stone-100 md:left-3 md:top-3">
+            Sin stock
+          </span>
+        ) : null}
         <img
           src={frontSrc}
           alt={title}
@@ -44,7 +61,9 @@ export function ShopProductCard({ slug, title, price, frontSrc, backSrc }: Props
 
       <div className="mt-3 flex flex-col gap-0.5">
         <h3 className="text-xs font-medium text-stone-900">{title}</h3>
-        <span className="text-xs text-stone-500">${price} USD</span>
+        <span className={`text-xs ${soldOut ? "text-stone-400" : "text-stone-500"}`}>
+          {soldOut ? "Agotado" : `$${price} USD`}
+        </span>
       </div>
     </Link>
   );

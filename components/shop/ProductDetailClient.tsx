@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 
 import type { Product } from "@/lib/products";
-import { getProductBySlug, isHoodie, products } from "@/lib/products";
+import { getProductBySlug, isHoodie, isInStock, products } from "@/lib/products";
 import { useCart } from "@/components/shop/cart-context";
 import {
   PRODUCT_FITS,
@@ -25,6 +25,7 @@ export function ProductDetailClient() {
 
   const [activeImage, setActiveImage] = useState(0);
   const hoodie = isHoodie(product);
+  const inStock = isInStock(product);
 
   const related = useMemo(
     () => products.filter((p) => p.slug !== product.slug).slice(0, 6),
@@ -73,9 +74,16 @@ export function ProductDetailClient() {
         <aside className="lg:sticky lg:top-10 h-fit space-y-6">
           <div className="space-y-2">
             <p className="text-xs font-semibold uppercase text-stone-500">Drop #001</p>
-            <h1 className="text-2xl font-black uppercase leading-tight tracking-tight text-stone-900 md:text-3xl">
-              {product.title}
-            </h1>
+            <div className="flex flex-wrap items-center gap-2">
+              <h1 className="text-2xl font-black uppercase leading-tight tracking-tight text-stone-900 md:text-3xl">
+                {product.title}
+              </h1>
+              {!inStock ? (
+                <span className="rounded-full bg-stone-900 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-stone-100">
+                  Sin stock
+                </span>
+              ) : null}
+            </div>
             <p className="text-sm text-stone-600 leading-6">{product.description}</p>
           </div>
 
@@ -107,7 +115,13 @@ export function ProductDetailClient() {
               ))}
             </div>
 
-            {!hoodie ? (
+            {!inStock ? (
+              <p className="rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-600">
+                Esta pieza está agotada en el Drop #001. No hay restock.
+              </p>
+            ) : null}
+
+            {!hoodie && inStock ? (
               <div className="space-y-2">
                 <p className="text-xs font-semibold uppercase text-stone-500">Corte</p>
                 <div className="grid grid-cols-2 gap-2">
@@ -129,30 +143,33 @@ export function ProductDetailClient() {
               </div>
             ) : null}
 
-            <div className="space-y-2">
-              <p className="text-xs font-semibold uppercase text-stone-500">Talla</p>
-              <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
-                {PRODUCT_SIZES.map((s) => (
-                  <button
-                    key={s}
-                    type="button"
-                    onClick={() => setActiveSize(s)}
-                    className={`h-10 rounded-xl border text-xs font-bold uppercase transition ${
-                      activeSize === s
-                        ? "border-stone-900 bg-stone-900 text-stone-100"
-                        : "border-stone-300 bg-white text-stone-500 hover:text-stone-900 hover:border-stone-700"
-                    }`}
-                  >
-                    {s}
-                  </button>
-                ))}
+            {inStock ? (
+              <div className="space-y-2">
+                <p className="text-xs font-semibold uppercase text-stone-500">Talla</p>
+                <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
+                  {PRODUCT_SIZES.map((s) => (
+                    <button
+                      key={s}
+                      type="button"
+                      onClick={() => setActiveSize(s)}
+                      className={`h-10 rounded-xl border text-xs font-bold uppercase transition ${
+                        activeSize === s
+                          ? "border-stone-900 bg-stone-900 text-stone-100"
+                          : "border-stone-300 bg-white text-stone-500 hover:text-stone-900 hover:border-stone-700"
+                      }`}
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            ) : null}
           </div>
 
           <div className="space-y-3">
             <button
               type="button"
+              disabled={!inStock}
               onClick={() =>
                 addItem(
                   product,
@@ -161,13 +178,15 @@ export function ProductDetailClient() {
                     : { quantity: 1, size: activeSize, fit: activeFit }
                 )
               }
-              className="w-full rounded-full bg-stone-900 px-6 py-4 text-sm font-black uppercase text-stone-100 transition hover:bg-stone-800"
+              className="w-full rounded-full bg-stone-900 px-6 py-4 text-sm font-black uppercase text-stone-100 transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-stone-900"
             >
-              Add to cart
+              {inStock ? "Add to cart" : "Sin stock"}
             </button>
 
             <p className="text-[11px] leading-5 text-stone-500">
-              {hoodie ? (
+              {!inStock ? (
+                <>Esta prenda no está disponible por ahora.</>
+              ) : hoodie ? (
                 <>
                   Seleccionaste talla{" "}
                   <span className="font-semibold text-stone-800">{activeSize}</span>.
