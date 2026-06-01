@@ -13,6 +13,7 @@ import {
   useProductSelection,
 } from "@/components/shop/product-selection-context";
 import { fitLabel } from "@/lib/shop-options";
+import { SIZE_GUIDES } from "@/lib/size-guides";
 
 export function ProductDetailClient() {
   const params = useParams<{ slug: string }>();
@@ -220,40 +221,70 @@ export function ProductDetailClient() {
                 <span className="text-stone-400 transition group-open:rotate-45">+</span>
               </summary>
               <div className="pt-3 text-sm leading-6 text-stone-600">
-                <div className="overflow-x-auto rounded-xl border border-stone-200">
-                  <table className="w-full min-w-[280px] text-left text-xs text-stone-700">
-                    <thead>
-                      <tr className="border-b border-stone-200 bg-stone-100 text-[10px] font-bold uppercase tracking-wider text-stone-500">
-                        <th className="px-3 py-2">Talla</th>
-                        <th className="px-3 py-2">Pecho</th>
-                        <th className="px-3 py-2">Cintura</th>
-                        <th className="px-3 py-2">Largo</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-stone-200">
-                      {[
-                        { size: "XS", chest: 49, waist: 50, length: 64 },
-                        { size: "S", chest: 51, waist: 52, length: 66 },
-                        { size: "M", chest: 52, waist: 53, length: 67 },
-                        { size: "L", chest: 53, waist: 54, length: 68 },
-                        { size: "XL", chest: 57, waist: 58, length: 72 },
-                        { size: "XXL", chest: 59, waist: 60, length: 74 },
-                      ].map((row) => (
-                        <tr key={row.size} className="bg-white">
-                          <td className="px-3 py-2 font-bold text-stone-900">{row.size}</td>
-                          <td className="px-3 py-2">{row.chest} cm</td>
-                          <td className="px-3 py-2">{row.waist} cm</td>
-                          <td className="px-3 py-2">{row.length} cm</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <p className="mt-3 text-sm text-stone-600">
-                  {hoodie
-                    ? "Usa tu talla usual. El hoodie tiene un solo corte."
-                    : "Usa tu talla usual con corte Regular. Para un fit más amplio, elige Boxy en la misma talla."}
-                </p>
+                {hoodie ? (
+                  <p>Usa tu talla usual. El hoodie tiene un solo corte.</p>
+                ) : (
+                  <div className="space-y-4">
+                    {PRODUCT_FITS.map((fitOption) => {
+                      const guide = SIZE_GUIDES[fitOption.id];
+                      const isActive = activeFit === fitOption.id;
+                      return (
+                        <div
+                          key={fitOption.id}
+                          className={`overflow-hidden rounded-xl border ${
+                            isActive
+                              ? "border-stone-900 ring-1 ring-stone-900"
+                              : "border-stone-200"
+                          }`}
+                        >
+                          <p
+                            className={`border-b px-3 py-2 text-[10px] font-bold uppercase tracking-wider ${
+                              isActive
+                                ? "border-stone-900 bg-stone-900 text-stone-100"
+                                : "border-stone-200 bg-stone-100 text-stone-600"
+                            }`}
+                          >
+                            {guide.title}
+                            {isActive ? " · seleccionado" : ""}
+                          </p>
+                          <div className="overflow-x-auto">
+                            <table className="w-full min-w-[320px] text-left text-xs text-stone-700">
+                              <thead>
+                                <tr className="border-b border-stone-200 bg-white text-[10px] font-bold uppercase tracking-wider text-stone-500">
+                                  <th className="px-3 py-2">Talla</th>
+                                  <th className="px-3 py-2">Pecho</th>
+                                  <th className="px-3 py-2">Cintura</th>
+                                  <th className="px-3 py-2">Largo</th>
+                                  <th className="px-3 py-2">Manga</th>
+                                </tr>
+                              </thead>
+                              <tbody className="divide-y divide-stone-200">
+                                {guide.rows.map((row) => (
+                                  <tr key={`${fitOption.id}-${row.size}`} className="bg-white">
+                                    <td className="px-3 py-2 font-bold text-stone-900">
+                                      {row.size}
+                                    </td>
+                                    <td className="px-3 py-2">{row.chest} cm</td>
+                                    <td className="px-3 py-2">{row.waist} cm</td>
+                                    <td className="px-3 py-2">{row.length} cm</td>
+                                    <td className="px-3 py-2">{row.sleeve} cm</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+                {!hoodie ? (
+                  <p className="mt-3 text-sm text-stone-600">
+                    Medidas en cm del corte{" "}
+                    <span className="font-semibold text-stone-800">{fitLabel(activeFit)}</span>.
+                    Cambia el corte arriba para ver otra tabla resaltada.
+                  </p>
+                ) : null}
               </div>
             </details>
             <details className="group p-4">

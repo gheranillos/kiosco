@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { getSupabaseServerClient } from "@/lib/supabase-server";
 import { isHoodie, products } from "@/lib/products";
+import { fitLabel, type ProductFit } from "@/lib/shop-options";
 
 type Body = {
   payment_method: "paypal" | "bolivares" | "binance_pay" | "zinli";
@@ -52,7 +53,7 @@ export async function POST(req: Request) {
         ? isHoodie(it.slug)
           ? ` · ${it.size}`
           : it.fit
-            ? ` · ${it.fit === "boxy" ? "Boxy / Oversize" : "Regular"} · ${it.size}`
+            ? ` · ${fitLabel(it.fit as ProductFit)} · ${it.size}`
             : ""
         : "";
       return {
