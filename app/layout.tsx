@@ -9,6 +9,7 @@ import { SiteShell } from '@/components/SiteShell'
 const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 const shopEnabled = process.env.NEXT_PUBLIC_SHOP_ENABLED !== "false";
+const metaPixelId = '1916006382385861';
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -49,6 +50,33 @@ export default function RootLayout({
       <body className="font-sans antialiased">
         <SiteShell shopEnabled={shopEnabled}>{children}</SiteShell>
         <Analytics />
+        <Script
+          id="meta-pixel"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              !function(f,b,e,v,n,t,s)
+              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+              n.queue=[];t=b.createElement(e);t.async=!0;
+              t.src=v;s=b.getElementsByTagName(e)[0];
+              s.parentNode.insertBefore(t,s)}(window, document,'script',
+              'https://connect.facebook.net/en_US/fbevents.js');
+              fbq('init', '${metaPixelId}');
+              fbq('track', 'PageView');
+            `,
+          }}
+        />
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: 'none' }}
+            src={`https://www.facebook.com/tr?id=${metaPixelId}&ev=PageView&noscript=1`}
+            alt=""
+          />
+        </noscript>
         <Script src="/validation.js" strategy="afterInteractive" />
         <Script src="/animations.js" strategy="afterInteractive" />
       </body>
